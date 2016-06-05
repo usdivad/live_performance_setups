@@ -1,0 +1,7 @@
+*.wav
+*.aif
+*.mp3
+.DS_Store
+*/.DS_Store
+*/Samples/Processed/Freeze/
+*.JPG
