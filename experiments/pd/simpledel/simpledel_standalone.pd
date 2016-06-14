@@ -1,0 +1,104 @@
+#N canvas 61 23 1397 704 10;
+#X obj 202 12 adc~;
+#X obj 336 388 dac~;
+#X obj 504 179 *~ 0.9;
+#X obj 329 314 delread~ del 50;
+#X obj 144 65 bonk~;
+#X floatatom 144 87 5 0 0 0 - - -;
+#X obj 374 117 delwrite~ del 10000;
+#X obj 113 133 moses 11;
+#X obj 162 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 244 199 5 0 0 0 - - -;
+#X obj 244 177 random 2;
+#X obj 247 227 tgl 15 1 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 32 77 *~;
+#X obj 339 343 *~ 5;
+#X text 558 181 del feedback;
+#X text 373 350 amplify delay signal;
+#X text 298 61 delay signal;
+#X floatatom 721 161 5 0 0 0 - - -;
+#X floatatom 1214 163 5 0 0 0 - - -;
+#X obj 727 22 vsl 15 128 0 50 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 6700 1;
+#X obj 1217 23 vsl 15 128 0 10 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 224 515 * 1;
+#X floatatom 224 537 5 0 0 0 - - -;
+#X text 218 553 final delay value;
+#X floatatom 908 160 5 0 0 0 - - -;
+#X obj 910 17 vsl 15 128 0 10 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 3810 1;
+#X text 717 -13 INPUT SENSITIVITY;
+#X text 892 -16 DELAY MULTIPLIER;
+#X text 1204 -15 DELAY OUTPUT AMPLIFICATION;
+#X obj 266 59 *~ 1;
+#X msg 989 53 0.5;
+#X msg 1028 49 1;
+#X msg 1066 57 2;
+#X msg 1104 56 3;
+#X msg 974 84 0;
+#X text 51 608 TODO: add more nuance in these values \; have "groups"
+- get an array of notes \; scale;
+#X obj 77 361 simpledel_shortlong;
+#X obj 141 329 simpledel_scale_pentatonic;
+#X text 281 203 connect to right inlet of delay signal to turn on/off
+randomly;
+#X text 173 123 only accents trigger delay level changes;
+#X obj 1029 309 vradio 20 1 0 8 empty empty empty 0 -8 0 10 -262144
+-1 -1 1;
+#X floatatom 1030 484 5 0 0 0 - - -;
+#X obj 94 261 sel 0 1 2 3 4 5 6 7;
+#X obj 1030 503 send deltype;
+#X obj 39 180 receive deltype;
+#X floatatom 98 220 5 0 0 0 - - -;
+#X obj 89 297 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 126 296 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 1056 312 0: short/long delay randoms;
+#X text 1055 331 1: pentatonic scale;
+#X text 1025 282 DELAY TYPE;
+#X connect 0 0 4 0;
+#X connect 0 0 12 0;
+#X connect 0 0 29 0;
+#X connect 0 1 12 1;
+#X connect 0 1 29 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 3 0 13 0;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 7 1 8 0;
+#X connect 8 0 10 0;
+#X connect 8 0 45 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 0;
+#X connect 13 0 1 1;
+#X connect 17 0 7 1;
+#X connect 18 0 13 1;
+#X connect 19 0 17 0;
+#X connect 20 0 18 0;
+#X connect 21 0 22 0;
+#X connect 22 0 3 0;
+#X connect 24 0 21 1;
+#X connect 25 0 24 0;
+#X connect 29 0 6 0;
+#X connect 30 0 25 0;
+#X connect 31 0 25 0;
+#X connect 32 0 25 0;
+#X connect 33 0 25 0;
+#X connect 34 0 25 0;
+#X connect 36 0 21 0;
+#X connect 37 0 21 0;
+#X connect 40 0 41 0;
+#X connect 41 0 43 0;
+#X connect 42 0 46 0;
+#X connect 42 1 47 0;
+#X connect 44 0 45 0;
+#X connect 45 0 42 0;
+#X connect 46 0 36 0;
+#X connect 47 0 37 0;
