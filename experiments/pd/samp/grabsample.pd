@@ -1,4 +1,4 @@
-#N canvas 498 237 651 545 12;
+#N canvas 498 237 857 531 12;
 #X obj 49 144 adc~;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array samplearr 220500 float 3;
@@ -24751,18 +24751,21 @@
 #X restore 258 72 graph;
 #X msg 113 53 start;
 #X msg 173 50 stop;
-#X obj 324 422 dac~;
-#X obj 332 358 tabplay~ samplearr;
+#X obj 283 400 dac~;
+#X obj 292 349 tabplay~ samplearr;
 #X msg 309 314 bang;
 #X obj 49 201 tabwrite~ samplearr;
 #X text 307 286 PLAYBACK;
 #X text 124 26 SAMPLING;
-#X text 498 291 todo:Reverse;
+#X text 642 277 todo:Reverse;
 #X obj 102 285 phasor~;
 #X obj 117 359 vline~;
 #X obj 117 384 snapshot~;
 #X floatatom 117 409 5 0 0 0 - - -;
 #X text 468 43 size: 220500;
+#X obj 629 403 dac~;
+#X msg 655 317 bang;
+#X obj 638 352 tabread4~ samplearr;
 #X connect 0 0 7 0;
 #X connect 0 1 7 0;
 #X connect 2 0 7 0;
@@ -24772,3 +24775,6 @@
 #X connect 6 0 5 0;
 #X connect 12 0 13 0;
 #X connect 13 0 14 0;
+#X connect 17 0 18 0;
+#X connect 18 0 16 0;
+#X connect 18 0 16 1;
