@@ -186,7 +186,8 @@ function playOutro(oscs, gains, notes) {
     setGains(gains, 1, 0.01);
     window.setTimeout(function() {
         // setGains(gains, 0.01, 40);
-        fadeOutGains(gains, 20);
+        fadeOutGains(gains, 30);
+        fadeDisplay(20);
     }, 1000); // has to wait a bit longer than the rampup time, otherwise sometimes it doesn't trigger
 }
 
@@ -272,6 +273,21 @@ function pointillize(oscs, gains, notes) {
             }
         }
     }, 100);
+}
+
+function fadeDisplay(dur) {
+    var step = 0.01;
+    var interval = dur * (1/step) / 10;
+    
+    var intervalId = window.setInterval(function() {
+        var currentOpacity = $("body").css("opacity");
+        if (currentOpacity > 0) {
+            $("body").css("opacity", Math.max(currentOpacity - step, 0));
+        }
+        else {
+            window.clearInterval(intervalId);
+        }
+    }, interval);
 }
 
 // UTILITIES
