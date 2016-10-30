@@ -5,3 +5,5 @@
 */.DS_Store
 */Samples/Processed/Freeze/
 *.JPG
+
+node_modules
