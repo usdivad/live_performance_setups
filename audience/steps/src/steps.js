@@ -141,11 +141,14 @@ $(document).ready(function() {
     $(".sectionDisp").on("touchend mouseup", function(e) {
         e.preventDefault();
         $(".sectionDisp").removeClass("currentlyTouched");
-        var lyric = "";
+
         if (currentSection < sections.length) {
             var lyric = sections[currentSection]["lyric"]; // this will be the upcoming section because currentSection has already been incremented by the touchstart
+            $(".sectionDisp").text(lyric);
         }
-        $(".sectionDisp").text(lyric);
+        else {
+            $(".sectionDisp").css("visibility", "hidden");
+        }
     });
 
 });
@@ -156,12 +159,12 @@ function playChant(oscs, gains, notes) {
 }
 
 function playVerse(oscs, gains, notes) {
-    // setGains(gains, 0.5, 3);
+    setGains(gains, 0.5, 3);
     pickNotesAndAdjustOscs(oscs, notes, "octaves");
 }
 
 function playChorus(oscs, gains, notes) {
-    // setGains(gains, 1, 3);
+    setGains(gains, 1, 3);
     pickNotesAndAdjustOscs(oscs, notes, "polyphonic");
 
     var currentVerseLabel = $("#verse").text();
@@ -180,10 +183,11 @@ function playOutro(oscs, gains, notes) {
         window.clearInterval(i);
     }
     pickNotesAndAdjustOscs(oscs, notes, "octaves");
-    setGains(gains, 1, 1);
+    setGains(gains, 1, 0.01);
     window.setTimeout(function() {
-        setGains(gains, 0.01, 40);
-    }, 5000); // has to wait a bit longer than the rampup time, otherwise sometimes it doesn't trigger
+        // setGains(gains, 0.01, 40);
+        fadeOutGains(gains, 20);
+    }, 1000); // has to wait a bit longer than the rampup time, otherwise sometimes it doesn't trigger
 }
 
 // OSC ADJUSTERS
@@ -226,8 +230,30 @@ function setGains(gains, val, dur) {
 }
 
 function setGain(gain, val, dur) {
-    gain.gain.exponentialRampToValueAtTime(val, dur);
+    // gain.gain.exponentialRampToValueAtTime(val, dur);
+    gain.gain.value = val;
 }
+
+function fadeOutGains(gains, dur) {
+    var step = 0.01;
+    var interval = dur * (1/step) / 10;
+    for (var i=0; i<gains.length; i++) {
+        var g = gains[i];
+        (function(gain) {
+            var intervalId = window.setInterval(function() {
+                if (gain.gain.value <= 0) {
+                    window.clearInterval(intervalId);
+                }
+                else {
+                    var val = gain.gain.value - step;
+                    gain.gain.value = Math.max(val, 0);
+                }
+                console.log(gain.gain.value);
+            }, interval);
+        })(g);
+    }
+}
+
 
 function pointillize(oscs, gains, notes) {
     window.setInterval(function() {
