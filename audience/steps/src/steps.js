@@ -36,57 +36,117 @@ $(document).ready(function() {
 
     var sections = [
         {
-            "id": "chant",
+            "lyric": "touch here to begin",
             "function": playChant,
-            "notes": [43, 43, 55, 55, 60, 62, 64, 67, 67]
+            "notes": [55]
         },
         {
-            "id": "verse",
+            "lyric": "ahh ahh ahh ahh",
+            "function": playChant,
+            "notes": [55, 55, 60, 62, 64, 67, 67]
+        },
+        {
+            "lyric": "falling back",
             "function": playVerse,
-            "notes": [55, 67]
+            "notes": [55]
         },
         {
-            "id": "chorus",
+            "lyric": "feel afraid to face the changes",
             "function": playChorus,
             "notes": [55, 60, 62, 62, 62, 62, 64, 67, 67]
         },
         {
-            "id": "solo",
+            "lyric": "ahh ahh ahh ahh",
+            "function": playChant,
+            "notes": [43, 43, 55, 55, 60, 62, 64, 67, 67]
+        },
+        {
+            "lyric": "arrowheads",
+            "function": playVerse,
+            "notes": [55, 67]
+        },
+        {
+            "lyric": "i feel afraid",
+            "function": playChant, // technically "prechorus"
+            "notes": [55, 62, 67]
+        },
+        {
+            "lyric": "feel afraid to face the changes",
+            "function": playChorus,
+            "notes": [55, 60, 62, 62, 62, 62, 64, 67, 67]
+        },
+        {
+            "lyric": "*sax solo*",
             "function": playSolo,
             "notes": [55, 60, 62, 64, 67]
         },
         {
-            "id": "outro",
+            "lyric": "shadows come and shadows go",
             "function": playOutro,
             "notes": [55, 62, 67]
         }
     ];
 
     // add listeners to each display element
-    for (var i=0; i<sections.length; i++) {
-        var section = sections[i];
-        (function(s) {
-            var id = "#" + s["id"];
-            var func = s["function"];
-            var notes = s["notes"];
-            $(id).on("mousedown touchstart", function(e) {
-                $(".sectionDisp").removeClass("selected");
-                $(".sectionDisp").removeClass("currentlyTouched");
-                $(id).addClass("currentlyTouched");
-                console.log("selected " + id);
-                if (!oscsStarted) {
-                    startOscs(oscs);
-                    oscsStarted = true;
-                }
-                func(oscs, gains, notes);
-            });
+    // for (var i=0; i<sections.length; i++) {
+    //     var section = sections[i];
+    //     (function(s) {
+    //         var id = "#" + s["id"];
+    //         var func = s["function"];
+    //         var notes = s["notes"];
+    //         $(id).on("mousedown touchstart", function(e) {
+    //             $(".sectionDisp").removeClass("selected");
+    //             $(".sectionDisp").removeClass("currentlyTouched");
+    //             $(id).addClass("currentlyTouched");
+    //             console.log("selected " + id);
+    //             if (!oscsStarted) {
+    //                 startOscs(oscs);
+    //                 oscsStarted = true;
+    //             }
+    //             func(oscs, gains, notes);
+    //         });
 
-            $(id).on("mouseup touchend", function(e) {
-                $(id).removeClass("currentlyTouched");
-                $(id).addClass("selected");
-            })
-        })(section);
-    }
+    //         $(id).on("mouseup touchend", function(e) {
+    //             $(id).removeClass("currentlyTouched");
+    //             $(id).addClass("selected");
+    //         });
+    //     })(section);
+    // }
+
+
+    // cycle through sections with the same UI element
+    var currentSection = 0;
+    $(".sectionDisp").on("touchstart mousedown", function(e) {
+        e.preventDefault();
+        $(".sectionDisp").addClass("currentlyTouched");
+        console.log("current section: " + currentSection);
+
+        if (currentSection >= sections.length) {
+            return;
+        }
+
+        var notes = sections[currentSection]["notes"];
+        var func = sections[currentSection]["function"];
+
+        if (!oscsStarted) {
+            startOscs(oscs);
+            oscsStarted = true;
+        }
+
+        func(oscs, gains, notes);
+        
+        currentSection++;
+    });
+
+    $(".sectionDisp").on("touchend mouseup", function(e) {
+        e.preventDefault();
+        $(".sectionDisp").removeClass("currentlyTouched");
+        var lyric = "";
+        if (currentSection < sections.length) {
+            var lyric = sections[currentSection]["lyric"]; // this will be the upcoming section because currentSection has already been incremented by the touchstart
+        }
+        $(".sectionDisp").text(lyric);
+    });
 
 });
 
@@ -96,12 +156,12 @@ function playChant(oscs, gains, notes) {
 }
 
 function playVerse(oscs, gains, notes) {
-    setGains(gains, 0.5, 3);
+    // setGains(gains, 0.5, 3);
     pickNotesAndAdjustOscs(oscs, notes, "octaves");
 }
 
 function playChorus(oscs, gains, notes) {
-    setGains(gains, 1, 3);
+    // setGains(gains, 1, 3);
     pickNotesAndAdjustOscs(oscs, notes, "polyphonic");
 
     var currentVerseLabel = $("#verse").text();
@@ -122,7 +182,7 @@ function playOutro(oscs, gains, notes) {
     pickNotesAndAdjustOscs(oscs, notes, "octaves");
     setGains(gains, 1, 1);
     window.setTimeout(function() {
-        setGains(gains, 0.01, 20);
+        setGains(gains, 0.01, 40);
     }, 5000); // has to wait a bit longer than the rampup time, otherwise sometimes it doesn't trigger
 }
 
@@ -171,7 +231,7 @@ function setGain(gain, val, dur) {
 
 function pointillize(oscs, gains, notes) {
     window.setInterval(function() {
-        var takeAction = Math.random() > 0.5;
+        var takeAction = Math.random() < 0.75;
         if (takeAction) {
             var i = Math.floor(Math.random() * oscs.length);
             var currentGainVal = gains[i].gain.value;
