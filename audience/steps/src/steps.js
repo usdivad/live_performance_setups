@@ -46,7 +46,7 @@ $(document).ready(function() {
             "notes": [55, 55, 60, 62, 64, 67, 67]
         },
         {
-            "lyric": "falling back",
+            "lyric": "falling back i think we're falling back",
             "function": playVerse,
             "notes": [55]
         },
@@ -61,7 +61,7 @@ $(document).ready(function() {
             "notes": [43, 43, 55, 55, 60, 62, 64, 67, 67]
         },
         {
-            "lyric": "arrowheads",
+            "lyric": "arrowheads these broken arrowheads",
             "function": playVerse,
             "notes": [55, 67]
         },
