@@ -1,8 +1,13 @@
 body {
     font-family: "Arial", Arial, sans-serif;
     text-align: center;
-    font-size: 150%;
+    font-size: 200%;
     background-color: #224662;
+    color: #7095B2;
+}
+
+a {
+    /*text-decoration: none;*/
     color: #7095B2;
 }
 

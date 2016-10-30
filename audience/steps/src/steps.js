@@ -103,6 +103,11 @@ function playVerse(oscs, gains, notes) {
 function playChorus(oscs, gains, notes) {
     setGains(gains, 1, 3);
     pickNotesAndAdjustOscs(oscs, notes, "polyphonic");
+
+    var currentVerseLabel = $("#verse").text();
+    if (currentVerseLabel.indexOf("falling") >= 0) {
+        $("#verse").text("arrowheads");
+    }
 }
 
 function playSolo(oscs, gains, notes) {
