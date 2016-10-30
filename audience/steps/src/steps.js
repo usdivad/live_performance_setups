@@ -78,7 +78,7 @@ $(document).ready(function() {
                     startOscs(oscs);
                     oscsStarted = true;
                 }
-                func(oscs, notes);
+                func(oscs, gains, notes);
             });
 
             $(id).on("mouseup touchend", function(e) {
@@ -91,24 +91,34 @@ $(document).ready(function() {
 });
 
 // SECTION FUNCTIONS
-function playChant(oscs, notes) {
+function playChant(oscs, gains, notes) {
     pickNotesAndAdjustOscs(oscs, notes, "polyphonic");
 }
 
-function playVerse(oscs, notes) {
+function playVerse(oscs, gains, notes) {
+    setGains(gains, 0.5, 3);
     pickNotesAndAdjustOscs(oscs, notes, "octaves");
 }
 
-function playChorus(oscs, notes) {
+function playChorus(oscs, gains, notes) {
+    setGains(gains, 1, 3);
     pickNotesAndAdjustOscs(oscs, notes, "polyphonic");
 }
 
-function playSolo(oscs, notes) {
+function playSolo(oscs, gains, notes) {
     pickNotesAndAdjustOscs(oscs, notes, "polyphonic");
+    pointillize(oscs, gains, notes);
 }
 
-function playOutro(oscs, notes) {
+function playOutro(oscs, gains, notes) {
+    for (var i=0; i<9999; i++) { // clear the pointillism
+        window.clearInterval(i);
+    }
     pickNotesAndAdjustOscs(oscs, notes, "octaves");
+    setGains(gains, 1, 1);
+    window.setTimeout(function() {
+        setGains(gains, 0.01, 20);
+    }, 5000); // has to wait a bit longer than the rampup time, otherwise sometimes it doesn't trigger
 }
 
 // OSC ADJUSTERS
@@ -142,6 +152,35 @@ function startOscs(oscs) {
     for (var i=0; i<oscs.length; i++) {
         oscs[i].start(0);
     }
+}
+
+function setGains(gains, val, dur) {
+    for (var i=0; i<gains.length; i++) {
+        setGain(gains[i], val, dur); // divide val by gains.length?
+    }
+}
+
+function setGain(gain, val, dur) {
+    gain.gain.exponentialRampToValueAtTime(val, dur);
+}
+
+function pointillize(oscs, gains, notes) {
+    window.setInterval(function() {
+        var takeAction = Math.random() > 0.5;
+        if (takeAction) {
+            var i = Math.floor(Math.random() * oscs.length);
+            var currentGainVal = gains[i].gain.value;
+            console.log(i + ", " + currentGainVal);
+            if (currentGainVal > 0) {
+                gains[i].gain.value = 0;
+                pickNotesAndAdjustOscs([oscs[i]], notes, "polyphonic");
+                console.log("setset");
+            }
+            else {
+                gains[i].gain.value = 1;
+            }
+        }
+    }, 100);
 }
 
 // UTILITIES
