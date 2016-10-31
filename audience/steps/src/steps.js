@@ -55,7 +55,7 @@ $(document).ready(function() {
         {
             "lyric": "feel afraid to face the changes",
             "function": playChorus,
-            "notes": [55, 60, 62, 62, 62, 62, 64, 67, 67]
+            "notes": [55, 62, 62, 62, 62, 67, 67]
         },
         {
             "lyric": "ahh ahh ahh ahh",
@@ -75,7 +75,7 @@ $(document).ready(function() {
         {
             "lyric": "feel afraid to face the changes",
             "function": playChorus,
-            "notes": [55, 60, 62, 62, 62, 62, 64, 67, 67]
+            "notes": [55, 62, 62, 62, 62, 67, 67]
         },
         {
             "lyric": "*sax solo*",
