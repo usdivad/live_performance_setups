@@ -158,23 +158,23 @@ $(document).ready(function() {
 
 
     // USER DEVICE ORIENTATION
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener("deviceorientation", function(e) {
-            var a = event.alpha; // 0 to 360
-            var b = event.beta + 180; // -180 to 180 -> 0 to 360
-            var c = (event.gamma * 2) + 180; // -90 to 90 -> 0 to 360
-            $("#orientationInfo").text("a: " + a + ", b: " + b + ", " + "c: " + c);
+    // if (window.DeviceOrientationEvent) {
+    //     window.addEventListener("deviceorientation", function(e) {
+    //         var a = event.alpha; // 0 to 360
+    //         var b = event.beta + 180; // -180 to 180 -> 0 to 360
+    //         var c = (event.gamma * 2) + 180; // -90 to 90 -> 0 to 360
+    //         $("#orientationInfo").text("a: " + a + ", b: " + b + ", " + "c: " + c);
 
-            var orientations = [a, b, c];
-            for (var i=0; i<orientations.length; i++) {
-                var orientation = orientations[i];
-                if (orientation && i < gains.length) {
-                    var val = orientation / 360;
-                    setGain(gains[i], val);
-                }
-            }
-        }, false);
-    }
+    //         var orientations = [a, b, c];
+    //         for (var i=0; i<orientations.length; i++) {
+    //             var orientation = orientations[i];
+    //             if (orientation && i < gains.length) {
+    //                 var val = orientation / 360;
+    //                 setGain(gains[i], val);
+    //             }
+    //         }
+    //     }, false);
+    // }
 });
 
 // SECTION FUNCTIONS
