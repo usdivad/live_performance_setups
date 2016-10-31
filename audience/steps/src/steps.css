@@ -31,6 +31,10 @@ h1 {
     margin: 0px 2.5%;
 }
 
+#orientationInfo {
+    font-size: 40%;
+}
+
 .sectionDisp {
     width: 100%;
     background-color: #0B4D30;
