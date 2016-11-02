@@ -78,7 +78,7 @@ $(document).ready(function() {
             "notes": [55, 62, 62, 62, 62, 67, 67]
         },
         {
-            "lyric": "*sax solo*",
+            "lyric": "*sax/drum solo*",
             "function": playSolo,
             "notes": [55, 60, 62, 64, 67]
         },
