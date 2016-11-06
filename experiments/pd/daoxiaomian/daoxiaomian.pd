@@ -1,51 +1,55 @@
-#N canvas 77 207 829 394 10;
+#N canvas 103 110 1249 401 10;
 #X obj 297 107 notein;
 #X obj 287 132 pack 0 0 0;
 #X text 348 104 note \, vel \, chan;
-#X obj 47 271 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 66 291 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 197 270 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 216 290 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X text 38 292 recording;
-#X text 186 290 play buf;
-#X obj 619 131 adc~;
-#X obj 663 113 r \$0-playthru;
-#X obj 663 135 b;
-#X obj 663 160 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X text 57 312 recording;
+#X text 205 310 play buf;
+#X obj 937 129 adc~;
+#X obj 981 111 r \$0-playthru;
+#X obj 981 133 b;
+#X obj 981 158 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 703 363 s \$0-playthru;
-#X obj 711 340 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 964 293 s \$0-playthru;
+#X obj 963 271 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 644 184 *~;
-#X obj 622 157 +~;
-#X obj 644 206 dac~;
+#X obj 962 182 *~;
+#X obj 940 155 +~;
+#X obj 962 204 dac~;
 #X text 274 80 /* midi events */;
-#X text 585 75 /* toggle input monitoring */;
+#X text 903 73 /* toggle input monitoring */;
 #X text 182 9 === DAO XIAO MIAN (KNIFE SHAVED NOODLES) -- main patch
 \; passes midi events to listeners and displays circular sampler results/statuses
 ===;
-#X text 598 88 (using midi note 42 atm);
-#X obj 402 155 print note vel chan;
-#X obj 62 240 daoxiaomian_circ_sampler;
-#X obj 46 199 daoxiaomian_midi_triggerer 48 44;
+#X obj 425 164 print note vel chan;
+#X obj 81 260 daoxiaomian_circ_sampler;
+#X obj 65 219 daoxiaomian_midi_triggerer 48 44;
 #X obj 278 220 daoxiaomian_midi_triggerer 49 45;
 #X obj 286 286 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 436 285 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 301 255 daoxiaomian_circ_sampler;
-#X obj 571 307 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 522 281 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 721 306 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 672 280 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 586 276 daoxiaomian_circ_sampler;
-#X obj 560 247 daoxiaomian_midi_triggerer 50 46;
+#X obj 537 250 daoxiaomian_circ_sampler;
+#X obj 511 221 daoxiaomian_midi_triggerer 50 46;
+#X obj 735 220 daoxiaomian_midi_triggerer 51 47;
+#X obj 924 246 moses 1;
+#X text 916 86 (using midi note 51 atm);
+#X text 996 342 TODO: options for playback and rec;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
 #X connect 0 2 1 2;
-#X connect 1 0 20 0;
+#X connect 1 0 19 0;
+#X connect 1 0 21 0;
 #X connect 1 0 22 0;
-#X connect 1 0 23 0;
+#X connect 1 0 29 0;
 #X connect 1 0 30 0;
 #X connect 7 0 14 0;
 #X connect 7 1 14 1;
@@ -56,15 +60,17 @@
 #X connect 13 0 15 0;
 #X connect 13 0 15 1;
 #X connect 14 0 13 0;
-#X connect 21 0 3 0;
-#X connect 21 1 4 0;
-#X connect 22 0 21 0;
-#X connect 22 1 21 1;
-#X connect 23 0 26 0;
-#X connect 23 1 26 1;
-#X connect 26 0 24 0;
-#X connect 26 1 25 0;
-#X connect 29 0 27 0;
-#X connect 29 1 28 0;
-#X connect 30 0 29 0;
-#X connect 30 1 29 1;
+#X connect 20 0 3 0;
+#X connect 20 1 4 0;
+#X connect 21 0 20 0;
+#X connect 21 1 20 1;
+#X connect 22 0 25 0;
+#X connect 22 1 25 1;
+#X connect 25 0 23 0;
+#X connect 25 1 24 0;
+#X connect 28 0 26 0;
+#X connect 28 1 27 0;
+#X connect 29 0 28 0;
+#X connect 29 1 28 1;
+#X connect 30 1 31 0;
+#X connect 31 1 12 0;
