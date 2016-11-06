@@ -1,30 +1,20 @@
-#N canvas 8 290 829 394 10;
+#N canvas 77 207 829 394 10;
 #X obj 297 107 notein;
 #X obj 287 132 pack 0 0 0;
 #X text 348 104 note \, vel \, chan;
-#X obj 17 243 daoxiaomian_midi_listener 36;
-#X obj 283 162 print;
-#X obj 15 270 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 47 271 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 165 269 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 197 270 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 283 270 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 433 269 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 558 273 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X text 6 291 recording;
-#X text 154 289 play buf;
-#X obj 285 244 daoxiaomian_midi_listener 37;
-#X obj 560 247 daoxiaomian_midi_listener 42;
+#X text 38 292 recording;
+#X text 186 290 play buf;
 #X obj 619 131 adc~;
 #X obj 663 113 r \$0-playthru;
 #X obj 663 135 b;
 #X obj 663 160 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 708 292 s \$0-playthru;
-#X obj 716 269 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 703 363 s \$0-playthru;
+#X obj 711 340 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 644 184 *~;
 #X obj 622 157 +~;
@@ -35,25 +25,46 @@
 \; passes midi events to listeners and displays circular sampler results/statuses
 ===;
 #X text 598 88 (using midi note 42 atm);
+#X obj 402 155 print note vel chan;
+#X obj 62 240 daoxiaomian_circ_sampler;
+#X obj 46 199 daoxiaomian_midi_triggerer 48 44;
+#X obj 278 220 daoxiaomian_midi_triggerer 49 45;
+#X obj 286 286 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 436 285 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 301 255 daoxiaomian_circ_sampler;
+#X obj 571 307 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 721 306 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 586 276 daoxiaomian_circ_sampler;
+#X obj 560 247 daoxiaomian_midi_triggerer 50 46;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
 #X connect 0 2 1 2;
-#X connect 1 0 3 0;
-#X connect 1 0 12 0;
-#X connect 1 0 13 0;
-#X connect 1 0 4 0;
-#X connect 3 0 5 0;
-#X connect 3 1 6 0;
-#X connect 12 0 7 0;
-#X connect 12 1 8 0;
-#X connect 13 0 9 0;
-#X connect 13 1 19 0;
-#X connect 14 0 21 0;
-#X connect 14 1 21 1;
-#X connect 15 0 16 0;
-#X connect 16 0 17 0;
-#X connect 17 0 20 1;
-#X connect 19 0 18 0;
-#X connect 20 0 22 0;
-#X connect 20 0 22 1;
-#X connect 21 0 20 0;
+#X connect 1 0 20 0;
+#X connect 1 0 22 0;
+#X connect 1 0 23 0;
+#X connect 1 0 30 0;
+#X connect 7 0 14 0;
+#X connect 7 1 14 1;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 13 1;
+#X connect 12 0 11 0;
+#X connect 13 0 15 0;
+#X connect 13 0 15 1;
+#X connect 14 0 13 0;
+#X connect 21 0 3 0;
+#X connect 21 1 4 0;
+#X connect 22 0 21 0;
+#X connect 22 1 21 1;
+#X connect 23 0 26 0;
+#X connect 23 1 26 1;
+#X connect 26 0 24 0;
+#X connect 26 1 25 0;
+#X connect 29 0 27 0;
+#X connect 29 1 28 0;
+#X connect 30 0 29 0;
+#X connect 30 1 29 1;
