@@ -1,13 +1,13 @@
-#N canvas 175 110 1249 401 10;
+#N canvas 175 110 1265 685 10;
 #X obj 297 107 notein;
 #X obj 287 132 pack 0 0 0;
 #X text 348 104 note \, vel \, chan;
-#X obj 66 291 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 70 432 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 216 290 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 220 431 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X text 57 312 recording;
-#X text 205 310 play buf;
+#X text 61 453 recording;
+#X text 209 451 play buf;
 #X obj 937 129 adc~;
 #X obj 981 111 r \$0-playthru;
 #X obj 981 133 b;
@@ -25,24 +25,35 @@
 \; passes midi events to listeners and displays circular sampler results/statuses
 ===;
 #X obj 425 164 print note vel chan;
-#X obj 81 260 daoxiaomian_circ_sampler;
+#X obj 85 401 daoxiaomian_circ_sampler;
 #X obj 65 219 daoxiaomian_midi_triggerer 48 44;
 #X obj 278 220 daoxiaomian_midi_triggerer 49 45;
-#X obj 286 286 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 447 441 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 436 285 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 597 440 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 522 281 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 773 489 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 672 280 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 923 488 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 511 221 daoxiaomian_midi_triggerer 50 46;
 #X obj 735 220 daoxiaomian_midi_triggerer 51 47;
 #X obj 924 246 moses 1;
 #X text 916 86 (using midi note 51 atm);
 #X text 996 342 TODO: options for playback and rec;
-#X obj 301 255 daoxiaomian_circ_sampler;
-#X obj 537 250 daoxiaomian_circ_sampler;
+#X floatatom 210 375 5 0 0 0 - - -;
+#X floatatom 381 374 5 0 0 0 - - -;
+#X obj 702 14 ctlin;
+#X obj 694 42 pack 0 0 0;
+#X obj 212 351 daoxiaomian_midi_triggerer 5 1;
+#X obj 467 413 daoxiaomian_circ_sampler;
+#X obj 788 458 daoxiaomian_circ_sampler;
+#X obj 694 64 s \$0-midi_ctrl;
+#X obj 222 321 r \$0-midi_ctrl;
+#X obj 532 356 r \$0-midi_ctrl;
+#X obj 530 384 daoxiaomian_midi_triggerer 6 2;
+#X obj 846 360 r \$0-midi_ctrl;
+#X obj 836 390 daoxiaomian_midi_triggerer 7 3;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
 #X connect 0 2 1 2;
@@ -64,13 +75,28 @@
 #X connect 20 1 4 0;
 #X connect 21 0 20 0;
 #X connect 21 1 20 1;
-#X connect 22 0 32 0;
-#X connect 22 1 32 1;
-#X connect 27 0 33 0;
-#X connect 27 1 33 1;
+#X connect 22 0 37 0;
+#X connect 22 1 37 1;
+#X connect 27 0 38 0;
+#X connect 27 1 38 1;
 #X connect 28 1 29 0;
 #X connect 29 1 12 0;
-#X connect 32 0 23 0;
-#X connect 32 1 24 0;
-#X connect 33 0 25 0;
-#X connect 33 1 26 0;
+#X connect 32 0 20 2;
+#X connect 33 0 20 3;
+#X connect 34 0 35 1;
+#X connect 34 1 35 0;
+#X connect 34 2 35 2;
+#X connect 35 0 39 0;
+#X connect 36 0 32 0;
+#X connect 36 1 33 0;
+#X connect 37 0 23 0;
+#X connect 37 1 24 0;
+#X connect 38 0 25 0;
+#X connect 38 1 26 0;
+#X connect 40 0 36 0;
+#X connect 41 0 42 0;
+#X connect 42 0 37 2;
+#X connect 42 1 37 3;
+#X connect 43 0 44 0;
+#X connect 44 0 38 2;
+#X connect 44 1 38 3;
