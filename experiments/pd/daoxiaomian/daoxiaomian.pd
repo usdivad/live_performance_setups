@@ -4,8 +4,6 @@
 #X text 348 104 note \, vel \, chan;
 #X obj 70 432 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 220 431 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
 #X text 61 453 recording;
 #X text 209 451 play buf;
 #X obj 937 129 adc~;
@@ -30,12 +28,8 @@
 #X obj 278 220 daoxiaomian_midi_triggerer 49 45;
 #X obj 447 441 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 597 440 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
 #X obj 773 489 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 923 488 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
 #X obj 511 221 daoxiaomian_midi_triggerer 50 46;
 #X obj 735 220 daoxiaomian_midi_triggerer 51 47;
 #X obj 924 246 moses 1;
@@ -46,57 +40,63 @@
 #X obj 702 14 ctlin;
 #X obj 694 42 pack 0 0 0;
 #X obj 212 351 daoxiaomian_midi_triggerer 5 1;
-#X obj 467 413 daoxiaomian_circ_sampler;
-#X obj 788 458 daoxiaomian_circ_sampler;
 #X obj 694 64 s \$0-midi_ctrl;
 #X obj 222 321 r \$0-midi_ctrl;
 #X obj 532 356 r \$0-midi_ctrl;
 #X obj 530 384 daoxiaomian_midi_triggerer 6 2;
 #X obj 846 360 r \$0-midi_ctrl;
 #X obj 836 390 daoxiaomian_midi_triggerer 7 3;
+#X obj 467 413 daoxiaomian_circ_sampler;
+#X obj 788 458 daoxiaomian_circ_sampler;
+#X obj 222 434 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 632 446 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 909 504 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
 #X connect 0 2 1 2;
-#X connect 1 0 19 0;
+#X connect 1 0 18 0;
+#X connect 1 0 20 0;
 #X connect 1 0 21 0;
-#X connect 1 0 22 0;
-#X connect 1 0 27 0;
-#X connect 1 0 28 0;
-#X connect 7 0 14 0;
-#X connect 7 1 14 1;
+#X connect 1 0 24 0;
+#X connect 1 0 25 0;
+#X connect 6 0 13 0;
+#X connect 6 1 13 1;
+#X connect 7 0 8 0;
 #X connect 8 0 9 0;
-#X connect 9 0 10 0;
-#X connect 10 0 13 1;
-#X connect 12 0 11 0;
-#X connect 13 0 15 0;
-#X connect 13 0 15 1;
-#X connect 14 0 13 0;
-#X connect 20 0 3 0;
-#X connect 20 1 4 0;
-#X connect 21 0 20 0;
-#X connect 21 1 20 1;
-#X connect 22 0 37 0;
-#X connect 22 1 37 1;
-#X connect 27 0 38 0;
-#X connect 27 1 38 1;
-#X connect 28 1 29 0;
-#X connect 29 1 12 0;
-#X connect 32 0 20 2;
-#X connect 33 0 20 3;
-#X connect 34 0 35 1;
-#X connect 34 1 35 0;
-#X connect 34 2 35 2;
-#X connect 35 0 39 0;
-#X connect 36 0 32 0;
-#X connect 36 1 33 0;
-#X connect 37 0 23 0;
-#X connect 37 1 24 0;
-#X connect 38 0 25 0;
-#X connect 38 1 26 0;
-#X connect 40 0 36 0;
-#X connect 41 0 42 0;
-#X connect 42 0 37 2;
-#X connect 42 1 37 3;
-#X connect 43 0 44 0;
-#X connect 44 0 38 2;
-#X connect 44 1 38 3;
+#X connect 9 0 12 1;
+#X connect 11 0 10 0;
+#X connect 12 0 14 0;
+#X connect 12 0 14 1;
+#X connect 13 0 12 0;
+#X connect 19 0 3 0;
+#X connect 19 1 42 0;
+#X connect 20 0 19 0;
+#X connect 20 1 19 1;
+#X connect 21 0 40 0;
+#X connect 21 1 40 1;
+#X connect 24 0 41 0;
+#X connect 24 1 41 1;
+#X connect 25 1 26 0;
+#X connect 26 1 11 0;
+#X connect 29 0 19 2;
+#X connect 30 0 19 3;
+#X connect 31 0 32 1;
+#X connect 31 1 32 0;
+#X connect 31 2 32 2;
+#X connect 32 0 34 0;
+#X connect 33 0 29 0;
+#X connect 33 1 30 0;
+#X connect 35 0 33 0;
+#X connect 36 0 37 0;
+#X connect 37 0 40 2;
+#X connect 37 1 40 3;
+#X connect 38 0 39 0;
+#X connect 39 0 41 2;
+#X connect 39 1 41 3;
+#X connect 40 0 22 0;
+#X connect 40 1 43 0;
+#X connect 41 0 23 0;
+#X connect 41 1 44 0;
