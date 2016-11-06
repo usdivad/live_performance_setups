@@ -1,3 +1,5 @@
+*.txt
+*-bak
 *.wav
 *.aif
 *.mp3
@@ -6,4 +8,5 @@
 */Samples/Processed/Freeze/
 *.JPG
 
+sphack*
 node_modules
