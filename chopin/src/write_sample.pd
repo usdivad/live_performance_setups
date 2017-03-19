@@ -1,0 +1,10 @@
+#N canvas 98 417 527 407 10;
+#X obj 133 42 inlet~;
+#X obj 226 42 inlet;
+#X text 125 24 audio in;
+#X text 206 23 recording on/off;
+#X obj 343 47 inlet;
+#X text 329 23 bang from onset;
+#X obj 133 119 *~;
+#X obj 323 85 makefilename;
+#X connect 0 0 6 0;
