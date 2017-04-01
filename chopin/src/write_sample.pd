@@ -1,10 +1,48 @@
-#N canvas 98 417 527 407 10;
-#X obj 133 42 inlet~;
-#X obj 226 42 inlet;
-#X text 125 24 audio in;
-#X text 206 23 recording on/off;
+#N canvas 564 328 527 407 10;
+#X obj 56 41 inlet~;
+#X obj 190 43 inlet;
+#X text 48 23 audio in;
+#X text 170 24 recording on/off;
 #X obj 343 47 inlet;
 #X text 329 23 bang from onset;
-#X obj 133 119 *~;
-#X obj 323 85 makefilename;
-#X connect 0 0 6 0;
+#X obj 360 150 construct_sample_filename;
+#X obj 360 177 s \$0-filename;
+#X obj 404 71 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 191 75 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 220 198 r \$0-filename;
+#X obj 220 308 tabwrite~;
+#X obj 137 287 writesf~;
+#X obj 370 118 spigot;
+#X obj 404 91 == 0;
+#X obj 222 224 symbol;
+#X obj 191 95 moses 1;
+#X obj 170 117 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 236 117 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 236 137 start;
+#X msg 168 138 stop;
+#X text 333 250 <- change dirpath as needed;
+#X obj 275 223 print filename;
+#X msg 179 250 open ../data/recorded/\$1;
+#X connect 0 0 12 0;
+#X connect 1 0 9 0;
+#X connect 4 0 8 0;
+#X connect 4 0 13 0;
+#X connect 6 0 7 0;
+#X connect 8 0 14 0;
+#X connect 9 0 16 0;
+#X connect 10 0 15 0;
+#X connect 10 0 22 0;
+#X connect 13 0 6 0;
+#X connect 14 0 13 1;
+#X connect 15 0 23 0;
+#X connect 16 0 17 0;
+#X connect 16 1 18 0;
+#X connect 17 0 20 0;
+#X connect 18 0 19 0;
+#X connect 19 0 12 0;
+#X connect 20 0 12 0;
+#X connect 23 0 12 0;
