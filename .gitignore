@@ -14,3 +14,8 @@ node_modules
 
 *.pyc
 *.pyo
+
+lavandula/resources/*
+lavandula/notes.txt
+lavandula/data/*
+!lavandula/data/.keep

@@ -19,11 +19,11 @@ class collection_updater(pyext._class):
     _cur_filename = ""
     _session_path = ""
     _collection_path = ""
-    # _collection_path = "/Users/usdivad/Documents/music/live_performance_setups/chopin/data/collection_recorded.musly"
+    # _collection_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/collection_recorded.musly"
     _collection_default_name = "collection.musly"
     _collection_method = "mandelellis" # "mandelellis" or "timbre"
-    _samples_base_path = "/Users/usdivad/Documents/music/live_performance_setups/chopin/data/recorded"
-    _musly_path = "/Users/usdivad/Documents/music/live_performance_setups/chopin/lib/musly"
+    _samples_base_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/recorded"
+    _musly_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/lib/musly"
 
     def bang_1(self):
         if len(self._prev_filename) > 0:

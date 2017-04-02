@@ -4,35 +4,35 @@
 #X obj 60 137 +~;
 #X floatatom 134 250 5 0 0 0 - - -, f 5;
 #X obj 101 221 unpack 0 0 0;
-#X obj 527 140 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+#X obj 527 180 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -203904
 -1 -1 6000 1;
-#X msg 527 110 60;
-#X obj 527 52 loadbang;
+#X msg 527 150 60;
+#X obj 537 53 loadbang;
 #X obj 134 295 moses 60;
 #X obj 68 438 timer;
 #X obj 179 353 spigot;
-#X obj 570 134 s \$0-isRecording;
-#X obj 527 83 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X obj 570 174 s \$0-isRecording;
+#X obj 537 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 569 110 0;
+#X msg 569 150 0;
 #X obj 179 378 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 527 280 s \$0-velThreshold;
+#X obj 527 320 s \$0-velThreshold;
 #X obj 179 273 r \$0-velThresh;
 #X msg 121 437 1;
 #X obj 119 456 s \$0-isRecording;
 #X floatatom 68 460 5 0 0 0 - - -, f 5;
 #X obj 510 460 delay;
-#X obj 706 186 s \$0-maxSampleSize;
+#X obj 706 226 s \$0-maxSampleSize;
 #X obj 537 434 r \$0-maxSampleSize;
 #X msg 508 481 0;
 #X obj 508 505 s \$0-isRecording;
-#X msg 706 164 2000;
-#X msg 571 159 1;
-#X obj 571 181 s \$0-canRecord;
-#X obj 706 125 s \$0-minSampleSize;
+#X msg 706 204 2000;
+#X msg 571 199 1;
+#X obj 571 221 s \$0-canRecord;
+#X obj 706 165 s \$0-minSampleSize;
 #X obj 212 307 r \$0-canRecord;
-#X text 500 32 == Setting initial values ==;
+#X text 501 33 == Setting initial values ==;
 #X msg 230 434 0;
 #X obj 230 456 s \$0-canRecord;
 #X obj 157 317 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -53,22 +53,23 @@
 #X text 359 485 re-enable recording;
 #X text 544 484 turn recording off;
 #X text 176 247 <- velocity;
-#X text 548 222 <- user can change this;
+#X text 548 262 <- user can change this;
 #X obj 27 592 write_sample;
 #X obj 61 499 r \$0-isRecording;
 #X obj 180 400 t b b b b b;
 #X obj 96 524 r \$0-canRecord;
-#X msg 706 103 500;
-#X obj 365 131 construct_session_dirname;
-#X obj 365 153 s \$0-sessionDirname;
+#X msg 706 143 500;
+#X obj 365 171 construct_session_dirname;
+#X obj 365 193 s \$0-sessionDirname;
 #X obj 115 553 r \$0-sessionDirname;
-#X obj 404 30 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X msg 340 77 \; pd dsp \$1;
-#X obj 411 50 t f b;
-#X text 370 9 == On/off ==;
-#X text 17 63 == Read input audio and collect into sample files ==
-;
+#X obj 396 54 tgl 15 0 empty empty empty 17 7 0 10 -203904 -45076 -1
+0 1;
+#X msg 340 117 \; pd dsp \$1;
+#X obj 403 74 t f b;
+#X text 16 60 == Read input audio and;
+#X text 15 74 collect into sample files ==;
+#X text 344 17 == On/off (starts;
+#X text 351 31 new session) ==;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 1 4 0;
