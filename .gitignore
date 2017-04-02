@@ -11,3 +11,6 @@
 
 sphack*
 node_modules
+
+*.pyc
+*.pyo
