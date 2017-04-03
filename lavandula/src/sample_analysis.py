@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 
 try:
@@ -11,7 +12,7 @@ Sample collection updater (for Musly collection)
 """
 class collection_updater(pyext._class):
     # Number of inlets and outlets
-    _inlets = 3
+    _inlets = 4
     _outlets = 1
 
     # Instance variables
@@ -19,24 +20,34 @@ class collection_updater(pyext._class):
     _cur_filename = ""
     _session_path = ""
     _collection_path = ""
-    # _collection_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/collection_recorded.musly"
-    _collection_default_name = "collection.musly"
+    _collection_name = "collection.musly"
     _collection_method = "mandelellis" # "mandelellis" or "timbre"
+    _collection_template_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/collection_templates/cpaghetti"
     _samples_base_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/recorded"
     _musly_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/lib/musly"
+    _analysis_method = 0 # 0 = use similarity matrix, 1 = use collection templates
 
+    # Analyze prev sample
     def bang_1(self):
+        print("Analysis mode: {}".format(self._analysis_method))
         if len(self._prev_filename) > 0:
             sample_path = os.path.join(self._session_path, self._prev_filename)
-            cmd_add = "{} -a {} -c {}".format(self._musly_path, sample_path, self._collection_path)
-            # print("cmd_add: {}".format(cmd_add))
-            # cmd_playlist = "musly -p {} -c {}".format(self._collection_path, self._samples_path)
-            result = subprocess.check_output(cmd_add.split(" "))
-            print(result)
-            if "[OK]" in result:
-                print("Added prev file {} to collection".format(self._prev_filename))
+            if self._analysis_method == 0:
+                cmd_add = "{} -a {} -c {}".format(self._musly_path, sample_path, self._collection_path)
+                result = subprocess.check_output(cmd_add.split(" "))
+                # print(result)
+                if "[OK]" in result:
+                    print("Added prev file {} to collection".format(self._prev_filename))
+                else:
+                    print("Failed to add file {} to collection".format(self._prev_filename))
+            elif self._analysis_method == 1:
+                for root, dirs, filenames in os.walk(self._session_path):
+                    for filename in filenames:
+                        if filename.endswith("musly"):
+                            print(filename)
             else:
-                print("Failed to add file {} to collection".format(self._prev_filename))
+                print("Invalid analysis method {}".format(self._analysis_method))
+
 
     # Update prev and cur filenames based on new recordings triggered
     def _anything_2(self, *args):
@@ -54,8 +65,22 @@ class collection_updater(pyext._class):
             except OSError as exception:
                 print("Caught OSError when trying to create {}!".format(self._session_path))
         
-        # Initialize new collection
-        self._collection_path = os.path.join(self._session_path, self._collection_default_name)
-        cmd = "{} -n {} -c {}".format(self._musly_path, self._collection_method, self._collection_path)
-        result = subprocess.check_output(cmd.split(" "))
-        print(result)
+        if self._analysis_method == 0:
+            # Initialize new collection
+            self._collection_path = os.path.join(self._session_path, self._collection_name)
+            cmd = "{} -n {} -c {}".format(self._musly_path, self._collection_method, self._collection_path)
+            result = subprocess.check_output(cmd.split(" "))
+            print(result)
+        elif self._analysis_method == 1:
+            for root, dirs, filenames in os.walk(self._collection_template_path):
+                for filename in filenames:
+                    if filename.endswith("musly"):
+                        shutil.copy(os.path.join(root, filename), os.path.join(self._session_path, filename))
+                        print("Copied {} to {}".format(filename, self._session_path))
+        else:
+            print("Invalid analysis method {}".format(self._analysis_method))
+
+    # Update analysis method
+    def int_4(self, a):
+        self._analysis_method = a
+        print("Analysis method is now {}".format(a))

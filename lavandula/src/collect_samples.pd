@@ -1,4 +1,4 @@
-#N canvas 202 47 1111 791 10;
+#N canvas 329 56 1111 791 10;
 #X obj 56 102 adc~;
 #X obj 74 194 bonk~;
 #X obj 60 137 +~;
@@ -54,7 +54,7 @@
 #X text 544 484 turn recording off;
 #X text 176 247 <- velocity;
 #X text 548 262 <- user can change this;
-#X obj 27 592 write_sample;
+#X obj 24 622 write_sample;
 #X obj 61 499 r \$0-isRecording;
 #X obj 180 400 t b b b b b;
 #X obj 96 524 r \$0-canRecord;
@@ -65,11 +65,15 @@
 #X obj 396 54 tgl 15 0 empty empty empty 17 7 0 10 -203904 -45076 -1
 0 1;
 #X msg 340 117 \; pd dsp \$1;
-#X obj 403 74 t f b;
 #X text 16 60 == Read input audio and;
 #X text 15 74 collect into sample files ==;
 #X text 344 17 == On/off (starts;
 #X text 351 31 new session) ==;
+#X obj 142 580 r \$0-analysisMode;
+#X msg 846 148 1;
+#X obj 846 170 s \$0-analysisMode;
+#X obj 403 74 t f b f;
+#X obj 416 102 spigot;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 1 4 0;
@@ -90,6 +94,7 @@
 #X connect 12 0 26 0;
 #X connect 12 0 53 0;
 #X connect 12 0 54 0;
+#X connect 12 0 64 0;
 #X connect 13 0 11 0;
 #X connect 14 0 51 0;
 #X connect 16 0 8 1;
@@ -117,6 +122,10 @@
 #X connect 53 0 28 0;
 #X connect 54 0 55 0;
 #X connect 56 0 49 3;
-#X connect 57 0 59 0;
-#X connect 59 0 58 0;
-#X connect 59 1 54 0;
+#X connect 57 0 66 0;
+#X connect 63 0 49 4;
+#X connect 64 0 65 0;
+#X connect 66 0 58 0;
+#X connect 66 1 67 0;
+#X connect 66 2 67 1;
+#X connect 67 0 54 0;

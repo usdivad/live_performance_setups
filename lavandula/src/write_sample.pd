@@ -1,4 +1,4 @@
-#N canvas 209 172 745 571 10;
+#N canvas 366 256 840 572 10;
 #X obj 56 41 inlet~;
 #X obj 190 43 inlet;
 #X text 48 23 audio in;
@@ -34,9 +34,9 @@
 #X obj 266 166 s \$0-bang_updater;
 #X text 174 415 update sample collection upon new sample recording
 ;
-#X obj 599 43 inlet;
-#X text 577 23 session dir path;
-#X obj 581 78 s \$0-session_dirname;
+#X obj 541 40 inlet;
+#X text 519 20 session dir path;
+#X obj 523 75 s \$0-session_dirname;
 #X obj 443 450 r \$0-session_dirname;
 #X obj 385 149 construct_sample_filename;
 #X obj 319 195 r \$0-session_dirname;
@@ -44,6 +44,10 @@
 #X obj 258 245 pack s s;
 #X obj 274 267 print filename;
 #X msg 162 297 open ../data/recorded/\$2/\$1;
+#X obj 700 46 inlet;
+#X obj 702 73 s \$0-analysis_mode;
+#X text 714 29 analysis mode;
+#X obj 582 449 r \$0-analysis_mode;
 #X connect 0 0 11 0;
 #X connect 1 0 8 0;
 #X connect 4 0 7 0;
@@ -75,3 +79,5 @@
 #X connect 37 0 38 0;
 #X connect 37 0 39 0;
 #X connect 39 0 11 0;
+#X connect 40 0 41 0;
+#X connect 43 0 20 4;
