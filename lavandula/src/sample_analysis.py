@@ -25,7 +25,7 @@ class collection_updater(pyext._class):
     _collection_template_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/collection_templates/cpaghetti"
     _samples_base_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/recorded"
     _musly_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/lib/musly"
-    _analysis_method = 0 # 0 = use similarity matrix, 1 = use collection templates
+    _analysis_method = 1 # 0 = use similarity matrix, 1 = use collection templates
 
     # Analyze prev sample
     def bang_1(self):
@@ -39,12 +39,24 @@ class collection_updater(pyext._class):
                 if "[OK]" in result:
                     print("Added prev file {} to collection".format(self._prev_filename))
                 else:
-                    print("Failed to add file {} to collection".format(self._prev_filename))
+                    print("Failed to add prev file {} to collection".format(self._prev_filename))
             elif self._analysis_method == 1:
                 for root, dirs, filenames in os.walk(self._session_path):
+                    num_collections = 0
+                    num_successful_additions = 0
                     for filename in filenames:
                         if filename.endswith("musly"):
-                            print(filename)
+                            num_collections += 1
+                            collection_path = os.path.join(self._session_path, filename)
+                            cmd_add = "{} -a {} -c {}".format(self._musly_path, sample_path, collection_path)
+                            result = subprocess.check_output(cmd_add.split(" "))
+                            # print(result)
+                            if "[OK]" in result:
+                                num_successful_additions += 1
+                    if num_successful_additions > 0:
+                        print("Added prev file {} to {} of {} collections".format(self._prev_filename, num_successful_additions, num_collections))
+                    else:
+                        print("Failed to add prev file {} to any collections".format(self._prev_filename))
             else:
                 print("Invalid analysis method {}".format(self._analysis_method))
 
