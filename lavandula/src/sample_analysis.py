@@ -19,13 +19,15 @@ class collection_updater(pyext._class):
     _prev_filename = ""
     _cur_filename = ""
     _session_path = ""
+    _similarity_matrix_path = ""
+    _similarity_matrix_name = "similarity_matrix.mirex"
     _collection_path = ""
     _collection_name = "collection.musly"
     _collection_method = "mandelellis" # "mandelellis" or "timbre"
     _collection_template_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/collection_templates/cpaghetti"
     _samples_base_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/data/recorded"
     _musly_path = "/Users/usdivad/Documents/music/live_performance_setups/lavandula/lib/musly"
-    _analysis_method = 1 # 0 = use similarity matrix, 1 = use collection templates
+    _analysis_method = 0 # 0 = use similarity matrix, 1 = use collection templates
 
     # Analyze prev sample
     def bang_1(self):
@@ -38,7 +40,10 @@ class collection_updater(pyext._class):
                 # print(result)
                 if "[OK]" in result:
                     print("Added prev file {} to collection".format(self._prev_filename))
-                else:
+                    cmd_similarity = "{} -m {} -c {}".format(self._musly_path, self._similarity_matrix_path, self._collection_path)
+                    result = subprocess.check_output(cmd_similarity.split(" "))
+                    print(result)
+                elif "Skipping" not in result:
                     print("Failed to add prev file {} to collection".format(self._prev_filename))
             elif self._analysis_method == 1:
                 for root, dirs, filenames in os.walk(self._session_path):
@@ -55,7 +60,7 @@ class collection_updater(pyext._class):
                                 num_successful_additions += 1
                     if num_successful_additions > 0:
                         print("Added prev file {} to {} of {} collections".format(self._prev_filename, num_successful_additions, num_collections))
-                    else:
+                    elif "Skipping" not in result:
                         print("Failed to add prev file {} to any collections".format(self._prev_filename))
             else:
                 print("Invalid analysis method {}".format(self._analysis_method))
@@ -80,6 +85,7 @@ class collection_updater(pyext._class):
         if self._analysis_method == 0:
             # Initialize new collection
             self._collection_path = os.path.join(self._session_path, self._collection_name)
+            self._similarity_matrix_path = os.path.join(self._session_path, self._similarity_matrix_name)
             cmd = "{} -n {} -c {}".format(self._musly_path, self._collection_method, self._collection_path)
             result = subprocess.check_output(cmd.split(" "))
             print(result)
