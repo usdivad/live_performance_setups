@@ -70,10 +70,10 @@
 #X text 344 17 == On/off (starts;
 #X text 351 31 new session) ==;
 #X obj 142 580 r \$0-analysisMode;
-#X msg 846 148 1;
 #X obj 846 170 s \$0-analysisMode;
 #X obj 403 74 t f b f;
 #X obj 416 102 spigot;
+#X msg 846 148 0;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 1 4 0;
@@ -94,7 +94,7 @@
 #X connect 12 0 26 0;
 #X connect 12 0 53 0;
 #X connect 12 0 54 0;
-#X connect 12 0 64 0;
+#X connect 12 0 67 0;
 #X connect 13 0 11 0;
 #X connect 14 0 51 0;
 #X connect 16 0 8 1;
@@ -122,10 +122,10 @@
 #X connect 53 0 28 0;
 #X connect 54 0 55 0;
 #X connect 56 0 49 3;
-#X connect 57 0 66 0;
+#X connect 57 0 65 0;
 #X connect 63 0 49 4;
-#X connect 64 0 65 0;
-#X connect 66 0 58 0;
-#X connect 66 1 67 0;
-#X connect 66 2 67 1;
-#X connect 67 0 54 0;
+#X connect 65 0 58 0;
+#X connect 65 1 66 0;
+#X connect 65 2 66 1;
+#X connect 66 0 54 0;
+#X connect 67 0 64 0;
