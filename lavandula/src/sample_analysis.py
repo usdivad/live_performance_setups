@@ -14,7 +14,7 @@ Sample collection updater (for Musly collection)
 """
 class collection_updater(pyext._class):
     # Number of inlets and outlets
-    _inlets = 4
+    _inlets = 6
     _outlets = 1
 
     # Instance variables
@@ -28,6 +28,7 @@ class collection_updater(pyext._class):
     _mappings_name = "mappings.mmm"
     _num_recent_mappings = 10 # Number of most samples to map
     _num_assignments_per_mapping = 5 # Number of samples to assign per mapping
+    _should_map_samples = True # Whether to map samples upon new sample collect
     
     _collection_path = ""
     _collection_name = "collection.musly"
@@ -58,70 +59,11 @@ class collection_updater(pyext._class):
                     result = subprocess.check_output(cmd_similarity.split(" "))
                     print(result)
 
-                    # Update mappings (assignments)
-                    # Parse similarity matrix
-                    lines = []
-                    sample_names = []
-                    sample_mappings = []
-
-                    with open(self._similarity_matrix_path, "r") as f:
-                        lines = f.readlines()
-
-                    if len(lines) < 1:
-                        print("ERROR: Empty similarity matrix file {}".format(self._similarity_matrix_path))
-                        return
-                    lines.pop(0) # Get rid of info header line
-
-                    # Get sample names
-                    # num_samples = self._num_samples_collected
-                    # for i in range(num_samples):
-                    has_additional_samples = True
-                    p = re.compile(r"^\d+\s+")
-                    while has_additional_samples:
-                        sample_line = lines.pop(0)
-                        sample_name = p.sub("", sample_line)
-                        sample_name = sample_name.replace("\n", "")
-                        sample_names.append(sample_name) # Sample path, really
-                        if len(lines)<1 or re.match(r"^Q/R", lines[0]):
-                            has_additional_samples = False
-                    print("{} samples, {} lines remaining: {}".format(len(sample_names), len(lines), sample_names))
-
                     # Map samples
-                    if len(lines) < 1:
-                        print("ERROR: No matrix data in similarity matrix file {}".format(self._similarity_matrix_path))
-                        return
-                    lines.pop(0) # Get rid of matrix header
-                    p = re.compile(r"\s+")
-                    for i in range(len(sample_names)):
-                        sample_assignment = []
-                        if len(lines) <= i:
-                            print("ERROR: No matrix data for samples beyond sample {}".format(i-1))
-                            return
-                        line = lines[i]
-                        similarities = p.split(line)
-                        if len(similarities) < 3:
-                            print("Warning: No similarities for sample {}".format(i))
-                            continue
-                        similarities.pop(0) # Get rid of index
-                        similarities.pop(-1)
-                        print("Similarities: {}".format(similarities))
-                        similarities_sorted = sorted(similarities)
-                        similarities_indices = [similarities.index(x) for x in similarities_sorted]
-                        similarities_indices.pop(0) # Get rid of zero-valued similarity (self)
-                        print("Similarities indices: {}".format(similarities_indices))
-                        for j in range(self._num_assignments_per_mapping):
-                            if j >= len(similarities_indices):
-                                print("Warning: Only {} similarities for sample {} ({} wanted)".format(len(similarities_indices), i, self._num_assignments_per_mapping))
-                                break
-                            similarity_idx = similarities_indices[j]
-                            sample_name = sample_names[similarity_idx]
-                            sample_assignment.append(sample_name)
-                        sample_mappings.append(sample_assignment)
-
-                    # Write to output file
-                    # TODO: Figure out an alternate way to format this? Currently it's a 2D array in JSON
-                    with open(self._mappings_path, "w") as f:
-                        f.write(json.dumps(sample_mappings))
+                    if self._should_map_samples:
+                        self.map_samples()
+                    else:
+                        print("Skipping sample mapping")
 
                 elif "Skipping" not in result:
                     print("Failed to add prev file {} to collection".format(self._prev_filename))
@@ -187,3 +129,80 @@ class collection_updater(pyext._class):
     def int_4(self, a):
         self._analysis_method = a
         print("Analysis method is now {}".format(a))
+
+    # Update whether to map samples
+    def int_5(self, m):
+        self._should_map_samples = True if m > 0 else False
+        print("Should map samples? {}".format(self._should_map_samples))
+
+    def bang_6(self):
+        self.map_samples()
+
+    ################################################################
+
+    # Update mappings (assignments)
+    def map_samples(self):
+        print("Updating sample mappings...")
+
+        # Parse similarity matrix
+        lines = []
+        sample_names = []
+        sample_mappings = []
+
+        with open(self._similarity_matrix_path, "r") as f:
+            lines = f.readlines()
+
+        if len(lines) < 1:
+            print("ERROR: Empty similarity matrix file {}".format(self._similarity_matrix_path))
+            return
+        lines.pop(0) # Get rid of info header line
+
+        # Get sample names
+        # num_samples = self._num_samples_collected
+        # for i in range(num_samples):
+        has_additional_samples = True
+        p = re.compile(r"^\d+\s+")
+        while has_additional_samples:
+            sample_line = lines.pop(0)
+            sample_name = p.sub("", sample_line)
+            sample_name = sample_name.replace("\n", "")
+            sample_names.append(sample_name) # Sample path, really
+            if len(lines)<1 or re.match(r"^Q/R", lines[0]):
+                has_additional_samples = False
+        print("{} samples, {} lines remaining: {}".format(len(sample_names), len(lines), sample_names))
+        if len(lines) < 1:
+            print("ERROR: No matrix data in similarity matrix file {}".format(self._similarity_matrix_path))
+            return
+        lines.pop(0) # Get rid of matrix header
+        p = re.compile(r"\s+")
+        for i in range(len(sample_names)):
+            sample_assignment = []
+            if len(lines) <= i:
+                print("ERROR: No matrix data for samples beyond sample {}".format(i-1))
+                return
+            line = lines[i]
+            similarities = p.split(line)
+            if len(similarities) < 3:
+                print("Warning: No similarities for sample {}".format(i))
+                continue
+            similarities.pop(0) # Get rid of index
+            similarities.pop(-1)
+            print("Similarities: {}".format(similarities))
+            similarities_sorted = sorted(similarities)
+            similarities_indices = [similarities.index(x) for x in similarities_sorted]
+            similarities_indices.pop(0) # Get rid of zero-valued similarity (self)
+            print("Similarities indices: {}".format(similarities_indices))
+            for j in range(self._num_assignments_per_mapping):
+                if j >= len(similarities_indices):
+                    print("Warning: Only {} similarities for sample {} ({} wanted)".format(len(similarities_indices), i, self._num_assignments_per_mapping))
+                    break
+                similarity_idx = similarities_indices[j]
+                sample_name = sample_names[similarity_idx]
+                sample_assignment.append(sample_name)
+            sample_mappings.append(sample_assignment)
+
+        # Write to output file
+        # TODO: Figure out an alternate way to format this? Currently it's a 2D array in JSON
+        with open(self._mappings_path, "w") as f:
+            f.write(json.dumps(sample_mappings))
+            print("Wrote sample mappings to {}".format(self._mappings_path))
