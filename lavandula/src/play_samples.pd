@@ -1,0 +1,17 @@
+#N canvas 668 272 450 300 10;
+#X obj 85 244 play_mapped_sample 0;
+#X obj 77 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 197 118 symbol;
+#X obj 47 44 inlet;
+#X obj 251 42 inlet;
+#X text 241 19 Session dir name;
+#X text 39 22 MIDI info;
+#X obj 195 203 r \$0-session_dirname;
+#X obj 197 162 s \$0-session_dirname;
+#X msg 276 89 20171009_8702891;
+#X connect 1 0 0 0;
+#X connect 2 0 8 0;
+#X connect 4 0 2 0;
+#X connect 7 0 0 1;
+#X connect 9 0 2 0;

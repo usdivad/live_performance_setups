@@ -74,7 +74,7 @@
 #X obj 416 102 spigot;
 #X msg 846 148 0;
 #X msg 972 147 1;
-#X obj 973 175 tgl 15 0 empty empty empty 17 7 0 10 -203904 -1 -1 0
+#X obj 973 175 tgl 15 0 empty empty empty 17 7 0 10 -203904 -1 -1 1
 1;
 #X obj 134 611 r \$0-mapSamples;
 #X obj 145 636 r \$0-bangMap;
@@ -94,6 +94,8 @@
 #X text 999 326 sample;
 #X text 998 349 update;
 #X text 999 336 mappings;
+#X obj 798 653 play_samples;
+#X obj 867 619 r \$0-sessionDirname;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 1 4 0;
@@ -155,3 +157,4 @@
 #X connect 69 0 48 5;
 #X connect 70 0 48 6;
 #X connect 78 0 79 0;
+#X connect 87 0 86 1;
