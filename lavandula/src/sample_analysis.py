@@ -175,7 +175,7 @@ class collection_updater(pyext._class):
             return
         lines.pop(0) # Get rid of matrix header
         p = re.compile(r"\s+")
-        for i in range(len(sample_names)):
+        for i in range(min(len(sample_names), self._num_recent_mappings)):
             sample_mapping = []
             if len(lines) <= i:
                 print("ERROR: No matrix data for samples beyond sample {}".format(i-1))
