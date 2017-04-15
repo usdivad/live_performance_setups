@@ -1,11 +1,8 @@
-#N canvas 165 403 1131 345 10;
+#N canvas 134 233 1174 512 10;
 #X obj 725 262 textfile;
 #X obj 499 147 f \$1;
 #X obj 500 118 loadbang;
 #X obj 101 33 inlet;
-#X text 71 13 Bang to trigger playback;
-#X obj 101 61 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
 #X obj 314 40 inlet;
 #X obj 314 62 s \$0-sessionDirname;
 #X obj 62 170 r \$0-sessionDirname;
@@ -15,17 +12,17 @@
 #X obj 469 109 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X msg 346 285 \$1\$2;
-#X obj 346 307 print sample_path;
 #X msg 41 197 /Users/usdivad/Documents/music/live_performance_setups/lavandula/data/recorded/\$1/
 ;
-#X connect 1 0 11 0;
+#X obj 346 307 print mappings_path;
+#X text 71 13 Velocity to trigger playback;
+#X connect 1 0 9 0;
 #X connect 2 0 1 0;
-#X connect 3 0 5 0;
-#X connect 6 0 7 0;
-#X connect 8 0 15 0;
-#X connect 9 0 13 0;
-#X connect 10 0 9 1;
-#X connect 11 0 10 0;
-#X connect 12 0 1 0;
-#X connect 13 0 14 0;
-#X connect 15 0 9 0;
+#X connect 4 0 5 0;
+#X connect 6 0 12 0;
+#X connect 7 0 11 0;
+#X connect 8 0 7 1;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 11 0 13 0;
+#X connect 12 0 7 0;
