@@ -1,4 +1,4 @@
-#N canvas 764 134 450 300 10;
+#N canvas 764 134 405 442 10;
 #X obj 197 118 symbol;
 #X obj 47 44 inlet;
 #X obj 251 42 inlet;
@@ -8,13 +8,15 @@
 #X obj 90 78 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X text 22 22 MIDI info (velocity);
-#X obj 85 244 play_mapped_sample 0;
+#X obj 85 244 choose_mapped_sample 0;
 #X msg 276 89 2017414_232220305;
 #X msg 101 200 60;
+#X obj 85 277 playback_sample_file;
 #X connect 0 0 5 0;
 #X connect 1 0 6 0;
 #X connect 1 0 8 0;
 #X connect 2 0 0 0;
 #X connect 4 0 8 1;
+#X connect 8 0 11 0;
 #X connect 9 0 0 0;
 #X connect 10 0 8 0;
