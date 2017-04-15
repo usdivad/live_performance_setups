@@ -24,8 +24,8 @@ class collection_updater(pyext._class):
     _similarity_matrix_path = ""
     _similarity_matrix_name = "similarity_matrix.mirex"
     
-    _mappings_path = ""
-    _mappings_name = "mappings.mmm"
+    _mapping_prefix = "mappings"
+    _mapping_extension = "mmm"
     _num_recent_mappings = 10 # Number of most samples to map
     _num_assignments_per_mapping = 5 # Number of samples to assign per mapping
     _should_map_samples = True # Whether to map samples upon new sample collect
@@ -112,7 +112,7 @@ class collection_updater(pyext._class):
             # Initialize new collection
             self._collection_path = os.path.join(self._session_path, self._collection_name)
             self._similarity_matrix_path = os.path.join(self._session_path, self._similarity_matrix_name)
-            self._mappings_path = os.path.join(self._session_path, self._mappings_name)
+            #self._mappings_path = os.path.join(self._session_path, self._mappings_name)
             cmd = "{} -n {} -c {}".format(self._musly_path, self._collection_method, self._collection_path)
             result = subprocess.check_output(cmd.split(" "))
             print(result)
@@ -176,7 +176,7 @@ class collection_updater(pyext._class):
         lines.pop(0) # Get rid of matrix header
         p = re.compile(r"\s+")
         for i in range(len(sample_names)):
-            sample_assignment = []
+            sample_mapping = []
             if len(lines) <= i:
                 print("ERROR: No matrix data for samples beyond sample {}".format(i-1))
                 return
@@ -198,11 +198,17 @@ class collection_updater(pyext._class):
                     break
                 similarity_idx = similarities_indices[j]
                 sample_name = sample_names[similarity_idx]
-                sample_assignment.append(sample_name)
-            sample_mappings.append(sample_assignment)
+                sample_mapping.append(sample_name)
+            sample_mappings.append(sample_mapping)
 
         # Write to output file
-        # TODO: Figure out an alternate way to format this? Currently it's a 2D array in JSON
-        with open(self._mappings_path, "w") as f:
-            f.write(json.dumps(sample_mappings))
-            print("Wrote sample mappings to {}".format(self._mappings_path))
+        for i, sample_mapping in enumerate(sample_mappings):
+            mapping_name = "{}_{}.{}".format(self._mapping_prefix, i, self._mapping_extension)
+            mapping_path = os.path.join(self._session_path, mapping_name)
+            with open(mapping_path, "w") as f:
+                f.write("\n".join(sample_mapping))
+
+        # OLD: Write all mappings to single 2D array as JSON
+        # with open(self._mappings_path, "w") as f:
+        #     f.write(json.dumps(sample_mappings))
+        #     print("Wrote sample mappings to {}".format(self._mappings_path))
