@@ -1,4 +1,4 @@
-#N canvas 54 24 1111 791 10;
+#N canvas 208 144 1111 791 10;
 #X obj 56 102 adc~;
 #X obj 74 194 bonk~;
 #X obj 60 137 +~;
@@ -94,8 +94,10 @@
 #X text 999 326 sample;
 #X text 998 349 update;
 #X text 999 336 mappings;
-#X obj 798 653 play_samples;
-#X obj 867 619 r \$0-sessionDirname;
+#X obj 807 575 play_samples;
+#X obj 876 541 r \$0-sessionDirname;
+#X obj 807 625 dac~;
+#X text 797 505 === Playback the samples! ===;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 1 4 0;
@@ -157,4 +159,6 @@
 #X connect 69 0 48 5;
 #X connect 70 0 48 6;
 #X connect 78 0 79 0;
+#X connect 86 0 88 0;
+#X connect 86 0 88 1;
 #X connect 87 0 86 1;

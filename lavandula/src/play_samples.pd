@@ -12,6 +12,7 @@
 #X msg 276 89 2017414_232220305;
 #X msg 101 200 60;
 #X obj 85 277 playback_sample_file;
+#X obj 85 351 outlet~;
 #X connect 0 0 5 0;
 #X connect 1 0 6 0;
 #X connect 1 0 8 0;
@@ -20,3 +21,4 @@
 #X connect 8 0 11 0;
 #X connect 9 0 0 0;
 #X connect 10 0 8 0;
+#X connect 11 0 12 0;
