@@ -1,0 +1,14 @@
+#N canvas 89 119 379 173 10;
+#X obj 145 117 playback_sample_file;
+#X obj 63 33 inlet;
+#X obj 280 36 inlet;
+#X text 11 10 MIDI data (note \, vel \, chan);
+#X text 258 12 Session dir name;
+#X obj 145 139 outlet~;
+#X obj 63 60 daoxiaomian_midi_listener \$1;
+#X obj 145 89 choose_mapped_sample \$2;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 1;
+#X connect 6 1 7 0;
+#X connect 7 0 0 0;
