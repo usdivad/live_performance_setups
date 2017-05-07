@@ -22,7 +22,7 @@
       this.cbxDefects = document.getElementById("cbxDefects");
       this.cbxSkin = document.getElementById("cbxSkin");
 
-      this.dispHullCoords = document.getElementById("dispHullCoords");
+      this.dispHullCentroid = document.getElementById("dispHullCentroid");
       this.dispHullArea = document.getElementById("dispHullArea");
 
       this.video = document.getElementById("video");
@@ -156,11 +156,14 @@
     };
 
     DEMO.prototype.processHull = function(hull) {
+      var centroid = CV.centroid(hull);
       var area = CV.area(hull);
 
+      this.dispHullCentroid.innerText = "centroid: [" + centroid.x.toFixed(2) + ", " + centroid.y.toFixed(2) + "]";
       this.dispHullArea.innerText = "area: " + area;
 
       // console.log(hull);
+      // console.log("Centroid: [" + centroid.x.toFixed(2) + ", " + centroid.y.toFixed(2) + "]");
       // console.log("Area: " + area);
     }
 
@@ -180,7 +183,7 @@
     <video id="video" autoplay="true" style="display:none;"></video>
     <canvas id="canvas" style="width:640px; height:480px;border:1px solid black;"></canvas>
     <div style="margin: 15px;">
-      <span id="dispHullCoords">coordinates: (0, 0)</span>
+      <span id="dispHullCentroid">centroid: [0, 0]</span>
       |
       <span id="dispHullArea">area: 0</span>
     </div>

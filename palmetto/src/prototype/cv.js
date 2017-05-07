@@ -428,3 +428,41 @@ CV.area = function(poly){
   
   return area;
 };
+
+// https://en.wikipedia.org/wiki/Centroid#Centroid_of_a_polygon
+// (Paul Bourke - "Calculating The Area And Centroid Of A Polygon")
+CV.centroid = function(poly) {
+  var centroid = {
+    "x": 0,
+    "y": 0
+  }
+
+  if (poly.length < 1) {
+    return centroid;
+  }
+
+  var cx = 0;
+  var cy = 0;
+  var area = CV.area(poly);
+
+  for (var i = 0; i < poly.length; i++) {
+    var curPt = poly[i];
+    var nextPt = poly[0];
+    if (i < poly.length-1) {
+      nextPt = poly[i+1];
+    }
+
+    var ptsDist = (curPt.x * nextPt.y) - (nextPt.x * curPt.y);
+
+    cx += (curPt.x + nextPt.x) * ptsDist;
+    cy += (curPt.y + nextPt.y) * ptsDist;
+  }
+
+  cx /= (6 * area);
+  cy /= (6 * area);
+
+  centroid.x = cx;
+  centroid.y = cy;
+
+  return centroid;
+}
