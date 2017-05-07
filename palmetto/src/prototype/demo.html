@@ -1,11 +1,12 @@
 <html>
 
 <head>
-  <title>Hand Tracking</title>
+  <title>Palmetto Prototype</title>
 
   <script type="text/javascript" src="libs/polyfill.js"></script> 
   <script type="text/javascript" src="cv.js"></script> 
   <script type="text/javascript" src="handtracking.js"></script> 
+  <script type="text/javascript" src="../palmetto.js"></script> 
 
   <script>
   
@@ -20,6 +21,9 @@
       this.cbxHull = document.getElementById("cbxHull");
       this.cbxDefects = document.getElementById("cbxDefects");
       this.cbxSkin = document.getElementById("cbxSkin");
+
+      this.dispHullCoords = document.getElementById("dispHullCoords");
+      this.dispHullArea = document.getElementById("dispHullArea");
 
       this.video = document.getElementById("video");
       this.canvas = document.getElementById("canvas");
@@ -79,6 +83,7 @@
       
         if (this.cbxHull.checked){
           this.drawHull(candidate.hull, "red");
+          this.processHull(candidate.hull);
         }
         
         if (this.cbxDefects.checked){
@@ -150,6 +155,15 @@
       return imageDst;
     };
 
+    DEMO.prototype.processHull = function(hull) {
+      var area = CV.area(hull);
+
+      this.dispHullArea.innerText = "area: " + area;
+
+      // console.log(hull);
+      // console.log("Area: " + area);
+    }
+
     window.onload = function(){
       var demo = new DEMO();
       demo.start();
@@ -162,13 +176,18 @@
 <body style="font-family: monospace;">
 
   <center>
-    <div style="margin: 10px;"><strong>-= Hand Tracking =-</strong></div>
+    <div style="margin: 10px;"><strong>Palmetto Prototype</strong></div>
     <video id="video" autoplay="true" style="display:none;"></video>
     <canvas id="canvas" style="width:640px; height:480px;border:1px solid black;"></canvas>
     <div style="margin: 15px;">
+      <span id="dispHullCoords">coordinates: (0, 0)</span>
+      |
+      <span id="dispHullArea">area: 0</span>
+    </div>
+    <div style="margin: 15px;">
       <input id="cbxHull" type="checkbox" checked="checked">Convex Hull</input>
       <input id="cbxDefects" type="checkbox">Convexity Defects</input>
-      <input id="cbxSkin" type="checkbox" checked="checked">Skin Detection</input>
+      <input id="cbxSkin" type="checkbox">Skin Detection</input>
     </div>
     <div style="margin: 15px;"><strong>Powered by <a href="http://code.google.com/p/js-handtracking/" target="_blank">js-handtracking</a></strong></div>
   </center>

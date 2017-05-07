@@ -9,3 +9,10 @@
         
     }
 });
+
+
+var Palmetto = function(){};
+
+Palmetto.prototype.processHull = function(hull) {
+    console.log(hull);
+};
