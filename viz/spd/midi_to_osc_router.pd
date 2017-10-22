@@ -1,0 +1,36 @@
+#N canvas 535 188 472 454 10;
+#X obj 288 243 packOSC;
+#X obj 298 26 notein;
+#X floatatom 277 50 5 0 0 0 - - -, f 5;
+#X floatatom 381 56 5 0 0 0 - - -, f 5;
+#X floatatom 359 86 5 0 0 0 - - -, f 5;
+#X obj 320 62 moses 1;
+#X obj 396 113 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 265 359 udpsend;
+#X obj 34 19 loadbang;
+#X obj 34 44 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 36 116 connect localhost 9001;
+#X msg 128 139 disconnect;
+#X text 293 7 MIDI in;
+#X text 54 96 OSC setup;
+#X obj 338 126 t b f;
+#X obj 286 173 pack 0 0;
+#X msg 292 208 send /spd/in \$1 \$2;
+#X connect 0 0 7 0;
+#X connect 1 0 2 0;
+#X connect 1 1 5 0;
+#X connect 1 2 3 0;
+#X connect 2 0 15 0;
+#X connect 4 0 6 0;
+#X connect 4 0 14 0;
+#X connect 5 1 4 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 0;
+#X connect 14 0 15 0;
+#X connect 14 1 15 1;
+#X connect 15 0 16 0;
+#X connect 16 0 0 0;
