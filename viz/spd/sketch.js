@@ -45,14 +45,14 @@ function draw() {
     for (var i=0; i<pads.length; i++) {
         var pad = pads[i];
         if (pad["framesLeftToAnimate"] > 0) {
-            console.log("asdf");
+            // console.log("asdf");
 
             var px = pad["rectArgs"][0];
             var py = pad["rectArgs"][1];
             var pw = pad["rectArgs"][2];
             var ph = pad["rectArgs"][3];
             var pa = (pad["framesLeftToAnimate"] / numFramesToAnimate) * 255;
-            console.log("pa: " + pa);
+            // console.log("pa: " + pa);
 
             fill(255, 0, 0, pa);
             // fill(255, 0, 0);
