@@ -27,7 +27,7 @@ function draw() {
 
     // Draw the SPD
     stroke(255, 0, 0);
-    for (var i=1; i<numDivisionsY; i++) {
+    for (var i=0; i<numDivisionsY; i++) {
         if (i == 2 || i == 4) {
             continue;
         }
@@ -36,10 +36,13 @@ function draw() {
         line(0, lineY, width, lineY);
     }
 
-    for (var i=1; i<numDivisionsY; i++) {
+    for (var i=0; i<numDivisionsY; i++) {
         var lineX = i * (width/numDivisionsX);
         line(lineX, 0, lineX, height);
     }    
+
+    line(width-1, 0, width-1, height);
+    line(0, height-1, width, height-1);
 
     // Animate the SPD
     for (var i=0; i<pads.length; i++) {
