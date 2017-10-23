@@ -1,12 +1,20 @@
 // Adapted from p5js-osc/p5-basic sketch: https://github.com/genekogan/p5js-osc/tree/master/p5-basic
 
+//====
+// Globs
 // var x, y;
 var numDivisionsX = 3;
 var numDivisionsY = 5;
+var numFramesToAnimate = 30;
+var pads;
 
+
+// ====
+// p5
 function setup() {
     createCanvas(800, 600);
     setupOsc(9001, 3334);
+    setupPads();
 }
 
 function draw() {
@@ -33,14 +41,106 @@ function draw() {
         line(lineX, 0, lineX, height);
     }    
 
-    // line(0, 100, width, 100);
-    
+    // Animate the SPD
+    for (var i=0; i<pads.length; i++) {
+        var pad = pads[i];
+        if (pad["framesLeftToAnimate"] > 0) {
+            console.log("asdf");
 
-    // fill(255, 0, 0);
+            var px = pad["rectArgs"][0];
+            var py = pad["rectArgs"][1];
+            var pw = pad["rectArgs"][2];
+            var ph = pad["rectArgs"][3];
+            var pa = (pad["framesLeftToAnimate"] / numFramesToAnimate) * 255;
+            console.log("pa: " + pa);
+
+            fill(255, 0, 0, pa);
+            // fill(255, 0, 0);
+            rect(px, py, pw, ph);
+            // rect(0, 0, width, height);
+
+            pad["framesLeftToAnimate"]--;
+        }
+    }
 
 }
 
+// ====
+// Custom
 
+function setupPads() {
+    var padWidth = width / numDivisionsX;
+    var topPadHeight = height / numDivisionsY;
+    var otherPadHeight = topPadHeight * 2;
+
+    pads = [
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 60,
+            "rectArgs": [0, 0, padWidth, topPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 61,
+            "rectArgs": [padWidth, 0, padWidth, topPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 62,
+            "rectArgs": [padWidth*2, 0, padWidth, topPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 63,
+            "rectArgs": [0, topPadHeight, padWidth, otherPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 64,
+            "rectArgs": [padWidth, topPadHeight, padWidth, otherPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 65,
+            "rectArgs": [padWidth*2, topPadHeight, padWidth, otherPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 66,
+            "rectArgs": [0, topPadHeight + otherPadHeight, padWidth, otherPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 67,
+            "rectArgs": [padWidth, topPadHeight + otherPadHeight, padWidth, otherPadHeight]
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 68,
+            "rectArgs": [padWidth*2, topPadHeight + otherPadHeight, padWidth, otherPadHeight]
+        }
+    ];
+}
+
+function handleOscFromSpd(value){
+    console.log("handling");
+
+    var note = value[0];
+    var vel = value[1];
+
+    var padIdx = note - 60;
+    console.log(padIdx);
+    if (padIdx >=0 && padIdx < pads.length) {
+        var pad = pads[padIdx];
+        pad["framesLeftToAnimate"] = numFramesToAnimate;
+        console.log(pads[padIdx]["framesLeftToAnimate"]);
+    }
+}
+
+
+
+// ====
+// OSC
 function receiveOsc(address, value) {
     console.log("received OSC: " + address + ", " + value);
     
@@ -50,8 +150,7 @@ function receiveOsc(address, value) {
     // }
 
     if (address == "/spd/in") {
-        var note = value[0];
-        var vel = value[1];
+        handleOscFromSpd(value);
     }
 }
 
