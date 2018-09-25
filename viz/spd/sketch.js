@@ -4,9 +4,10 @@
 // Globs
 // var x, y;
 var numDivisionsX = 3;
-var numDivisionsY = 5;
+var numDivisionsY = 6;
 var numFramesToAnimate = 30;
 var pads;
+// var midiMapping = "BATDUB"; // BAT_DUB, SPD_DEFAULT
 
 
 // ====
@@ -38,7 +39,13 @@ function draw() {
 
     for (var i=0; i<numDivisionsY; i++) {
         var lineX = i * (width/numDivisionsX);
-        line(lineX, 0, lineX, height);
+        var h = height;
+
+        if (i == 1 || i == 2) { // To get whole width on bottom kick pad
+            h = height * ((numDivisionsY-1)/numDivisionsY);
+        }
+
+        line(lineX, 0, lineX, h);
     }    
 
     line(width-1, 0, width-1, height);
@@ -121,7 +128,13 @@ function setupPads() {
             "framesLeftToAnimate": 0,
             "midiNote": 68,
             "rectArgs": [padWidth*2, topPadHeight + otherPadHeight, padWidth, otherPadHeight]
-        }
+        },
+        {
+            "framesLeftToAnimate": 0,
+            "midiNote": 69,
+            "rectArgs": [0, topPadHeight + otherPadHeight*2, padWidth*3, topPadHeight]
+            // "rectArgs": [padWidth*2, topPadHeight + otherPadHeight, padWidth, otherPadHeight]
+        },
     ];
 }
 
