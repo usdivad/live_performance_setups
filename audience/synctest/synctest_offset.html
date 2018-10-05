@@ -8,6 +8,15 @@ body {
     width: 200px;
     height: 200px;
 }
+
+.pressable {
+    background-color: gray;
+}
+
+.pressable:active {
+    background-color: white;
+}
+
 </style>
 
 <script>
@@ -50,6 +59,8 @@ document.getElementById("beatDisp").onclick = function() {
 };
 
 window.addEventListener("touchstart", function() {
+    e.stopPropagation();
+    
     isStarted = !isStarted;
     // document.getElementById("text").innerHTML = "";
     oscillator.start();
@@ -87,6 +98,8 @@ window.setInterval(function() {
         // oscillator.start();
 
         gainNode.gain.value = 1;
+
+        window.navigator.vibrate(onsetDur);
     }
     else {
         document.getElementById("bloop").style.backgroundColor = "white";
@@ -101,9 +114,9 @@ window.setInterval(function() {
 
 </script>
 
-<div id="instructions">----------------<br><br>touch here to start/stop<br><br>----------------</div>
+<div class="pressable" id="instructions">----------------<br><br>touch here to start/stop<br><br>----------------</div>
 <br><br>
-<div id="beatDisp">----------------<br><br>touch here to toggle subdivisions<br><br>----------------</div>
+<div class="pressable" id="beatDisp">----------------<br><br>touch here to toggle subdivisions<br><br>----------------</div>
 <br><br>
 <div id="bloop"></div>
 <br><br>
