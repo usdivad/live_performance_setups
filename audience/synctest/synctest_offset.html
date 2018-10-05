@@ -1,0 +1,112 @@
+<html>
+<style>
+body {
+    font-family: Arial, sans-serif;
+}
+
+#bloop {
+    width: 200px;
+    height: 200px;
+}
+</style>
+
+<script>
+// Maybe for sync etudes eh?
+
+window.onload = function() {
+
+var isStarted = false;
+var currBeat = 1;
+var numBeats = 4;
+
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var oscillator = audioCtx.createOscillator();
+var gainNode = audioCtx.createGain();
+oscillator.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+oscillator.type = "sine"; 
+oscillator.frequency.value = 440;
+
+document.getElementById("instructions").onclick = function() {
+    isStarted = !isStarted;
+    oscillator.start();
+};
+
+document.getElementById("beatDisp").onclick = function() {
+    // if (!isStarted) {
+    //     oscillator.start();
+    // }
+    // // isStarted = !isStarted;
+    // isStarted = true;
+    // // document.getElementById("text").innerHTML = "";
+
+    currBeat++;
+    currBeat = currBeat % numBeats;
+    if (currBeat == 0) {
+        currBeat = 1;
+    }
+
+    console.log("currBeat = " + currBeat);
+};
+
+window.addEventListener("touchstart", function() {
+    isStarted = !isStarted;
+    // document.getElementById("text").innerHTML = "";
+    oscillator.start();
+}, false);
+
+
+window.setInterval(function() {
+    if (!isStarted) {
+        gainNode.gain.value = 0;
+        document.getElementById("playingDisp").innerHTML = "stopped<br>subdividing into " + currBeat;
+        return;
+    }
+
+    document.getElementById("playingDisp").innerHTML = "playing<br>subdividing into " + currBeat;
+
+    var isOn = false;
+    var onsetInterval = 1000;
+    var onsetDur = 100;
+
+    // Time dep on beat
+    var now = Date.now();
+    // now += onsetInterval * (currBeat / numBeats);
+    onsetInterval = onsetInterval * (currBeat / numBeats);
+
+    if (Date.now() % onsetInterval < onsetDur) {
+        document.getElementById("bloop").style.backgroundColor = "red";
+
+        // if (isOn) {
+        //     document.getElementById("bloop").style.backgroundColor = "white";
+        // }
+        // else {
+        //     document.getElementById("bloop").style.backgroundColor = "red";
+        // }
+
+        // oscillator.start();
+
+        gainNode.gain.value = 1;
+    }
+    else {
+        document.getElementById("bloop").style.backgroundColor = "white";
+
+        // oscillator.stop();
+
+        gainNode.gain.value = 0;
+    }
+}, 1);
+
+};
+
+</script>
+
+<div id="instructions">----------------<br><br>touch here to start/stop<br><br>----------------</div>
+<br><br>
+<div id="beatDisp">----------------<br><br>touch here to toggle subdivisions<br><br>----------------</div>
+<br><br>
+<div id="bloop"></div>
+<br><br>
+<div id="playingDisp"></div>
+
+</html>
