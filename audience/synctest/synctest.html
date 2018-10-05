@@ -1,0 +1,83 @@
+<html>
+<style>
+body {
+    font-family: Arial, sans-serif;
+}
+
+#bloop {
+    width: 200px;
+    height: 200px;
+}
+</style>
+
+<script>
+// Maybe for sync etudes eh?
+
+var isStarted = false;
+
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var oscillator = audioCtx.createOscillator();
+var gainNode = audioCtx.createGain();
+oscillator.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+oscillator.type = "sine"; 
+oscillator.frequency.value = 440;
+
+document.onclick = function() {
+    isStarted = !isStarted;
+    // document.getElementById("text").innerHTML = "";
+    oscillator.start();
+};
+
+window.addEventListener("touchstart", function() {
+    isStarted = !isStarted;
+    // document.getElementById("text").innerHTML = "";
+    oscillator.start();
+}, false);
+
+
+window.setInterval(function() {
+    if (!isStarted) {
+        gainNode.gain.value = 0;
+        document.getElementById("playingDisp").innerHTML = "stopped";
+        return;
+    }
+
+    document.getElementById("playingDisp").innerHTML = "playing";
+
+    var isOn = false;
+    var onsetInterval = 1000;
+    var onsetDur = 100;
+
+    if (Date.now() % onsetInterval < onsetDur) {
+        document.getElementById("bloop").style.backgroundColor = "red";
+
+        // if (isOn) {
+        //     document.getElementById("bloop").style.backgroundColor = "white";
+        // }
+        // else {
+        //     document.getElementById("bloop").style.backgroundColor = "red";
+        // }
+
+        // oscillator.start();
+
+        gainNode.gain.value = 1;
+    }
+    else {
+        document.getElementById("bloop").style.backgroundColor = "white";
+
+        // oscillator.stop();
+
+        gainNode.gain.value = 0;
+    }
+}, 1);
+
+</script>
+
+<div id="instructions">touch screen to start/stop</div>
+<br><br>
+<div id="bloop"></div>
+<br><br>
+<div id="playingDisp"></div>
+
+</html>
