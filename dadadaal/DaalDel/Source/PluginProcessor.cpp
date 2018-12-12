@@ -97,6 +97,12 @@ void DaalDelAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    const int numInputChannels = getTotalNumInputChannels();
+    const int delayBufferSize = 2 * (sampleRate + samplesPerBlock); //  2 seconds (plus a bit)
+    
+    _delayBuffer.setSize(numInputChannels, delayBufferSize);
+    _sampleRate = sampleRate;
 }
 
 void DaalDelAudioProcessor::releaseResources()
@@ -143,7 +149,11 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
+    
+    // Lengths for circular buffer
+    const int bufferLength = buffer.getNumSamples();
+    const int delayBufferLength = _delayBuffer.getNumSamples();
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -152,9 +162,47 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        //auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
+        
+        // Set up circular buffer
+        const float* bufferData = buffer.getReadPointer(channel);
+        const float* delayBufferData = _delayBuffer.getReadPointer(channel);
+        
+        // Copy data from main to delay buffer
+        fillDelayBuffer(channel, bufferLength, delayBufferLength, bufferData, delayBufferData);
+        
+        // Copy data from delay buffer to output buffer
+        getFromDelayBuffer(buffer, channel, bufferLength, delayBufferLength, bufferData, delayBufferData);
+    }
+    
+    _writePosition += bufferLength; // Increment
+    _writePosition %= delayBufferLength; // Wrap around position index
+}
+
+void DaalDelAudioProcessor::fillDelayBuffer(const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
+    if (delayBufferLength > bufferLength + _writePosition) { // Straight copy
+        _delayBuffer.copyFromWithRamp(channel, _writePosition, bufferData, bufferLength, 0.8, 0.8);
+    }
+    else { // Copy with wrap-around
+        const int bufferRemaining = delayBufferLength - _writePosition;
+        _delayBuffer.copyFromWithRamp(channel, _writePosition, bufferData, bufferRemaining, 0.8, 0.8);
+        _delayBuffer.copyFromWithRamp(channel, 0, bufferData + bufferRemaining, bufferLength - bufferRemaining, 0.8, 0.8);
+    }
+}
+
+void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
+    int delayTime = 500;
+    const int readPosition = static_cast<int> (delayBufferLength + _writePosition - (_sampleRate * delayTime / 1000)) % delayBufferLength;
+    
+    if (delayBufferLength > bufferLength + readPosition) { // Straight copy
+        buffer.addFrom(channel, 0, delayBufferData + readPosition, bufferLength);
+    }
+    else { // Copy with wrap-around
+        const int bufferRemaining = delayBufferLength - readPosition;
+        buffer.addFrom(channel, 0, delayBufferData + readPosition, bufferRemaining);
+        buffer.addFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining);
     }
 }
 
