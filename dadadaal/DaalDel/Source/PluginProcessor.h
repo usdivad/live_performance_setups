@@ -58,10 +58,14 @@ public:
     
     void fillDelayBuffer(const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
+    void feedbackDelay(const int channel, const int bufferLength, const int delayBufferLength, float* dryBuffer);
+    
 private:
     AudioBuffer<float> _delayBuffer;
     int _writePosition {0};
     int _sampleRate {44100};
+    float _delayGain {0.25};
+    int _delayTime {500};
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalDelAudioProcessor)

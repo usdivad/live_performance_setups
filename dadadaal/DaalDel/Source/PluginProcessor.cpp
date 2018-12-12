@@ -169,12 +169,16 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         // Set up circular buffer
         const float* bufferData = buffer.getReadPointer(channel);
         const float* delayBufferData = _delayBuffer.getReadPointer(channel);
+        float* dryBuffer = buffer.getWritePointer(channel);
         
         // Copy data from main to delay buffer
         fillDelayBuffer(channel, bufferLength, delayBufferLength, bufferData, delayBufferData);
         
         // Copy data from delay buffer to output buffer
         getFromDelayBuffer(buffer, channel, bufferLength, delayBufferLength, bufferData, delayBufferData);
+        
+        // Feedback
+        feedbackDelay(channel, bufferLength, delayBufferLength, dryBuffer);
     }
     
     _writePosition += bufferLength; // Increment
@@ -182,27 +186,40 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
 }
 
 void DaalDelAudioProcessor::fillDelayBuffer(const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
+    
     if (delayBufferLength > bufferLength + _writePosition) { // Straight copy
-        _delayBuffer.copyFromWithRamp(channel, _writePosition, bufferData, bufferLength, 0.8, 0.8);
+        _delayBuffer.copyFromWithRamp(channel, _writePosition, bufferData, bufferLength, _delayGain, _delayGain);
     }
     else { // Copy with wrap-around
         const int bufferRemaining = delayBufferLength - _writePosition;
-        _delayBuffer.copyFromWithRamp(channel, _writePosition, bufferData, bufferRemaining, 0.8, 0.8);
-        _delayBuffer.copyFromWithRamp(channel, 0, bufferData + bufferRemaining, bufferLength - bufferRemaining, 0.8, 0.8);
+        _delayBuffer.copyFromWithRamp(channel, _writePosition, bufferData, bufferRemaining, _delayGain, _delayGain);
+        _delayBuffer.copyFromWithRamp(channel, 0, bufferData + bufferRemaining, bufferLength - bufferRemaining, _delayGain, _delayGain);
     }
 }
 
 void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
-    int delayTime = 500;
-    const int readPosition = static_cast<int> (delayBufferLength + _writePosition - (_sampleRate * delayTime / 1000)) % delayBufferLength;
+    const int readPosition = static_cast<int> (delayBufferLength + _writePosition - (_sampleRate * _delayTime / 1000)) % delayBufferLength;
     
     if (delayBufferLength > bufferLength + readPosition) { // Straight copy
-        buffer.addFrom(channel, 0, delayBufferData + readPosition, bufferLength);
+        buffer.copyFrom(channel, 0, delayBufferData + readPosition, bufferLength);
     }
     else { // Copy with wrap-around
         const int bufferRemaining = delayBufferLength - readPosition;
-        buffer.addFrom(channel, 0, delayBufferData + readPosition, bufferRemaining);
-        buffer.addFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining);
+        buffer.copyFrom(channel, 0, delayBufferData + readPosition, bufferRemaining);
+        buffer.copyFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining);
+    }
+}
+
+
+void DaalDelAudioProcessor::feedbackDelay(const int channel, const int bufferLength, const int delayBufferLength, float* dryBuffer) {
+    // Add main signal to the delay signal
+    if (delayBufferLength > bufferLength + _writePosition) {
+        _delayBuffer.addFromWithRamp(channel, _writePosition, dryBuffer, bufferLength, _delayGain, _delayGain);
+    }
+    else {
+        const int bufferRemaining = delayBufferLength - _writePosition;
+        _delayBuffer.addFromWithRamp(channel, _writePosition, dryBuffer, bufferRemaining, _delayGain, _delayGain);
+        _delayBuffer.addFromWithRamp(channel, 0, dryBuffer, bufferLength - bufferRemaining,  _delayGain, _delayGain);
     }
 }
 
