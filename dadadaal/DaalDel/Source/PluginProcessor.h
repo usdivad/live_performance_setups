@@ -64,8 +64,8 @@ private:
     AudioBuffer<float> _delayBuffer;
     int _writePosition {0};
     int _sampleRate {44100};
-    float _delayGain {0.25};
-    int _delayTime {500};
+    float _delayGain {0.5};
+    int _delayTime {2000};
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalDelAudioProcessor)
