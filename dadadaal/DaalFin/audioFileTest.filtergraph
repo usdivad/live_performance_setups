@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FILTERGRAPH>
+  <FILTER uid="6" x="0.5" y="0.10000000000000000555">
+    <PLUGIN name="Audio Input" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="ROLI Ltd." version="1.0" file="" uid="246006c0"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="0"
+            numOutputs="2" isShell="0"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="disabled"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="C"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="7" x="0.25" y="0.10000000000000000555">
+    <PLUGIN name="Midi Input" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="ROLI Ltd." version="1.0" file="" uid="cb5fde0b"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="0"
+            numOutputs="0" isShell="0"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="disabled"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="disabled"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="8" x="0.5" y="0.9000000000000000222">
+    <PLUGIN name="Audio Output" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="ROLI Ltd." version="1.0" file="" uid="724248cb"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="1"
+            numOutputs="0" isShell="0"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="disabled"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="9" x="0.54800000000000004263" y="0.25384615384615383249"
+          uiLastX_Normal="329" uiLastY_Normal="396" uiopen_Normal="0">
+    <PLUGIN name="AudioFilePlayer" format="VST3" category="Instrument|Synth"
+            manufacturer="NTwelve" version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/AudioFilePlayer.vst3"
+            uid="d9d3ae59" isInstrument="1" fileTime="167c3b6e6b8" infoUpdateTime="167c3c4711f"
+            numInputs="0" numOutputs="2" isShell="0"/>
+    <STATE>541.VMjLgPg....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9LSMw3hUMczXWEjKt3hYt3hKt.kKt3hKt3BS5gEcyQjKtPjcQYTR5AkaA4hKtfjYSQUPEElKD4hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKtbCbUMTRSgDbA4hKtX2PhIWUxj0azX0R4UkQio2ZrEVaMcDRmU0QY8FNrk0a2YUV3fDdKUUSWkEdMIyRvzzQY8VVWgkZ3HTT00jUiMWUrEldMIyRyslQiUGSwDFLIIiXq0jLWc2MRk0bUwlX4gCagUGQSwzchk2RRUULXUWRGk0YvHUXqEDZP81XFgjPEwVXpQiTgYWSogTcyLjKt3hKt3hKt3hKtXlTU0DUQAURWoULEYzXqEEUXoWQF4RPDYFTzDzUXkWSG4RPDYmKtnWPt3hKt3hKt3hKJUELPUTPqI1aYcEV5UkQQcVTWgEOujzPu0Fbu4VYtQmO77hUSQ0LPwVcmklaSQWXzUlO..</STATE>
+    <LAYOUT>
+      <INPUTS/>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="10" x="0.42399999999999998801" y="0.59038461538461539657"
+          uiLastX_Normal="418" uiLastY_Normal="435" uiopen_Normal="0">
+    <PLUGIN name="DaalFin" format="VST3" category="Fx" manufacturer="yourcompany"
+            version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/DaalFin.vst3"
+            uid="acf79128" isInstrument="0" fileTime="167c29c8990" infoUpdateTime="167c3c4711f"
+            numInputs="2" numOutputs="2" isShell="0"/>
+    <STATE>152.VMjLg7H....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="11" x="0.3420000000000000262" y="0.44230769230769229061"
+          uiLastX_Normal="44" uiLastY_Normal="307" uiopen_Normal="0">
+    <PLUGIN name="DaalDel" format="VST3" category="Fx" manufacturer="yourcompany"
+            version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/DaalDel.vst3"
+            uid="acfac90c" isInstrument="0" fileTime="167a08c79a0" infoUpdateTime="167c3c4711f"
+            numInputs="2" numOutputs="2" isShell="0"/>
+    <STATE>152.VMjLg7H....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <CONNECTION srcFilter="9" srcChannel="0" dstFilter="11" dstChannel="0"/>
+  <CONNECTION srcFilter="9" srcChannel="1" dstFilter="11" dstChannel="1"/>
+  <CONNECTION srcFilter="10" srcChannel="0" dstFilter="8" dstChannel="0"/>
+  <CONNECTION srcFilter="10" srcChannel="1" dstFilter="8" dstChannel="1"/>
+  <CONNECTION srcFilter="11" srcChannel="0" dstFilter="10" dstChannel="0"/>
+  <CONNECTION srcFilter="11" srcChannel="1" dstFilter="10" dstChannel="1"/>
+</FILTERGRAPH>

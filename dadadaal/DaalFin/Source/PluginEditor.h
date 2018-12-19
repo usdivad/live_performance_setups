@@ -27,6 +27,11 @@ public:
     void resized() override;
 
 private:
+    Slider filterCutoffDial;
+    Slider filterResonanceDial;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterCutoffValue; // Has to come AFTER the UI elements
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterResonanceValue;
+    
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     DaalFinAudioProcessor& processor;

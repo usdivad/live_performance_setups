@@ -21,9 +21,33 @@ DaalFinAudioProcessor::DaalFinAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+//        tree(*this, nullptr),
+        tree(*this, nullptr, "Parameters", createParameterLayout()),
+        lpf(dsp::IIR::Coefficients<float>::makeLowPass(44100, 20000.0, 0.1))
 #endif
 {
+    // Deprecated
+//    NormalisableRange<float> cutoffRange(20.0, 20000.0);
+//    NormalisableRange<float> resonanceRange(1.0, 5.0);
+//    NormalisableRange<float> filterMenuRange(0.0, 2.0);
+    
+//    AudioParameterFloat cutoffParam("cutoff", "Cutoff", cutoffRange, 600.0);
+//    AudioParameterFloat resonanceParam("resonance", "Resonance", resonanceRange, 1.0);
+//    AudioParameterFloat filterMenuParam("filterMenu", "FilterMenu", filterMenuRange, 0.0);
+    
+//    tree.createAndAddParameter(std::unique_ptr<AudioParameterFloat>(&cutoffParam));
+//    tree.createAndAddParameter(std::unique_ptr<AudioParameterFloat>(&resonanceParam));
+//    tree.createAndAddParameter(std::unique_ptr<AudioParameterFloat>(&filterMenuParam));
+    
+//    tree.createAndAddParameter(std::unique_ptr<AudioParameterFloat>("resonance", "Resonance", resonanceRange, 1.0));
+//    tree.createAndAddParameter(std::unique_ptr<AudioParameterFloat>("filterMenu", "FilterMenu", filterMenuRange, 0.0));
+    
+    
+    // Even more deprecated
+//    tree.createAndAddParameter("cutoff", "Cutoff", "cutoff", cutoffRange, 600.0, nullptr, nullptr);
+//    tree.createAndAddParameter("cutoff", "Cutoff", "cutoff", cutoffRange, 600.0, nullptr, nullptr);
+    
 }
 
 DaalFinAudioProcessor::~DaalFinAudioProcessor()
@@ -95,8 +119,16 @@ void DaalFinAudioProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void DaalFinAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    lastSampleRate = sampleRate;
+    
+    // DSP spec
+    dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getTotalNumOutputChannels();
+    
+    lpf.prepare(spec); // Pass spec in
+    lpf.reset(); // Flush garbage
 }
 
 void DaalFinAudioProcessor::releaseResources()
@@ -129,33 +161,25 @@ bool DaalFinAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 }
 #endif
 
+void DaalFinAudioProcessor::updateFilter() {
+    float frequency = *tree.getRawParameterValue("cutoff");
+    float resonance = *tree.getRawParameterValue("resonance");
+    *lpf.state = *dsp::IIR::Coefficients<float>::makeLowPass(lastSampleRate, frequency, resonance);
+}
+
 void DaalFinAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
+    // DSP
+    dsp::AudioBlock<float> block(buffer);
+    updateFilter();
+    lpf.process(dsp::ProcessContextReplacing<float>(block));
 }
 
 //==============================================================================
@@ -188,4 +212,29 @@ void DaalFinAudioProcessor::setStateInformation (const void* data, int sizeInByt
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new DaalFinAudioProcessor();
+}
+
+
+//==============================================================================
+AudioProcessorValueTreeState::ParameterLayout DaalFinAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<AudioParameterFloat>> params;
+    
+    // Using temp variables for clarity (crs)
+//    NormalisableRange<float> cutoffRange(20.0, 20000.0);
+//    NormalisableRange<float> resonanceRange(1.0, 5.0);
+//
+//    AudioParameterFloat cutoffParam("cutoff", "Cutoff", cutoffRange, 600.0);
+//    AudioParameterFloat resonanceParam("resonance", "Resonance", resonanceRange, 1.0);
+//
+//    params.push_back(std::unique_ptr<AudioParameterFloat>(&cutoffParam));
+//    params.push_back(std::unique_ptr<AudioParameterFloat>(&resonanceParam));
+    
+    // Constructing arguments directly
+    params.push_back(std::make_unique<AudioParameterFloat>("cutoff", "Cutoff", NormalisableRange<float> (20.0, 20000.0), 600.0));
+    params.push_back(std::make_unique<AudioParameterFloat>("resonance", "Resonance", NormalisableRange<float> (1.0, 5.0), 1.0));
+
+    
+    return {params.begin(), params.end()};
+    
 }

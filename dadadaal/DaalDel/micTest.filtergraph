@@ -46,10 +46,10 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="4" x="0.37249999999999999778" y="0.55576923076923079314">
+  <FILTER uid="4" x="0.21799999999999999933" y="0.46153846153846156408">
     <PLUGIN name="DaalDel" format="VST3" category="Fx" manufacturer="yourcompany"
             version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/DaalDel.vst3"
-            uid="acfac90c" isInstrument="0" fileTime="167a08c79a0" infoUpdateTime="167a0a88e2e"
+            uid="acfac90c" isInstrument="0" fileTime="167a08c79a0" infoUpdateTime="167c3a091a5"
             numInputs="2" numOutputs="2" isShell="0"/>
     <STATE>152.VMjLg7H....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
     <LAYOUT>
@@ -61,6 +61,26 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <CONNECTION srcFilter="1" srcChannel="0" dstFilter="4" dstChannel="0"/>
+  <FILTER uid="5" x="0.75400000000000000355" y="0.46346153846153848033"
+          uiLastX_Normal="186" uiLastY_Normal="367" uiopen_Normal="0">
+    <PLUGIN name="DaalFin" format="VST3" category="Fx" manufacturer="yourcompany"
+            version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/DaalFin.vst3"
+            uid="acf79128" isInstrument="0" fileTime="167c29c8990" infoUpdateTime="167c3a091a5"
+            numInputs="2" numOutputs="2" isShell="0"/>
+    <STATE>152.VMjLg7H....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <CONNECTION srcFilter="1" srcChannel="0" dstFilter="5" dstChannel="0"/>
+  <CONNECTION srcFilter="1" srcChannel="0" dstFilter="5" dstChannel="1"/>
   <CONNECTION srcFilter="4" srcChannel="0" dstFilter="3" dstChannel="0"/>
+  <CONNECTION srcFilter="4" srcChannel="1" dstFilter="3" dstChannel="1"/>
+  <CONNECTION srcFilter="5" srcChannel="0" dstFilter="3" dstChannel="0"/>
+  <CONNECTION srcFilter="5" srcChannel="1" dstFilter="3" dstChannel="1"/>
 </FILTERGRAPH>
