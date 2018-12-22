@@ -67,6 +67,8 @@ private:
     float _delayGain {0.5};
     int _delayTimeMax {2000};
     int _delayTimeMin {1000};
+    int _curDelayTime;
+    int _curDelayTimeDirectionIsUp {true};
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalDelAudioProcessor)

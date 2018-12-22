@@ -150,6 +150,7 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+    // ====
     // Lengths for circular buffer
     const int bufferLength = buffer.getNumSamples();
     const int delayBufferLength = _delayBuffer.getNumSamples();
@@ -200,7 +201,7 @@ void DaalDelAudioProcessor::fillDelayBuffer(const int channel, const int bufferL
 void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
     
     // Set delay time
-    int curDelayTime = _delayTimeMax;
+    int curDelayTime = _curDelayTime;
     
     // Randomize delay time (half vs. full)
 //    int dice = rand() % 100;
@@ -211,6 +212,19 @@ void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const
     // Randomize delay time (within min to max range)
     curDelayTime = rand() % (_delayTimeMax - _delayTimeMin);
     curDelayTime += _delayTimeMin;
+    
+    // Poor man's oscillator (just for testing real quick)
+    // TODO: Use a real oscillator
+    if (_curDelayTimeDirectionIsUp) { // Up
+        curDelayTime++;
+        if (curDelayTime >= _delayTimeMax) _curDelayTimeDirectionIsUp = false;
+    }
+    else { // Down
+        curDelayTime--;
+        if (curDelayTime <= _delayTimeMin) _curDelayTimeDirectionIsUp = true;
+    }
+    _curDelayTime = curDelayTime;
+    
     DBG("curDelayTime=" + String(curDelayTime));
     
     // Get
