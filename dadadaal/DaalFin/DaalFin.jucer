@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="jWpZJd" name="DaalFin" projectType="audioplug" jucerVersion="5.4.1">
+<JUCERPROJECT id="jWpZJd" name="DaalFin" projectType="audioplug" jucerVersion="5.4.1"
+              companyName="usdivad">
   <MAINGROUP id="sAIOMP" name="DaalFin">
     <GROUP id="{9B02A29D-5456-4E5B-4591-3F6659783B27}" name="Source">
       <FILE id="V2sy3m" name="PluginProcessor.cpp" compile="1" resource="0"

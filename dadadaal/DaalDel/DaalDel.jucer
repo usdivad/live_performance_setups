@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="QZB4Z8" name="DaalDel" projectType="audioplug" jucerVersion="5.4.1">
+<JUCERPROJECT id="QZB4Z8" name="DaalDel" projectType="audioplug" jucerVersion="5.4.1"
+              companyName="usdivad" pluginVST3Category="Delay">
   <MAINGROUP id="Uwv73d" name="DaalDel">
     <GROUP id="{46779424-FFC0-2D74-DBC0-8F5485794E07}" name="Source">
       <FILE id="n3iCgu" name="PluginProcessor.cpp" compile="1" resource="0"
