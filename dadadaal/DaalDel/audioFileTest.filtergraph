@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FILTERGRAPH>
+  <FILTER uid="12" x="0.5" y="0.10000000000000000555">
+    <PLUGIN name="Audio Input" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="ROLI Ltd." version="1.0" file="" uid="246006c0"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="0"
+            numOutputs="2" isShell="0"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="disabled"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="C"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="13" x="0.25" y="0.10000000000000000555">
+    <PLUGIN name="Midi Input" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="ROLI Ltd." version="1.0" file="" uid="cb5fde0b"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="0"
+            numOutputs="0" isShell="0"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="disabled"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="disabled"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="14" x="0.5" y="0.9000000000000000222">
+    <PLUGIN name="Audio Output" descriptiveName="" format="Internal" category="I/O devices"
+            manufacturer="ROLI Ltd." version="1.0" file="" uid="724248cb"
+            isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="1"
+            numOutputs="0" isShell="0"/>
+    <STATE>0.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="disabled"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="15" x="0.23599999999999998757" y="0.30192307692307690514"
+          uiLastX_Normal="32" uiLastY_Normal="295" uiopen_Normal="0">
+    <PLUGIN name="AudioFilePlayer" format="VST3" category="Instrument|Synth"
+            manufacturer="NTwelve" version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/AudioFilePlayer.vst3"
+            uid="d9d3ae59" isInstrument="1" fileTime="167c3b6e6b8" infoUpdateTime="167d53240ad"
+            numInputs="0" numOutputs="2" isShell="0"/>
+    <STATE>541.VMjLgPg....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9LSMw3hUMczXWEjKt3hYt3hKt.kKt3hKt3BS5gEcyQjKtPjcQYTR5AkaA4hKtfjYSQUPEElKD4hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKtbCbUMTRSgDbA4hKtX2PhIWUxj0azX0R4UkQio2ZrEVaMcDRmU0QY8FNrk0a2YUV3fDdKUUSWkEdMIyRvzzQY8VVWgkZ3HTT00jUiMWUrEldMIyRyslQiUGSwDFLIIiXq0jLWc2MRk0bUwlX4gCagUGQSwzchk2RRUULXUWRGk0YvHUXqEDZP81XFgjPEwVXpQiTgYWSogTcyLjKt3hKt3hKt3hKtXlTU0DUQAURWoULEYzXqEEUXoWQF4RPDYFTzDzUXkWSG4RPDYmKtnWPt3hKt3hKt3hKJUELPUTPqI1aYcEV5UkQQcVTWgEOujzPu0Fbu4VYtQmO77hUSQ0LPwVcmklaSQWXzUlO..</STATE>
+    <LAYOUT>
+      <INPUTS/>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="16" x="0.59199999999999997069" y="0.52884615384615385469">
+    <PLUGIN name="DaalDel" format="VST3" category="Fx|Delay" manufacturer="usdivad"
+            version="1.0.0" file="/Users/usdivad/Library/Audio/Plug-Ins/VST3/DaalDel.vst3"
+            uid="acfac90c" isInstrument="0" fileTime="167d529aae8" infoUpdateTime="167d53240ad"
+            numInputs="2" numOutputs="2" isShell="0"/>
+    <STATE>152.VMjLg7H....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <CONNECTION srcFilter="15" srcChannel="0" dstFilter="16" dstChannel="0"/>
+  <CONNECTION srcFilter="15" srcChannel="1" dstFilter="16" dstChannel="1"/>
+  <CONNECTION srcFilter="16" srcChannel="0" dstFilter="14" dstChannel="0"/>
+  <CONNECTION srcFilter="16" srcChannel="1" dstFilter="14" dstChannel="1"/>
+</FILTERGRAPH>

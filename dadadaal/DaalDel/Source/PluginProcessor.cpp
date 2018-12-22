@@ -200,17 +200,18 @@ void DaalDelAudioProcessor::fillDelayBuffer(const int channel, const int bufferL
 void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
     
     // Set delay time
-    int curDelayTime = _delayTime;
+    int curDelayTime = _delayTimeMax;
     
     // Randomize delay time (half vs. full)
 //    int dice = rand() % 100;
 //    if (dice > 50) {
-//        curDelayTime = static_cast<int>(_delayTime / 2);
+//        curDelayTime = static_cast<int>(_delayTimeMax / 2);
 //    }
     
-    // Randomize delay time (up to full)
-    curDelayTime = rand() % _delayTime;
-    
+    // Randomize delay time (within min to max range)
+    curDelayTime = rand() % (_delayTimeMax - _delayTimeMin);
+    curDelayTime += _delayTimeMin;
+    DBG("curDelayTime=" + String(curDelayTime));
     
     // Get
     const int readPosition = static_cast<int> (delayBufferLength + _writePosition - (_sampleRate * curDelayTime / 1000)) % delayBufferLength;
