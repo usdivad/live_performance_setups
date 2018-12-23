@@ -139,6 +139,7 @@ bool DaalDelAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
+    
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
@@ -155,6 +156,7 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // Lengths for circular buffer
     const int bufferLength = buffer.getNumSamples();
     const int delayBufferLength = _delayBuffer.getNumSamples();
+    
     
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -185,6 +187,9 @@ void DaalDelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     
     _writePosition += bufferLength; // Increment
     _writePosition %= delayBufferLength; // Wrap around position index
+    
+    // Update values from tree
+    updateTreeParams();
 }
 
 void DaalDelAudioProcessor::fillDelayBuffer(const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData) {
@@ -296,4 +301,12 @@ AudioProcessorValueTreeState::ParameterLayout DaalDelAudioProcessor::createParam
         params.push_back(std::make_unique<AudioParameterFloat>("delayTimeMax", "Delay Time Max", NormalisableRange<float> (0.0f, 10000.0f), 2000.0f));
     
     return {params.begin(), params.end()};
+}
+
+void DaalDelAudioProcessor::updateTreeParams()
+{
+    // TODO: Fix these, in particular the delayTimeMax one
+    // _delayGain = *tree.getRawParameterValue("delayGain");
+    // _delayTimeMax = *tree.getRawParameterValue("delayTimeMax");
+    // _delayTimeMin = *tree.getRawParameterValue("delayTimeMin");
 }

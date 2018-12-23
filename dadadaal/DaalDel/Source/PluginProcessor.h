@@ -55,11 +55,12 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    
+    //==============================================================================
     void fillDelayBuffer(const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void feedbackDelay(const int channel, const int bufferLength, const int delayBufferLength, float* dryBuffer);
     
+    void updateTreeParams();
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
