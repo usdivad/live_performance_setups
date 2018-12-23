@@ -60,6 +60,11 @@ public:
     void getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void feedbackDelay(const int channel, const int bufferLength, const int delayBufferLength, float* dryBuffer);
     
+    
+    //==============================================================================
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    AudioProcessorValueTreeState tree;
+    
 private:
     AudioBuffer<float> _delayBuffer;
     int _writePosition {0};

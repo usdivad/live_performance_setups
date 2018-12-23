@@ -21,7 +21,8 @@ DaalDelAudioProcessor::DaalDelAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        tree(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
 }
@@ -283,4 +284,16 @@ void DaalDelAudioProcessor::setStateInformation (const void* data, int sizeInByt
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new DaalDelAudioProcessor();
+}
+
+//==============================================================================
+AudioProcessorValueTreeState::ParameterLayout DaalDelAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<AudioParameterFloat>> params;
+    
+    params.push_back(std::make_unique<AudioParameterFloat>("delayGain", "Delay Gain", NormalisableRange<float> (0.0f, 1.0f), 0.5f));
+    params.push_back(std::make_unique<AudioParameterFloat>("delayTimeMin", "Delay Time Min", NormalisableRange<float> (0.0f, 10000.0f), 1000.0f));
+        params.push_back(std::make_unique<AudioParameterFloat>("delayTimeMax", "Delay Time Max", NormalisableRange<float> (0.0f, 10000.0f), 2000.0f));
+    
+    return {params.begin(), params.end()};
 }
