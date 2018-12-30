@@ -57,8 +57,8 @@ void DaalDelAudioProcessorEditor::resized()
     int windowWidth = getWidth();
     int windowHeight = getHeight();
     int sliderWidth = 75;
-    int delayTimeSlidersCenterXOffset = 50;
-    int delayTimeSlidersY = 50;
+    int delayTimeSlidersCenterXOffset = 25;
+    int delayTimeSlidersY = 100;
     
     _delayGainSlider.setBounds((windowWidth/2) - (sliderWidth/2), (windowHeight/2) - (sliderWidth/2), sliderWidth, sliderWidth);
     _delayTimeMinSlider.setBounds((windowWidth/2) - delayTimeSlidersCenterXOffset - (sliderWidth/2), delayTimeSlidersY, sliderWidth, sliderWidth);
@@ -73,6 +73,6 @@ void DaalDelAudioProcessorEditor::setupSlider(Slider& slider, float minVal, floa
     slider.setLookAndFeel(&_daalLookAndFeel);
     slider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
     slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    slider.setPopupDisplayEnabled(true, true, this);
+    // slider.setPopupDisplayEnabled(true, true, this);
     addAndMakeVisible(&slider);
 }

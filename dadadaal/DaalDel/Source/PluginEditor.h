@@ -39,6 +39,10 @@ private:
     
     DaalLookAndFeel _daalLookAndFeel;
     
+    int _delayGainValueOscRate = 1;
+    int _delayTimeMinValueOscRate = 2;
+    int _delayTimeMaxValueOscRate = 3;
+    
     //==============================================================================
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
