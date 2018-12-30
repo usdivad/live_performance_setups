@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="QZB4Z8" name="DaalDel" projectType="audioplug" jucerVersion="5.4.1"
-              companyName="usdivad" pluginVST3Category="Delay">
+              companyName="usdivad" pluginVST3Category="Delay" pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="Uwv73d" name="DaalDel">
     <GROUP id="{51BBA36B-0C80-AA2C-AC4B-53E3845CAD7F}" name="Fonts">
       <FILE id="kwhXg9" name="ch_bold.ttf" compile="0" resource="1" file="../Fonts/ch_bold.ttf"/>
