@@ -21,6 +21,10 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="i9zSQ6" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <FILE id="RZGa7w" name="DaalLookAndFeel.cpp" compile="1" resource="0"
+          file="../DaalLookAndFeel.cpp"/>
+    <FILE id="PUIONK" name="DaalLookAndFeel.h" compile="0" resource="0"
+          file="../DaalLookAndFeel.h"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
