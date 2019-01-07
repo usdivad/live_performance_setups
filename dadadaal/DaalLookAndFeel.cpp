@@ -40,4 +40,9 @@ DaalLookAndFeel::DaalLookAndFeel()
     // setColour(Slider::thumbColourId, Colours::red);
     // setColour(Slider::trackColourId, Colour(0xffc8a686));
     // setColour(Slider::backgroundColourId, Colour(0xff7b4e2c));
+    
+    
+    
+    // Text
+    setColour(Label::textColourId, Colour(0xffffffff));
 }

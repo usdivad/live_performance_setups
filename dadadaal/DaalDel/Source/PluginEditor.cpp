@@ -48,6 +48,18 @@ void DaalDelAudioProcessorEditor::paint (Graphics& g)
 //    g.setColour (Colours::white);
 //    g.setFont (15.0f);
 //    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    
+    g.setColour(getLookAndFeel().findColour(Label::textColourId));
+    
+    g.setColour(Colour(0xff666666));
+    g.drawText("Delay Time", (getWidth()/2) - (150/2) - 5, 20, 150, 50, Justification::centred);
+    g.drawText("Delay Time", (getWidth()/2) - (150/2) + 5, 20, 150, 50, Justification::centred);
+    
+    g.setColour(getLookAndFeel().findColour(Label::textColourId));
+    g.drawText("Delay Time", (getWidth()/2) - (200/2), 20, 200, 50, Justification::centred);
+    g.drawText("Min", 50, 100, 200, 50, Justification::centred);
+    g.drawText("Max", 150, 100, 200, 50, Justification::centred);
+    g.drawText("Gain", (getWidth()/2) - (200/2), 200, 200, 50, Justification::centred);
 }
 
 void DaalDelAudioProcessorEditor::resized()
@@ -59,8 +71,10 @@ void DaalDelAudioProcessorEditor::resized()
     int sliderWidth = 75;
     int delayTimeSlidersCenterXOffset = 50;
     int delayTimeSlidersY = 50;
+    // int delayGainSliderY = (windowHeight/2) - (sliderWidth/2);
+    int delayGainSliderY = 150;
     
-    _delayGainSlider.setBounds((windowWidth/2) - (sliderWidth/2), (windowHeight/2) - (sliderWidth/2), sliderWidth, sliderWidth);
+    _delayGainSlider.setBounds((windowWidth/2) - (sliderWidth/2), delayGainSliderY, sliderWidth, sliderWidth);
     _delayTimeMinSlider.setBounds((windowWidth/2) - delayTimeSlidersCenterXOffset - (sliderWidth/2), delayTimeSlidersY, sliderWidth, sliderWidth);
     _delayTimeMaxSlider.setBounds((windowWidth/2) + delayTimeSlidersCenterXOffset - (sliderWidth/2), delayTimeSlidersY, sliderWidth, sliderWidth);
 }
