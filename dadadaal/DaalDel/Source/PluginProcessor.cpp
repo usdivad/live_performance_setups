@@ -100,7 +100,7 @@ void DaalDelAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     // initialisation that you need..
     
     const int numInputChannels = getTotalNumInputChannels();
-    const int delayBufferSize = 2 * (sampleRate + samplesPerBlock); //  2 seconds (plus a bit)
+    const int delayBufferSize = 20 * (sampleRate + samplesPerBlock); //  20 seconds (plus a bit)
     
     _delayBuffer.setSize(numInputChannels, delayBufferSize);
     _sampleRate = sampleRate;
@@ -210,27 +210,35 @@ void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const
     int curDelayTime = _curDelayTime;
     
     // Randomize delay time (half vs. full)
-//    int dice = rand() % 100;
-//    if (dice > 50) {
-//        curDelayTime = static_cast<int>(_delayTimeMax / 2);
-//    }
+    // int dice = rand() % 100;
+    // if (dice > 50) {
+    //    curDelayTime = static_cast<int>(_delayTimeMax / 2);
+    // }
     
     // Randomize delay time (within min to max range)
-    curDelayTime = rand() % (_delayTimeMax - _delayTimeMin);
-    curDelayTime += _delayTimeMin;
+    // curDelayTime = rand() % (_delayTimeMax - _delayTimeMin);
+    // curDelayTime += _delayTimeMin;
+    
+    // Just set it to min
+    curDelayTime = _delayTimeMin;
+    
+    // ====
     
     // Poor man's oscillator (just for testing real quick)
     // TODO: Use a real oscillator
-    if (_curDelayTimeDirectionIsUp) { // Up
-        curDelayTime++;
-        if (curDelayTime >= _delayTimeMax) _curDelayTimeDirectionIsUp = false;
-    }
-    else { // Down
-        curDelayTime--;
-        if (curDelayTime <= _delayTimeMin) _curDelayTimeDirectionIsUp = true;
-    }
-    _curDelayTime = curDelayTime;
+    // if (_curDelayTimeDirectionIsUp) { // Up
+    //     curDelayTime++;
+    //     if (curDelayTime >= _delayTimeMax) _curDelayTimeDirectionIsUp = false;
+    // }
+    // else { // Down
+    //     curDelayTime--;
+    //     if (curDelayTime <= _delayTimeMin) _curDelayTimeDirectionIsUp = true;
+    // }
     
+    // ====
+    
+    // Update delay time
+    _curDelayTime = curDelayTime;
     DBG("curDelayTime=" + String(curDelayTime));
     
     // Get
@@ -306,7 +314,7 @@ AudioProcessorValueTreeState::ParameterLayout DaalDelAudioProcessor::createParam
 void DaalDelAudioProcessor::updateTreeParams()
 {
     // TODO: Fix these, in particular the delayTimeMax one
-    // _delayGain = *tree.getRawParameterValue("delayGain");
-    // _delayTimeMax = *tree.getRawParameterValue("delayTimeMax");
-    // _delayTimeMin = *tree.getRawParameterValue("delayTimeMin");
+    _delayGain = *tree.getRawParameterValue("delayGain");
+    _delayTimeMax = *tree.getRawParameterValue("delayTimeMax");
+    _delayTimeMin = *tree.getRawParameterValue("delayTimeMin");
 }
