@@ -216,24 +216,25 @@ void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const
     // }
     
     // Randomize delay time (within min to max range)
-    // curDelayTime = rand() % (_delayTimeMax - _delayTimeMin);
-    // curDelayTime += _delayTimeMin;
+    curDelayTime = rand() % (std::max(_delayTimeMax - _delayTimeMin, 1));
+    curDelayTime += _delayTimeMin;
+    
     
     // Just set it to min
-    curDelayTime = _delayTimeMin;
+    // curDelayTime = _delayTimeMin;
     
     // ====
     
     // Poor man's oscillator (just for testing real quick)
     // TODO: Use a real oscillator
-    // if (_curDelayTimeDirectionIsUp) { // Up
-    //     curDelayTime++;
-    //     if (curDelayTime >= _delayTimeMax) _curDelayTimeDirectionIsUp = false;
-    // }
-    // else { // Down
-    //     curDelayTime--;
-    //     if (curDelayTime <= _delayTimeMin) _curDelayTimeDirectionIsUp = true;
-    // }
+    if (_curDelayTimeDirectionIsUp) { // Up
+        curDelayTime++;
+        if (curDelayTime >= _delayTimeMax) _curDelayTimeDirectionIsUp = false;
+    }
+    else { // Down
+        curDelayTime--;
+        if (curDelayTime <= _delayTimeMin) _curDelayTimeDirectionIsUp = true;
+    }
     
     // ====
     
