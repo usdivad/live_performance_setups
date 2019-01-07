@@ -57,8 +57,8 @@ void DaalDelAudioProcessorEditor::resized()
     int windowWidth = getWidth();
     int windowHeight = getHeight();
     int sliderWidth = 75;
-    int delayTimeSlidersCenterXOffset = 25;
-    int delayTimeSlidersY = 100;
+    int delayTimeSlidersCenterXOffset = 50;
+    int delayTimeSlidersY = 50;
     
     _delayGainSlider.setBounds((windowWidth/2) - (sliderWidth/2), (windowHeight/2) - (sliderWidth/2), sliderWidth, sliderWidth);
     _delayTimeMinSlider.setBounds((windowWidth/2) - delayTimeSlidersCenterXOffset - (sliderWidth/2), delayTimeSlidersY, sliderWidth, sliderWidth);
