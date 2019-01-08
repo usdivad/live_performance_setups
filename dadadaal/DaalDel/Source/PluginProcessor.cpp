@@ -249,12 +249,12 @@ void DaalDelAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer, const
     const int readPosition = static_cast<int> (delayBufferLength + _writePosition - (_sampleRate * curDelayTime / 1000)) % delayBufferLength;
     
     if (delayBufferLength > bufferLength + readPosition) { // Straight copy
-        buffer.copyFrom(channel, 0, delayBufferData + readPosition, bufferLength, 1 - _delayDryWetGain);
+        buffer.addFrom(channel, 0, delayBufferData + readPosition, bufferLength, 1 - _delayDryWetGain);
     }
     else { // Copy with wrap-around
         const int bufferRemaining = delayBufferLength - readPosition;
-        buffer.copyFrom(channel, 0, delayBufferData + readPosition, bufferRemaining,  1 - _delayDryWetGain);
-        buffer.copyFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining,  1 - _delayDryWetGain);
+        buffer.addFrom(channel, 0, delayBufferData + readPosition, bufferRemaining,  1 - _delayDryWetGain);
+        buffer.addFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining,  1 - _delayDryWetGain);
     }
 }
 
