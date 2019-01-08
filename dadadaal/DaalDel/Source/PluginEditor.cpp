@@ -21,12 +21,12 @@ DaalDelAudioProcessorEditor::DaalDelAudioProcessorEditor (DaalDelAudioProcessor&
     setLookAndFeel(&_daalLookAndFeel);
     
     // Setup sliders
-    setupSlider(_delayGainSlider, 0.0f, 1.0f, 0.5f);
+    setupSlider(_delayFeedbackGainSlider, 0.0f, 1.0f, 0.5f);
     setupSlider(_delayTimeMinSlider, 0.0f, 20000.0f, 1000.0f);
     setupSlider(_delayTimeMaxSlider, 0.0f, 20000.0f, 2000.0f);
     
     // Add attachments
-    _delayGainValue = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "delayGain", _delayGainSlider);
+    _delayFeedbackGainValue = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "delayFeedbackGain", _delayFeedbackGainSlider);
     _delayTimeMinValue = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "delayTimeMin", _delayTimeMinSlider);
     _delayTimeMaxValue = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "delayTimeMax", _delayTimeMaxSlider);
 }
@@ -34,7 +34,7 @@ DaalDelAudioProcessorEditor::DaalDelAudioProcessorEditor (DaalDelAudioProcessor&
 DaalDelAudioProcessorEditor::~DaalDelAudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
-    _delayGainSlider.setLookAndFeel(nullptr);
+    _delayFeedbackGainSlider.setLookAndFeel(nullptr);
     _delayTimeMinSlider.setLookAndFeel(nullptr);
     _delayTimeMaxSlider.setLookAndFeel(nullptr);
 }
@@ -59,7 +59,7 @@ void DaalDelAudioProcessorEditor::paint (Graphics& g)
     g.drawText("Delay Time", (getWidth()/2) - (200/2), 20, 200, 50, Justification::centred);
     g.drawText("Min", 50, 100, 200, 50, Justification::centred);
     g.drawText("Max", 150, 100, 200, 50, Justification::centred);
-    g.drawText("Gain", (getWidth()/2) - (200/2), 200, 200, 50, Justification::centred);
+    g.drawText("Feedback", (getWidth()/2) - (200/2), 200, 200, 50, Justification::centred);
 }
 
 void DaalDelAudioProcessorEditor::resized()
@@ -71,10 +71,10 @@ void DaalDelAudioProcessorEditor::resized()
     int sliderWidth = 75;
     int delayTimeSlidersCenterXOffset = 50;
     int delayTimeSlidersY = 50;
-    // int delayGainSliderY = (windowHeight/2) - (sliderWidth/2);
-    int delayGainSliderY = 150;
+    // int delayFeedbackGainSliderY = (windowHeight/2) - (sliderWidth/2);
+    int delayFeedbackGainSliderY = 150;
     
-    _delayGainSlider.setBounds((windowWidth/2) - (sliderWidth/2), delayGainSliderY, sliderWidth, sliderWidth);
+    _delayFeedbackGainSlider.setBounds((windowWidth/2) - (sliderWidth/2), delayFeedbackGainSliderY, sliderWidth, sliderWidth);
     _delayTimeMinSlider.setBounds((windowWidth/2) - delayTimeSlidersCenterXOffset - (sliderWidth/2), delayTimeSlidersY, sliderWidth, sliderWidth);
     _delayTimeMaxSlider.setBounds((windowWidth/2) + delayTimeSlidersCenterXOffset - (sliderWidth/2), delayTimeSlidersY, sliderWidth, sliderWidth);
 }

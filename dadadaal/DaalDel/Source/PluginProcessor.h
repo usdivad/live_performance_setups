@@ -59,6 +59,7 @@ public:
     void fillDelayBuffer(const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void getFromDelayBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void feedbackDelay(const int channel, const int bufferLength, const int delayBufferLength, float* dryBuffer);
+    void applyDryWetToBuffer(AudioBuffer<float>& buffer, const int channel, const int bufferLength, float* dryBuffer);
     
     void updateTreeParams();
     
@@ -70,7 +71,8 @@ private:
     AudioBuffer<float> _delayBuffer;
     int _writePosition {0};
     int _sampleRate {44100};
-    float _delayGain {0.5};
+    float _delayFeedbackGain {0.5}; // i.e. feedback
+    float _delayDryWetGain {0.5};
     int _delayTimeMax {2000};
     int _delayTimeMin {1000};
     int _curDelayTime;

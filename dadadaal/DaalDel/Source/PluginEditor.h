@@ -30,16 +30,16 @@ public:
 private:
     void setupSlider(Slider& slider, float minVal, float maxVal, float defaultVal);
     
-    Slider _delayGainSlider;
+    Slider _delayFeedbackGainSlider;
     Slider _delayTimeMinSlider;
     Slider _delayTimeMaxSlider;
-    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> _delayGainValue;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> _delayFeedbackGainValue;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> _delayTimeMinValue;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> _delayTimeMaxValue;
     
     DaalLookAndFeel _daalLookAndFeel;
     
-    int _delayGainValueOscRate = 1;
+    int _delayFeedbackGainValueOscRate = 1;
     int _delayTimeMinValueOscRate = 2;
     int _delayTimeMaxValueOscRate = 3;
     
