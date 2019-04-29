@@ -19,16 +19,47 @@ DaalGAudioProcessorEditor::DaalGAudioProcessorEditor (DaalGAudioProcessor& p)
     // editor's size to whatever you need it to be.
     setSize (400, 300);
     
-    // Setup slider
+    // Get parameters from processor
     auto& params = processor.getParameters();
-    AudioParameterFloat* gainParameter = (AudioParameterFloat*) params.getUnchecked(0);
-    _gainControlSlider.setRange(gainParameter->range.start, gainParameter->range.end);
-    _gainControlSlider.setValue(*gainParameter);
-    _gainControlSlider.setBounds(0,0,100,100);
-    _gainControlSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    _gainControlSlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    _gainControlSlider.addListener(this);
-    addAndMakeVisible(_gainControlSlider);
+    
+    
+    // Setup gain slider left
+    // (Listener pattern)
+    AudioParameterFloat* gainParameterLeft = (AudioParameterFloat*) params.getUnchecked(0);
+    _gainControlSliderLeft.setRange(gainParameterLeft->range.start, gainParameterLeft->range.end);
+    _gainControlSliderLeft.setValue(*gainParameterLeft);
+    _gainControlSliderLeft.setBounds(100,50,100,100);
+    _gainControlSliderLeft.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    _gainControlSliderLeft.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+    
+    // Register as listener
+    _gainControlSliderLeft.addListener(this);
+    
+    addAndMakeVisible(_gainControlSliderLeft);
+    
+    
+    
+    // Setup gain slider right
+    // (Lambda callback)
+    AudioParameterFloat* gainParameterRight = (AudioParameterFloat*) params.getUnchecked(1);
+    _gainControlSliderRight.setRange(gainParameterRight->range.start, gainParameterRight->range.end);
+    _gainControlSliderRight.setValue(*gainParameterRight);
+    _gainControlSliderRight.setBounds(200,50,100,100);
+    _gainControlSliderRight.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    _gainControlSliderRight.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+    
+    // Using lambda capturing
+    _gainControlSliderRight.onValueChange = [this, gainParameterRight] {
+        *gainParameterRight = _gainControlSliderRight.getValue();
+    };
+    _gainControlSliderRight.onDragStart = [gainParameterRight] {
+        gainParameterRight->beginChangeGesture();
+    };
+    _gainControlSliderRight.onDragEnd = [gainParameterRight] {
+        gainParameterRight->endChangeGesture();
+    };
+    
+    addAndMakeVisible(_gainControlSliderRight);
 }
 
 DaalGAudioProcessorEditor::~DaalGAudioProcessorEditor()
@@ -41,9 +72,9 @@ void DaalGAudioProcessorEditor::paint (Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
-    g.setColour (Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    // g.setColour (Colours::white);
+    // g.setFont (15.0f);
+    // g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
 }
 
 void DaalGAudioProcessorEditor::resized()
@@ -56,9 +87,9 @@ void DaalGAudioProcessorEditor::resized()
 void DaalGAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     auto& params = processor.getParameters();
     
-    if (slider == &_gainControlSlider) {
-        AudioParameterFloat* gainParameter = (AudioParameterFloat*) params.getUnchecked(0);
-        *gainParameter = _gainControlSlider.getValue();
-        DBG("Gain control slider value changed to " << _gainControlSlider.getValue());
+    if (slider == &_gainControlSliderLeft) {
+        AudioParameterFloat* gainParameterLeft = (AudioParameterFloat*) params.getUnchecked(0);
+        *gainParameterLeft = _gainControlSliderLeft.getValue();
+        DBG("Gain control left slider value changed to " << _gainControlSliderLeft.getValue());
     }
 }

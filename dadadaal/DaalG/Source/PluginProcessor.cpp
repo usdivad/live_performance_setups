@@ -21,11 +21,15 @@ DaalGAudioProcessor::DaalGAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        _gainSmoothScalar(0.005)
 #endif
 {    
-    addParameter(_gainParameter = new AudioParameterFloat("gain", "Gain", 0.0f, 1.0f, 0.5f));
-    _gainSmoothed = _gainParameter->get();
+    addParameter(_gainParameterLeft = new AudioParameterFloat("gainLeft", "Gain Left", 0.0f, 1.0f, 0.5f));
+    _gainSmoothedLeft = _gainParameterLeft->get();
+    
+    addParameter(_gainParameterRight = new AudioParameterFloat("gainRight", "Gain Right", 0.0f, 1.0f, 0.5f));
+    _gainSmoothedRight = _gainParameterRight->get();
 }
 
 DaalGAudioProcessor::~DaalGAudioProcessor()
@@ -176,10 +180,11 @@ void DaalGAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& 
         // DBG(*_gainParameter); // Don't print from audio thread
         
         for (int sampleIdx = 0; sampleIdx < buffer.getNumSamples(); sampleIdx++) {
-            _gainSmoothed = _gainSmoothed - (0.005 * (_gainSmoothed - _gainParameter->get()));
+            _gainSmoothedLeft = _gainSmoothedLeft - (_gainSmoothScalar * (_gainSmoothedLeft - _gainParameterLeft->get()));
+            _gainSmoothedRight = _gainSmoothedRight - (_gainSmoothScalar * (_gainSmoothedRight - _gainParameterRight->get()));
             
-            channelLeft[sampleIdx] *= _gainSmoothed;
-            channelRight[sampleIdx] *= _gainSmoothed;
+            channelLeft[sampleIdx] *= _gainSmoothedLeft;
+            channelRight[sampleIdx] *= _gainSmoothedRight;
         }
     }
 }

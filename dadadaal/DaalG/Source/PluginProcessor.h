@@ -57,8 +57,11 @@ public:
 
 private:
     //==============================================================================
-    AudioParameterFloat* _gainParameter;
-    float _gainSmoothed;
+    AudioParameterFloat* _gainParameterLeft;
+    float _gainSmoothedLeft;
+    AudioParameterFloat* _gainParameterRight;
+    float _gainSmoothedRight;
+    const float _gainSmoothScalar;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalGAudioProcessor)

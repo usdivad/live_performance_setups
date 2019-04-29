@@ -30,7 +30,8 @@ public:
 
 private:
 
-    Slider _gainControlSlider;
+    Slider _gainControlSliderLeft;
+    Slider _gainControlSliderRight;
     
     //==============================================================================
 
