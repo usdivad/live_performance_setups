@@ -32,10 +32,15 @@ private:
     DaalModAudioProcessor& processor;
     
     //==============================================================================
-    // Sliders
+    // UI elements
     Slider _dryWetSlider;
+    Slider _depthSlider;
+    Slider _rateSlider;
+    Slider _phaseOffsetSlider;
     Slider _feedbackSlider;
     // Slider _delayTimeSlider;
+    
+    ComboBox _typeBox;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalModAudioProcessorEditor)
 };

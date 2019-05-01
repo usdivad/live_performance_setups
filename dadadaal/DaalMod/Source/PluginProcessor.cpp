@@ -228,18 +228,36 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     float* leftChannel = buffer.getWritePointer(0);
     float* rightChannel = buffer.getWritePointer(1);
     
-    // Write to circular buffer
+    // Debug printing
+    // DBG("Dry/Wet: " <<  _dryWetParam->get());
+    // DBG("Depth: " <<  _depthParam->get());
+    // DBG("Rate: " <<  _rateParam->get());
+    // DBG("Phase Offset: " <<  _phaseOffsetParam->get());
+    // DBG("Feedback: " <<  _feedbackParam->get());
+    // DBG("Type: " <<  _typeParam->get());
+    
+    // Process audio
     for (int i=0; i<buffer.getNumSamples(); i++) {
         
-        // LFO
+        // ========
+        
+        // Set curr LFO out
         float lfoOut = sin(2 * M_PI * _lfoPhase); // Formula for LFO
-        _lfoPhase = _rateParam->get() * getSampleRate(); // Set phase based on rate
+        
+        // Update LFO phase
+        _lfoPhase += _rateParam->get() / getSampleRate(); // Increment phase based on rate
         if (_lfoPhase > 1) { // Keep range between 0-1
             _lfoPhase -= 1;
         }
         
-        // Map LFO output value to 5ms-30ms
+        // Apply depth param to LFO out
+        lfoOut *= _depthParam->get();
+        
+        // Map LFO output value to min and max values
         float lfoOutMapped = jmap(lfoOut, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
+        
+        
+        // ========
         
         // Smooth delay
         _delayTimeSmoothed = _delayTimeSmoothed - (DELAY_TIME_SMOOTH_AMOUNT * (_delayTimeSmoothed - lfoOutMapped)); // Use lfoOutMapped now, instead of delay time param from prev example
