@@ -231,8 +231,45 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         
         // ========
         
-        // Set curr LFO out
-        float lfoOut = sin(2 * M_PI * _lfoPhase); // Formula for LFO
+        // Setup LFO for left channel
+        
+        // Calculate curr LFO out
+        float lfoOutLeft = sin(2 * M_PI * _lfoPhase); // Formula for LFO
+        
+        // Apply depth param to LFO out
+        lfoOutLeft *= _depthParam->get();
+        
+        // Map LFO output value to min and max values
+        float lfoOutMappedLeft = jmap(lfoOutLeft, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
+        
+        // Update delay time in case sample rate has changed
+        // We also now need to update since we're using the LFO
+        // (Also, we use LFO directly, instead of a smoothed delay var, since it's already smooth)
+        float delayTimeInSamplesLeft = getSampleRate() * lfoOutMappedLeft;
+        
+        
+        
+        // ========
+        
+        // Setup LFO for right channel
+        
+        // Set the phase first
+        float lfoPhaseRight = _lfoPhase + _phaseOffsetParam->get(); // Set based on phase and offset param
+        if (lfoPhaseRight > 1) { // Keep range between 0-1
+            lfoPhaseRight -= 1;
+        }
+        
+        // And then do the actual LFO out value calculation
+        float lfoOutRight = sin(2 * M_PI * lfoPhaseRight);
+        
+        // Map it
+        float lfoOutMappedRight = jmap(lfoOutRight, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
+        
+        // Then update delay time
+        float delayTimeInSamplesRight = getSampleRate() * lfoOutMappedRight;
+
+        
+        // ========
         
         // Update LFO phase
         _lfoPhase += _rateParam->get() / getSampleRate(); // Increment phase based on rate
@@ -240,14 +277,10 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             _lfoPhase -= 1;
         }
         
-        // Apply depth param to LFO out
-        lfoOut *= _depthParam->get();
+
+        // ========
         
-        // Map LFO output value to min and max values
-        float lfoOutMapped = jmap(lfoOut, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
-        
-        // Update sample rate if need be (use LFO directly since it's already smooth)
-        float delayTimeInSamples = getSampleRate() * lfoOutMapped;
+        // Read/write delay for both left and right channels
         
         // Write sample to circular buffer
         // and also add feedback
@@ -255,26 +288,37 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         _circularBufferRight[_circularBufferWriteHead] = rightChannel[i] + _feedbackRight;
         
         // Read from delayed position in buffer
-        float delayReadHead = _circularBufferWriteHead - delayTimeInSamples;
-        if (delayReadHead < 0) {
-            delayReadHead += _circularBufferLength;
+        float delayReadHeadLeft = _circularBufferWriteHead - delayTimeInSamplesLeft;
+        if (delayReadHeadLeft < 0) {
+            delayReadHeadLeft += _circularBufferLength;
+        }
+        float delayReadHeadRight = _circularBufferWriteHead - delayTimeInSamplesRight;
+        if (delayReadHeadRight < 0) {
+            delayReadHeadRight += _circularBufferLength;
         }
         
         // Lerp!
-        int delayReadHeadIntX0 = (int) delayReadHead; // x0
-        float delayReadHeadRemainderX0 = delayReadHead - delayReadHeadIntX0; // t, i.e. inPhase
-        int delayReadHeadIntX1 = delayReadHeadIntX0 + 1; // x1
-        if (delayReadHeadIntX1 >= _circularBufferLength) {
-            delayReadHeadIntX1 -= _circularBufferLength;
+        int delayReadHeadIntX0Left = (int) delayReadHeadLeft; // x0
+        float delayReadHeadRemainderX0Left = delayReadHeadLeft - delayReadHeadIntX0Left; // t, i.e. inPhase
+        int delayReadHeadIntX1Left = delayReadHeadIntX0Left + 1; // x1
+        if (delayReadHeadIntX1Left >= _circularBufferLength) {
+            delayReadHeadIntX1Left -= _circularBufferLength;
+        }
+        
+        int delayReadHeadIntX0Right = (int) delayReadHeadRight; // x0
+        float delayReadHeadRemainderX0Right = delayReadHeadRight - delayReadHeadIntX0Right; // t, i.e. inPhase
+        int delayReadHeadIntX1Right = delayReadHeadIntX0Right + 1; // x1
+        if (delayReadHeadIntX1Right >= _circularBufferLength) {
+            delayReadHeadIntX1Right -= _circularBufferLength;
         }
         
         // Get current delay sample for applying feedback
-        float delaySampleLeft = lerp(_circularBufferLeft[(int)delayReadHeadIntX0],
-                                     _circularBufferLeft[(int)delayReadHeadIntX1],
-                                     delayReadHeadRemainderX0);
-        float delaySampleRight = lerp(_circularBufferRight[(int)delayReadHeadIntX0],
-                                      _circularBufferRight[(int)delayReadHeadIntX1],
-                                      delayReadHeadRemainderX0);
+        float delaySampleLeft = lerp(_circularBufferLeft[(int)delayReadHeadIntX0Left],
+                                     _circularBufferLeft[(int)delayReadHeadIntX1Left],
+                                     delayReadHeadRemainderX0Left);
+        float delaySampleRight = lerp(_circularBufferRight[(int)delayReadHeadIntX0Right],
+                                      _circularBufferRight[(int)delayReadHeadIntX1Right],
+                                      delayReadHeadRemainderX0Right);
         
         // Apply feedback (for next iteration)
         _feedbackLeft = delaySampleLeft * _feedbackParam->get();
@@ -288,7 +332,7 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         buffer.setSample(0, i, (buffer.getSample(0, i) * (1 - _dryWetParam->get())) +
                          (delaySampleLeft * _dryWetParam->get()));
         buffer.setSample(1, i, (buffer.getSample(1, i) * (1 - _dryWetParam->get())) +
-                         (delaySampleLeft * _dryWetParam->get()));
+                         (delaySampleRight * _dryWetParam->get()));
         
         
         // Increment write head
