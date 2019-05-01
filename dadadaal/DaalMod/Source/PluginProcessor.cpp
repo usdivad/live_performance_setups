@@ -30,10 +30,6 @@ DaalModAudioProcessor::DaalModAudioProcessor()
     _circularBufferWriteHead = 0;
     _circularBufferLength = 0;
     
-    _delayTimeInSamples = 0;
-    _delayReadHead = 0;
-    _delayTimeSmoothed = 0;
-    
     _feedbackLeft = 0;
     _feedbackRight = 0;
     
@@ -129,12 +125,6 @@ void DaalModAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    
-    // Delay time
-    // _delayTimeInSamples = sampleRate * _delayTimeParam->get();
-    // _delayTimeSmoothed = _delayTimeParam->get();
-    _delayTimeInSamples = sampleRate * 1; // TEMP
-    _delayTimeSmoothed = 1; // TEMP
     
     // LFO
     _lfoPhase = 0;
@@ -256,14 +246,8 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         // Map LFO output value to min and max values
         float lfoOutMapped = jmap(lfoOut, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
         
-        
-        // ========
-        
-        // Smooth delay
-        _delayTimeSmoothed = _delayTimeSmoothed - (DELAY_TIME_SMOOTH_AMOUNT * (_delayTimeSmoothed - lfoOutMapped)); // Use lfoOutMapped now, instead of delay time param from prev example
-        
-        // Update sample rate if need be (also use smoothed delay time)
-        _delayTimeInSamples = getSampleRate() * _delayTimeSmoothed;
+        // Update sample rate if need be (use LFO directly since it's already smooth)
+        float delayTimeInSamples = getSampleRate() * lfoOutMapped;
         
         // Write sample to circular buffer
         // and also add feedback
@@ -271,14 +255,14 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         _circularBufferRight[_circularBufferWriteHead] = rightChannel[i] + _feedbackRight;
         
         // Read from delayed position in buffer
-        _delayReadHead = _circularBufferWriteHead - _delayTimeInSamples;
-        if (_delayReadHead < 0) {
-            _delayReadHead += _circularBufferLength;
+        float delayReadHead = _circularBufferWriteHead - delayTimeInSamples;
+        if (delayReadHead < 0) {
+            delayReadHead += _circularBufferLength;
         }
         
         // Lerp!
-        int delayReadHeadIntX0 = (int) _delayReadHead; // x0
-        float delayReadHeadRemainderX0 = _delayReadHead - delayReadHeadIntX0; // t, i.e. inPhase
+        int delayReadHeadIntX0 = (int) delayReadHead; // x0
+        float delayReadHeadRemainderX0 = delayReadHead - delayReadHeadIntX0; // t, i.e. inPhase
         int delayReadHeadIntX1 = delayReadHeadIntX0 + 1; // x1
         if (delayReadHeadIntX1 >= _circularBufferLength) {
             delayReadHeadIntX1 -= _circularBufferLength;

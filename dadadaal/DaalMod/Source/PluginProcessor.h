@@ -73,11 +73,6 @@ private:
     int _circularBufferWriteHead;
     int _circularBufferLength;
     
-    // Delay
-    float _delayTimeInSamples;
-    float _delayReadHead;
-    float _delayTimeSmoothed;
-    
     // Feedback
     float _feedbackLeft;
     float _feedbackRight;
