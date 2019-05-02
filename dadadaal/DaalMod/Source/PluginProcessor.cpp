@@ -375,12 +375,40 @@ void DaalModAudioProcessor::getStateInformation (MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    
+    // Create XML
+    std::unique_ptr<XmlElement> xml(new XmlElement("DaalMod"));
+    
+    // Populate with params
+    xml->setAttribute("DryWet", _dryWetParam->get());
+    xml->setAttribute("Depth", _depthParam->get());
+    xml->setAttribute("Rate", _rateParam->get());
+    xml->setAttribute("PhaseOffset", _phaseOffsetParam->get());
+    xml->setAttribute("Feedback", _feedbackParam->get());
+    xml->setAttribute("Type", _typeParam->get());
+    
+    // Copy the XML data to destination blob
+    copyXmlToBinary(*xml, destData);
+    
 }
 
 void DaalModAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    
+    // Create XML from state data
+    std::unique_ptr<XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
+    
+    // Set params based on state
+    if (xml.get() != nullptr && xml->hasTagName("DaalMod")) {
+        *_dryWetParam = xml->getDoubleAttribute("DryWet");
+        *_depthParam = xml->getDoubleAttribute("Depth");
+        *_rateParam = xml->getDoubleAttribute("Rate");
+        *_phaseOffsetParam = xml->getDoubleAttribute("PhaseOffset");
+        *_feedbackParam = xml->getDoubleAttribute("Feedback");
+        *_typeParam = xml->getIntAttribute("Type");
+    }
 }
 
 //==============================================================================

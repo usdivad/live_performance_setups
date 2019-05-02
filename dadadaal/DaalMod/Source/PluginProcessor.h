@@ -89,7 +89,6 @@ private:
     AudioParameterFloat* _phaseOffsetParam;
     AudioParameterFloat* _feedbackParam;
     // AudioParameterFloat* _delayTimeParam; // No longer necessary; we use depth param instead
-    
     AudioParameterInt* _typeParam;
     
     
