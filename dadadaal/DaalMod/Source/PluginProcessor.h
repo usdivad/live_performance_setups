@@ -14,8 +14,10 @@
 
 #define MAX_DELAY_TIME_IN_SECONDS 2
 #define DELAY_TIME_SMOOTH_AMOUNT 0.001f
-#define LFO_OUT_MIN_IN_SECONDS 0.005f
-#define LFO_OUT_MAX_IN_SECONDS 0.03f
+#define CHORUS_LFO_OUT_MIN_IN_SECONDS 0.005f
+#define CHORUS_LFO_OUT_MAX_IN_SECONDS 0.03f
+#define FLANGER_LFO_OUT_MIN_IN_SECONDS 0.001f
+#define FLANGER_LFO_OUT_MAX_IN_SECONDS 0.005f
 
 //==============================================================================
 /**

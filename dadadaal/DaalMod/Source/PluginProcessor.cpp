@@ -231,6 +231,8 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         
         // ========
         
+        // Setup LFO out value and phase
+        
         // Setup LFO for left channel
         
         // Calculate curr LFO out
@@ -238,18 +240,6 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         
         // Apply depth param to LFO out
         lfoOutLeft *= _depthParam->get();
-        
-        // Map LFO output value to min and max values
-        float lfoOutMappedLeft = jmap(lfoOutLeft, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
-        
-        // Update delay time in case sample rate has changed
-        // We also now need to update since we're using the LFO
-        // (Also, we use LFO directly, instead of a smoothed delay var, since it's already smooth)
-        float delayTimeInSamplesLeft = getSampleRate() * lfoOutMappedLeft;
-        
-        
-        
-        // ========
         
         // Setup LFO for right channel
         
@@ -262,8 +252,32 @@ void DaalModAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         // And then do the actual LFO out value calculation
         float lfoOutRight = sin(2 * M_PI * lfoPhaseRight);
         
-        // Map it
-        float lfoOutMappedRight = jmap(lfoOutRight, -1.0f, 1.0f, LFO_OUT_MIN_IN_SECONDS, LFO_OUT_MAX_IN_SECONDS);
+        // Apply depth param to LFO out right
+        lfoOutRight *= _depthParam->get();
+        
+        
+        // ========
+
+        // Map LFO output value to min and max values depending on the type (chorus/flanger)
+        
+        float lfoOutMappedLeft = 0;
+        float lfoOutMappedRight = 0;
+        
+        if (_typeParam->get() == 0) { // Chorus
+            lfoOutMappedLeft = jmap(lfoOutLeft, -1.0f, 1.0f, CHORUS_LFO_OUT_MIN_IN_SECONDS, CHORUS_LFO_OUT_MAX_IN_SECONDS); // Map left
+            lfoOutMappedRight = jmap(lfoOutRight, -1.0f, 1.0f, CHORUS_LFO_OUT_MIN_IN_SECONDS, CHORUS_LFO_OUT_MAX_IN_SECONDS); // Map right
+        }
+        else { // Flanger
+            lfoOutMappedLeft = jmap(lfoOutLeft, -1.0f, 1.0f, FLANGER_LFO_OUT_MIN_IN_SECONDS, FLANGER_LFO_OUT_MAX_IN_SECONDS); // Map left
+            lfoOutMappedRight = jmap(lfoOutRight, -1.0f, 1.0f, FLANGER_LFO_OUT_MIN_IN_SECONDS, FLANGER_LFO_OUT_MAX_IN_SECONDS); // Map right
+        }
+        
+        
+        // Update delay time in case sample rate has changed
+        // We also now need to update since we're using the LFO
+        // (Also, we use LFO directly, instead of a smoothed delay var, since it's already smooth)
+        float delayTimeInSamplesLeft = getSampleRate() * lfoOutMappedLeft;
+        
         
         // Then update delay time
         float delayTimeInSamplesRight = getSampleRate() * lfoOutMappedRight;
