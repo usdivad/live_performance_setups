@@ -40,7 +40,17 @@ void DaalSamAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    
+    if (processor.getNumSamplerSounds() > 0)
+    {
+        g.setColour (Colours::green);
+        g.drawText(":D", getWidth() / 4 - 50, getHeight() / 4 - 50, 100, 100, Justification::centred);
+    }
+    else
+    {
+        g.setColour (Colours::red);
+        g.drawText("D:", getWidth() / 4 - 50, getHeight() / 4 - 50, 100, 100, Justification::centred);
+    }
 }
 
 void DaalSamAudioProcessorEditor::resized()
@@ -49,4 +59,33 @@ void DaalSamAudioProcessorEditor::resized()
     // subcomponents in your editor..
     
     m_LoadButton.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 50, 100, 100);
+}
+
+//==============================================================================
+
+bool DaalSamAudioProcessorEditor::isInterestedInFileDrag(const StringArray& files)
+{
+    for (auto file : files)
+    {
+        if (file.contains(".wav") || file.contains(".aif") || file.contains(".mp3") || file.contains(".m4a"))
+        {
+            return true;
+        }
+            
+    }
+    
+    return false;
+}
+
+void DaalSamAudioProcessorEditor::filesDropped(const StringArray& files, int x, int y)
+{
+    if (isInterestedInFileDrag(files))
+    {
+        for (auto file : files)
+        {
+            processor.loadFile(file);
+        }
+    }
+    
+    repaint();
 }

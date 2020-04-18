@@ -199,6 +199,8 @@ void DaalSamAudioProcessor::setStateInformation (const void* data, int sizeInByt
 
 void DaalSamAudioProcessor::loadFile()
 {
+    m_Sampler.clearSounds();
+
     FileChooser chooser {":)"};
     
     if (chooser.browseForFileToOpen())
@@ -206,6 +208,19 @@ void DaalSamAudioProcessor::loadFile()
         auto file = chooser.getResult();
         m_FormatReader = m_FormatManager.createReaderFor(file);
     }
+    
+    BigInteger midiRange;
+    midiRange.setRange(0, 128, true);
+    
+    m_Sampler.addSound(new SamplerSound("Sample", *m_FormatReader, midiRange, 60, 0.1, 0.1, 10));
+}
+
+void DaalSamAudioProcessor::loadFile(const String& path)
+{
+    m_Sampler.clearSounds();
+    
+    auto file = File(path);
+    m_FormatReader = m_FormatManager.createReaderFor(file);
     
     BigInteger midiRange;
     midiRange.setRange(0, 128, true);

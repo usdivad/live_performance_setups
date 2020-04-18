@@ -16,7 +16,8 @@
 //==============================================================================
 /**
 */
-class DaalSamAudioProcessorEditor  : public AudioProcessorEditor
+class DaalSamAudioProcessorEditor  : public AudioProcessorEditor,
+                                     public FileDragAndDropTarget
 {
 public:
     DaalSamAudioProcessorEditor (DaalSamAudioProcessor&);
@@ -25,6 +26,10 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+    
+    //==============================================================================
+    bool isInterestedInFileDrag(const StringArray& files) override;
+    void filesDropped(const StringArray& files, int x, int y) override;
 
 private:
     //==============================================================================

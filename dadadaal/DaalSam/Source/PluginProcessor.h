@@ -57,6 +57,9 @@ public:
     
     //==============================================================================
     void loadFile();
+    void loadFile(const String& path);
+    
+    int getNumSamplerSounds() {return m_Sampler.getNumSounds(); }
 
 private:
     //==============================================================================
