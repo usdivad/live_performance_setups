@@ -60,11 +60,13 @@ public:
     void loadFile(const String& path);
     
     int getNumSamplerSounds() {return m_Sampler.getNumSounds(); }
+    const AudioBuffer<float>& getWaveform() { return m_Waveform; }
 
 private:
     //==============================================================================
     Synthesiser m_Sampler;
     const int m_NumVoices {3};
+    AudioBuffer<float> m_Waveform;
     
     AudioFormatManager m_FormatManager;
     AudioFormatReader* m_FormatReader {nullptr};

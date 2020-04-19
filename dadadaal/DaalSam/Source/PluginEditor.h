@@ -34,6 +34,8 @@ public:
 private:
     //==============================================================================
     TextButton m_LoadButton {":)"};
+    std::vector<float> m_AudioPoints;
+    bool m_ShouldPaint {false};
 
     //==============================================================================
     // This reference is provided as a quick way for your editor to

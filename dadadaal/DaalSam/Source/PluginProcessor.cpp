@@ -222,6 +222,10 @@ void DaalSamAudioProcessor::loadFile(const String& path)
     auto file = File(path);
     m_FormatReader = m_FormatManager.createReaderFor(file);
     
+    int sampleLength = static_cast<int>(m_FormatReader->lengthInSamples);
+    m_Waveform.setSize(1, sampleLength);
+    m_FormatReader->read(&m_Waveform, 0, sampleLength, 0, true, true);
+    
     BigInteger midiRange;
     midiRange.setRange(0, 128, true);
     
