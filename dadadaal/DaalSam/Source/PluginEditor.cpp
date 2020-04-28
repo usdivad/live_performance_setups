@@ -15,17 +15,68 @@
 DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (400, 300);
     
-    
+    // Load button
     m_LoadButton.onClick = [&]()
     {
         processor.loadFile();
     };
     
     addAndMakeVisible(m_LoadButton);
+    
+    
+    // Sliders
+    // TODO: Use setupSlider()
+    
+    Slider::SliderStyle sliderStyle = Slider::SliderStyle::RotaryVerticalDrag;
+    Slider::TextEntryBoxPosition sliderTextBoxStyle = Slider::TextBoxBelow;
+    bool sliderTextBoxReadOnly = true;
+    int sliderTextBoxWidth = 45;
+    int sliderTextBoxHeight = 25;
+    float sliderRangeMin = 0.0f;
+    float sliderRangeMax = 5.0f;
+    float sliderRangeStep = 0.01f;
+    
+    m_AttackSlider.setSliderStyle(sliderStyle);
+    m_AttackSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
+    m_AttackSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    addAndMakeVisible(m_AttackSlider);
+    
+    m_AttackLabel.setText("A", NotificationType::dontSendNotification);
+    m_AttackLabel.setJustificationType(Justification::centredTop);
+    m_AttackLabel.attachToComponent(&m_AttackSlider, false);
+    
+    m_DecaySlider.setSliderStyle(sliderStyle);
+    m_DecaySlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
+    m_DecaySlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    addAndMakeVisible(m_DecaySlider);
+    
+    m_DecayLabel.setText("D", NotificationType::dontSendNotification);
+    m_DecayLabel.setJustificationType(Justification::centredTop);
+    m_DecayLabel.attachToComponent(&m_DecaySlider, false);
+    
+    m_SustainSlider.setSliderStyle(sliderStyle);
+    m_SustainSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
+    m_SustainSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    addAndMakeVisible(m_SustainSlider);
+    
+    m_SustainLabel.setText("S", NotificationType::dontSendNotification);
+    m_SustainLabel.setJustificationType(Justification::centredTop);
+    m_SustainLabel.attachToComponent(&m_SustainSlider, false);
+    
+    m_ReleaseSlider.setSliderStyle(sliderStyle);
+    m_ReleaseSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
+    m_ReleaseSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    addAndMakeVisible(m_ReleaseSlider);
+    
+    m_ReleaseLabel.setText("R", NotificationType::dontSendNotification);
+    m_ReleaseLabel.setJustificationType(Justification::centredTop);
+    m_ReleaseLabel.attachToComponent(&m_ReleaseSlider, false);
+    
+    
+    // Do this *after* setting up the individual components
+    setSize (400, 300);
+    setLookAndFeel(&m_DaalLookAndFeel);
 }
 
 DaalSamAudioProcessorEditor::~DaalSamAudioProcessorEditor()
@@ -96,7 +147,18 @@ void DaalSamAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    m_LoadButton.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 50, 100, 100);
+    m_LoadButton.setBounds(getWidth() / 2 - 50, getHeight() / 2 - 100, 100, 100);
+    
+    float sliderX = 0.0f;
+    float sliderY = 0.65f;
+    float sliderWidth = 0.25f;
+    float sliderHeight = 0.3f;
+    
+    m_AttackSlider.setBoundsRelative(sliderX, sliderY, sliderWidth, sliderHeight);
+    m_DecaySlider.setBoundsRelative(sliderX + (sliderWidth), sliderY, sliderWidth, sliderHeight);
+    m_SustainSlider.setBoundsRelative(sliderX + (sliderWidth * 2), sliderY, sliderWidth, sliderHeight);
+    m_ReleaseSlider.setBoundsRelative(sliderX + (sliderWidth * 3), sliderY, sliderWidth, sliderHeight);
+
 }
 
 //==============================================================================

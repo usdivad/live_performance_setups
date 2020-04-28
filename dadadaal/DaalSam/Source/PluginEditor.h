@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "../../DaalLookAndFeel.h"
 
 //==============================================================================
 /**
@@ -36,6 +37,21 @@ private:
     TextButton m_LoadButton {":)"};
     std::vector<float> m_AudioPoints;
     bool m_ShouldPaint {false};
+    
+    DaalLookAndFeel m_DaalLookAndFeel;
+    
+    Slider m_AttackSlider;
+    Slider m_DecaySlider;
+    Slider m_SustainSlider;
+    Slider m_ReleaseSlider;
+    
+    Label m_AttackLabel;
+    Label m_DecayLabel;
+    Label m_SustainLabel;
+    Label m_ReleaseLabel;
+    
+    //==============================================================================
+    // void setupSlider(Slider& slider, Slider::Style style, float minVal, float maxVal, float defaultVal);
 
     //==============================================================================
     // This reference is provided as a quick way for your editor to

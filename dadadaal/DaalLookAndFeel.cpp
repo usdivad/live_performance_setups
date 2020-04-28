@@ -35,6 +35,9 @@ DaalLookAndFeel::DaalLookAndFeel()
     setColour(Slider::rotarySliderFillColourId, Colour(0xff949494));
     setColour(Slider::rotarySliderOutlineColourId, Colour(0xff535353));
     
+    setColour(TextButton::buttonColourId, Colour(0xff535353));
+    setColour(TextButton::buttonOnColourId, Colour(0xff949494));
+    
     // Misc
     // setColour(Slider::thumbColourId, Colour(0xff2c597b));
     // setColour(Slider::thumbColourId, Colours::red);
