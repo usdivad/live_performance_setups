@@ -19,7 +19,9 @@ DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor&
     // Load button
     m_LoadButton.onClick = [&]()
     {
+        m_ShouldPaint = true;
         processor.loadFile();
+        repaint();
     };
     
     addAndMakeVisible(m_LoadButton);

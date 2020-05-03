@@ -208,12 +208,16 @@ void DaalSamAudioProcessor::loadFile()
     {
         auto file = chooser.getResult();
         m_FormatReader = m_FormatManager.createReaderFor(file);
+        
+        int sampleLength = static_cast<int>(m_FormatReader->lengthInSamples);
+        m_Waveform.setSize(1, sampleLength);
+        m_FormatReader->read(&m_Waveform, 0, sampleLength, 0, true, true);
+        
+        BigInteger midiRange;
+        midiRange.setRange(0, 128, true);
+        
+        m_Sampler.addSound(new SamplerSound("Sample", *m_FormatReader, midiRange, 60, 0.1, 0.1, 10));
     }
-    
-    BigInteger midiRange;
-    midiRange.setRange(0, 128, true);
-    
-    m_Sampler.addSound(new SamplerSound("Sample", *m_FormatReader, midiRange, 60, 0.1, 0.1, 10));
 }
 
 void DaalSamAudioProcessor::loadFile(const String& path)
