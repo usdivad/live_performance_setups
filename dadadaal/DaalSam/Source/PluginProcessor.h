@@ -61,6 +61,10 @@ public:
     
     int getNumSamplerSounds() {return m_Sampler.getNumSounds(); }
     const AudioBuffer<float>& getWaveform() { return m_Waveform; }
+    
+    void updateADSR();
+    
+    ADSR::Parameters& getADSRParams() { return m_ADSRParams; }
 
 private:
     //==============================================================================
@@ -70,6 +74,8 @@ private:
     
     AudioFormatManager m_FormatManager;
     AudioFormatReader* m_FormatReader {nullptr};
+    
+    ADSR::Parameters m_ADSRParams;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalSamAudioProcessor)

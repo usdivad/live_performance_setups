@@ -106,6 +106,7 @@ void DaalSamAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     // initialisation that you need..
     
     m_Sampler.setCurrentPlaybackSampleRate(sampleRate);
+    updateADSR();
 }
 
 void DaalSamAudioProcessor::releaseResources()
@@ -231,6 +232,21 @@ void DaalSamAudioProcessor::loadFile(const String& path)
     
     m_Sampler.addSound(new SamplerSound("Sample", *m_FormatReader, midiRange, 60, 0.1, 0.1, 10));
 }
+
+void DaalSamAudioProcessor::updateADSR()
+{
+    for (int i=0; i<m_Sampler.getNumSounds(); i++)
+    {
+        if (auto sound = dynamic_cast<SamplerSound*>(m_Sampler.getSound(i).get()))
+        {
+            sound->setEnvelopeParameters(m_ADSRParams);
+        }
+        
+    }
+    
+    DBG("A=" << m_ADSRParams.attack << ", D=" << m_ADSRParams.decay << ", S=" << m_ADSRParams.sustain << ", R=" << m_ADSRParams.release);
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

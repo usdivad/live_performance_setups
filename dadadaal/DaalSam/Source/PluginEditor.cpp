@@ -40,6 +40,7 @@ DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor&
     m_AttackSlider.setSliderStyle(sliderStyle);
     m_AttackSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
     m_AttackSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    m_AttackSlider.addListener(this);
     addAndMakeVisible(m_AttackSlider);
     
     m_AttackLabel.setText("A", NotificationType::dontSendNotification);
@@ -49,6 +50,7 @@ DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor&
     m_DecaySlider.setSliderStyle(sliderStyle);
     m_DecaySlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
     m_DecaySlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    m_DecaySlider.addListener(this);
     addAndMakeVisible(m_DecaySlider);
     
     m_DecayLabel.setText("D", NotificationType::dontSendNotification);
@@ -58,6 +60,7 @@ DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor&
     m_SustainSlider.setSliderStyle(sliderStyle);
     m_SustainSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
     m_SustainSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    m_SustainSlider.addListener(this);
     addAndMakeVisible(m_SustainSlider);
     
     m_SustainLabel.setText("S", NotificationType::dontSendNotification);
@@ -67,6 +70,7 @@ DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor&
     m_ReleaseSlider.setSliderStyle(sliderStyle);
     m_ReleaseSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
     m_ReleaseSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
+    m_ReleaseSlider.addListener(this);
     addAndMakeVisible(m_ReleaseSlider);
     
     m_ReleaseLabel.setText("R", NotificationType::dontSendNotification);
@@ -189,4 +193,26 @@ void DaalSamAudioProcessorEditor::filesDropped(const StringArray& files, int x, 
     }
     
     repaint();
+}
+
+void DaalSamAudioProcessorEditor::sliderValueChanged(Slider* slider)
+{
+    if (slider == &m_AttackSlider)
+    {
+        processor.getADSRParams().attack = m_AttackSlider.getValue();
+    }
+    else if (slider == &m_DecaySlider)
+    {
+        processor.getADSRParams().decay = m_DecaySlider.getValue();
+    }
+    else if (slider == &m_SustainSlider)
+    {
+        processor.getADSRParams().sustain = m_SustainSlider.getValue();
+    }
+    else if (slider == &m_ReleaseSlider)
+    {
+        processor.getADSRParams().release = m_ReleaseSlider.getValue();
+    }
+    
+    processor.updateADSR();
 }
