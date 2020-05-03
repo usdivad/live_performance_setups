@@ -15,7 +15,8 @@
 //==============================================================================
 /**
 */
-class DaalSamAudioProcessor  : public AudioProcessor
+class DaalSamAudioProcessor  : public AudioProcessor,
+                               public ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -54,6 +55,9 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
+    //==============================================================================
+    void valueTreePropertyChanged(ValueTree& treeWhosePropertyhasChanged, const Identifier& property) override;
     
     //==============================================================================
     void loadFile();
@@ -65,6 +69,8 @@ public:
     void updateADSR();
     
     ADSR::Parameters& getADSRParams() { return m_ADSRParams; }
+    
+    AudioProcessorValueTreeState& getValueTreeState() { return m_ValueTreeState; }
 
 private:
     //==============================================================================
@@ -76,6 +82,11 @@ private:
     AudioFormatReader* m_FormatReader {nullptr};
     
     ADSR::Parameters m_ADSRParams;
+    
+    AudioProcessorValueTreeState m_ValueTreeState;
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    
+    std::atomic<bool> m_ShouldUpdate {false};
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalSamAudioProcessor)

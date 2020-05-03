@@ -35,49 +35,60 @@ DaalSamAudioProcessorEditor::DaalSamAudioProcessorEditor (DaalSamAudioProcessor&
     bool sliderTextBoxReadOnly = true;
     int sliderTextBoxWidth = 45;
     int sliderTextBoxHeight = 25;
-    float sliderRangeMin = 0.0f;
-    float sliderRangeMax = 5.0f;
+    // float sliderRangeMin = 0.0f;
+    // float sliderRangeMax = 5.0f;
     float sliderRangeStep = 0.01f;
+    
+    // Attack
     
     m_AttackSlider.setSliderStyle(sliderStyle);
     m_AttackSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
-    m_AttackSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
-    m_AttackSlider.addListener(this);
     addAndMakeVisible(m_AttackSlider);
     
     m_AttackLabel.setText("A", NotificationType::dontSendNotification);
     m_AttackLabel.setJustificationType(Justification::centredTop);
     m_AttackLabel.attachToComponent(&m_AttackSlider, false);
     
+    m_AttackAttachment = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.getValueTreeState(), "ATTACK", m_AttackSlider);
+    
+    // Decay
+    
     m_DecaySlider.setSliderStyle(sliderStyle);
     m_DecaySlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
-    m_DecaySlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
-    m_DecaySlider.addListener(this);
     addAndMakeVisible(m_DecaySlider);
     
     m_DecayLabel.setText("D", NotificationType::dontSendNotification);
     m_DecayLabel.setJustificationType(Justification::centredTop);
     m_DecayLabel.attachToComponent(&m_DecaySlider, false);
     
+    m_DecayAttachment = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.getValueTreeState(), "DECAY", m_DecaySlider);
+
+    
+    // Sustain
+    
     m_SustainSlider.setSliderStyle(sliderStyle);
     m_SustainSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
-    m_SustainSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
-    m_SustainSlider.addListener(this);
     addAndMakeVisible(m_SustainSlider);
     
     m_SustainLabel.setText("S", NotificationType::dontSendNotification);
     m_SustainLabel.setJustificationType(Justification::centredTop);
     m_SustainLabel.attachToComponent(&m_SustainSlider, false);
     
+    m_SustainAttachment = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.getValueTreeState(), "SUSTAIN", m_SustainSlider);
+
+    
+    // Release
+    
     m_ReleaseSlider.setSliderStyle(sliderStyle);
     m_ReleaseSlider.setTextBoxStyle(sliderTextBoxStyle, sliderTextBoxReadOnly, sliderTextBoxWidth, sliderTextBoxHeight);
-    m_ReleaseSlider.setRange(sliderRangeMin, sliderRangeMax, sliderRangeStep);
-    m_ReleaseSlider.addListener(this);
     addAndMakeVisible(m_ReleaseSlider);
     
     m_ReleaseLabel.setText("R", NotificationType::dontSendNotification);
     m_ReleaseLabel.setJustificationType(Justification::centredTop);
     m_ReleaseLabel.attachToComponent(&m_ReleaseSlider, false);
+    
+    m_ReleaseAttachment = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.getValueTreeState(), "RELEASE", m_ReleaseSlider);
+
     
     
     // Do this *after* setting up the individual components
@@ -195,26 +206,4 @@ void DaalSamAudioProcessorEditor::filesDropped(const StringArray& files, int x, 
     }
     
     repaint();
-}
-
-void DaalSamAudioProcessorEditor::sliderValueChanged(Slider* slider)
-{
-    if (slider == &m_AttackSlider)
-    {
-        processor.getADSRParams().attack = m_AttackSlider.getValue();
-    }
-    else if (slider == &m_DecaySlider)
-    {
-        processor.getADSRParams().decay = m_DecaySlider.getValue();
-    }
-    else if (slider == &m_SustainSlider)
-    {
-        processor.getADSRParams().sustain = m_SustainSlider.getValue();
-    }
-    else if (slider == &m_ReleaseSlider)
-    {
-        processor.getADSRParams().release = m_ReleaseSlider.getValue();
-    }
-    
-    processor.updateADSR();
 }

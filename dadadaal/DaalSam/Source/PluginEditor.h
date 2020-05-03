@@ -18,8 +18,7 @@
 /**
 */
 class DaalSamAudioProcessorEditor  : public AudioProcessorEditor,
-                                     public FileDragAndDropTarget,
-                                     public Slider::Listener
+                                     public FileDragAndDropTarget
 {
 public:
     DaalSamAudioProcessorEditor (DaalSamAudioProcessor&);
@@ -33,7 +32,6 @@ public:
     bool isInterestedInFileDrag(const StringArray& files) override;
     void filesDropped(const StringArray& files, int x, int y) override;
     
-    void sliderValueChanged(Slider* slider) override;
 private:
     //==============================================================================
     TextButton m_LoadButton {":)"};
@@ -51,6 +49,11 @@ private:
     Label m_DecayLabel;
     Label m_SustainLabel;
     Label m_ReleaseLabel;
+    
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_AttackAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_DecayAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_SustainAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_ReleaseAttachment;
     
     //==============================================================================
     // void setupSlider(Slider& slider, Slider::Style style, float minVal, float maxVal, float defaultVal);

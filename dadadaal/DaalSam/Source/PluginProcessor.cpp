@@ -21,7 +21,8 @@ DaalSamAudioProcessor::DaalSamAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+                      m_ValueTreeState(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
     for (int i=0; i<m_NumVoices; i++)
@@ -30,6 +31,7 @@ DaalSamAudioProcessor::DaalSamAudioProcessor()
     }
     
     m_FormatManager.registerBasicFormats();
+    m_ValueTreeState.state.addListener(this);
 }
 
 DaalSamAudioProcessor::~DaalSamAudioProcessor()
@@ -167,6 +169,11 @@ void DaalSamAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         // ..do something to the data...
     }
     
+    if (m_ShouldUpdate)
+    {
+        updateADSR();
+        m_ShouldUpdate = false;
+    }
     
     m_Sampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
@@ -217,6 +224,8 @@ void DaalSamAudioProcessor::loadFile()
         midiRange.setRange(0, 128, true);
         
         m_Sampler.addSound(new SamplerSound("Sample", *m_FormatReader, midiRange, 60, 0.1, 0.1, 10));
+        
+        updateADSR();
     }
 }
 
@@ -235,10 +244,17 @@ void DaalSamAudioProcessor::loadFile(const String& path)
     midiRange.setRange(0, 128, true);
     
     m_Sampler.addSound(new SamplerSound("Sample", *m_FormatReader, midiRange, 60, 0.1, 0.1, 10));
+    
+    updateADSR();
 }
 
 void DaalSamAudioProcessor::updateADSR()
 {
+    m_ADSRParams.attack = m_ValueTreeState.getRawParameterValue("ATTACK")->load();
+    m_ADSRParams.decay = m_ValueTreeState.getRawParameterValue("DECAY")->load();
+    m_ADSRParams.sustain = m_ValueTreeState.getRawParameterValue("SUSTAIN")->load();
+    m_ADSRParams.release = m_ValueTreeState.getRawParameterValue("RELEASE")->load();
+    
     for (int i=0; i<m_Sampler.getNumSounds(); i++)
     {
         if (auto sound = dynamic_cast<SamplerSound*>(m_Sampler.getSound(i).get()))
@@ -251,6 +267,22 @@ void DaalSamAudioProcessor::updateADSR()
     DBG("A=" << m_ADSRParams.attack << ", D=" << m_ADSRParams.decay << ", S=" << m_ADSRParams.sustain << ", R=" << m_ADSRParams.release);
 }
 
+AudioProcessorValueTreeState::ParameterLayout DaalSamAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<RangedAudioParameter>> parameters;
+    
+    parameters.push_back(std::make_unique<AudioParameterFloat>("ATTACK", "Attack", 0.0f, 5.0f, 0.0f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("DECAY", "Decay", 0.0f, 3.0f, 2.0f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
+    
+    return {parameters.begin(), parameters.end() };
+}
+
+void DaalSamAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhosePropertyhasChanged, const Identifier &property)
+{
+    m_ShouldUpdate = true;
+}
 
 //==============================================================================
 // This creates new instances of the plugin..
