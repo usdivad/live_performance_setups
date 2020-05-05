@@ -21,9 +21,12 @@ DaalHallaAudioProcessor::DaalHallaAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+                        m_ValueTreeState(*this, nullptr, "Parameters", createParameterLayout())
+
 #endif
 {
+    m_ValueTreeState.state.addListener(this);
 }
 
 DaalHallaAudioProcessor::~DaalHallaAudioProcessor()
@@ -156,6 +159,13 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
 
         // ..do something to the data...
     }
+    
+    
+    if (m_ShouldUpdateParameters)
+    {
+        updateParameters();
+        m_ShouldUpdateParameters = false;
+    }
 }
 
 //==============================================================================
@@ -181,6 +191,32 @@ void DaalHallaAudioProcessor::setStateInformation (const void* data, int sizeInB
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+//==============================================================================
+
+AudioProcessorValueTreeState::ParameterLayout DaalHallaAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<RangedAudioParameter>> parameters;
+    
+    parameters.push_back(std::make_unique<AudioParameterFloat>("TIME", "Time", 0.4f, 0.7f, 0.5f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("MODULATION", "Modulation", 1.0f, 10.0f, 2.0f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("DRYWET", "Dry/Wet", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("PREDELAY", "Predelay", 0.0f, 200.0f, 0.0f)); // Milliseconds
+    parameters.push_back(std::make_unique<AudioParameterFloat>("DIFFUSION", "Diffusion", 0.2f, 0.8f, 0.5f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("LPF", "LPF", 1000.0f, 20000.0f, 10000.0f)); // Hz
+    
+    return {parameters.begin(), parameters.end() };
+}
+
+void DaalHallaAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhosePropertyhasChanged, const Identifier &property)
+{
+    m_ShouldUpdateParameters = true;
+}
+
+void DaalHallaAudioProcessor::updateParameters()
+{
+    
 }
 
 //==============================================================================

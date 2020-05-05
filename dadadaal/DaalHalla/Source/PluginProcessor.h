@@ -15,7 +15,8 @@
 //==============================================================================
 /**
 */
-class DaalHallaAudioProcessor  : public AudioProcessor
+class DaalHallaAudioProcessor  : public AudioProcessor,
+                                 public ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -54,8 +55,23 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    //==============================================================================
+    void valueTreePropertyChanged(ValueTree& treeWhosePropertyhasChanged, const Identifier& property) override;
+    
+    //==============================================================================
+    AudioProcessorValueTreeState& getValueTreeState() { return m_ValueTreeState; }
+    
 
 private:
+    //==============================================================================
+    AudioProcessorValueTreeState m_ValueTreeState;
+    bool m_ShouldUpdateParameters = false;
+    
+    //==============================================================================
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    void updateParameters();
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DaalHallaAudioProcessor)
 };

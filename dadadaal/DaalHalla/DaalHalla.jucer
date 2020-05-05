@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="lYSan0" name="DaalHalla" projectType="audioplug" jucerVersion="5.4.7">
+<JUCERPROJECT id="lYSan0" name="DaalHalla" projectType="audioplug" jucerVersion="5.4.7"
+              companyName="David Su" bundleIdentifier="com.usdivad.DaalHalla"
+              aaxIdentifier="com.usdivad.DaalHalla">
   <MAINGROUP id="WZzAkN" name="DaalHalla">
     <GROUP id="{59845344-83C5-359E-B59C-4B9BB7E98848}" name="Source">
       <FILE id="fd5FmK" name="PluginProcessor.cpp" compile="1" resource="0"
