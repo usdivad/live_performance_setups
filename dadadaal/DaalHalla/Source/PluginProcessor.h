@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 
+#include "FractionalDelay.hpp"
+
 //==============================================================================
 /**
 */
@@ -67,6 +69,8 @@ private:
     //==============================================================================
     AudioProcessorValueTreeState m_ValueTreeState;
     bool m_ShouldUpdateParameters = false;
+    
+    FractionalDelay m_Predelay;
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

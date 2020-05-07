@@ -100,6 +100,9 @@ void DaalHallaAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    m_Predelay.setFs(sampleRate);
+    m_Predelay.setDelaySamples(0.0f);
 }
 
 void DaalHallaAudioProcessor::releaseResources()
@@ -146,6 +149,14 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    
+    float predelayDelayAmountInSamples = m_ValueTreeState.getRawParameterValue("PREDELAY")->load() * 0.001f * getSampleRate();
+    float predelayDryWet = m_ValueTreeState.getRawParameterValue("DRYWET")->load();
+    
+    m_Predelay.setSpeed(0.0f);
+    m_Predelay.setDepth(0.0f);
+    m_Predelay.setDelaySamples(predelayDelayAmountInSamples);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -158,6 +169,15 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
         auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
+        
+        for (int n=0; n<buffer.getNumSamples(); n++)
+        {
+            float x = channelData[n];
+            float w = m_Predelay.processSample(x, channel);
+            float y = x + (predelayDryWet * w);
+            
+            channelData[n] = y;
+        }
     }
     
     
