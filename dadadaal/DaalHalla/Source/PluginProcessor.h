@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 
 #include "FractionalDelay.hpp"
+#include "FeedbackDelayNetwork.hpp"
 
 //==============================================================================
 /**
@@ -71,6 +72,7 @@ private:
     bool m_ShouldUpdateParameters = false;
     
     FractionalDelay m_Predelay;
+    FeedbackDelayNetwork m_FDN;
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

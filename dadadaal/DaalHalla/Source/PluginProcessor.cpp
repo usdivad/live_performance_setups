@@ -103,6 +103,8 @@ void DaalHallaAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     
     m_Predelay.setFs(sampleRate);
     m_Predelay.setDelaySamples(0.0f);
+    
+    m_FDN.setFs(sampleRate);
 }
 
 void DaalHallaAudioProcessor::releaseResources()
@@ -152,11 +154,14 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     
     
     float predelayDelayAmountInSamples = m_ValueTreeState.getRawParameterValue("PREDELAY")->load() * 0.001f * getSampleRate();
-    float predelayDryWet = m_ValueTreeState.getRawParameterValue("DRYWET")->load();
+    float dryWet = m_ValueTreeState.getRawParameterValue("DRYWET")->load();
+    float verbTime = m_ValueTreeState.getRawParameterValue("TIME")->load();
     
     m_Predelay.setSpeed(0.0f);
     m_Predelay.setDepth(0.0f);
     m_Predelay.setDelaySamples(predelayDelayAmountInSamples);
+    
+    m_FDN.setTime(verbTime);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -172,9 +177,11 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
         
         for (int n=0; n<buffer.getNumSamples(); n++)
         {
+            // x = in, w = verb, y = out
             float x = channelData[n];
             float w = m_Predelay.processSample(x, channel);
-            float y = x + (predelayDryWet * w);
+            w = m_FDN.processSample(w, channel);
+            float y = ((1.0f - dryWet) * x) + (dryWet * w);
             
             channelData[n] = y;
         }

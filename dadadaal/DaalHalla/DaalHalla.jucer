@@ -16,6 +16,10 @@
             file="Source/FractionalDelay.cpp"/>
       <FILE id="ahZX2Z" name="FractionalDelay.hpp" compile="0" resource="0"
             file="Source/FractionalDelay.hpp"/>
+      <FILE id="zc4rin" name="FeedbackDelayNetwork.cpp" compile="1" resource="0"
+            file="Source/FeedbackDelayNetwork.cpp"/>
+      <FILE id="miipuE" name="FeedbackDelayNetwork.hpp" compile="0" resource="0"
+            file="Source/FeedbackDelayNetwork.hpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
