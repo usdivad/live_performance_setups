@@ -156,12 +156,14 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     float predelayDelayAmountInSamples = m_ValueTreeState.getRawParameterValue("PREDELAY")->load() * 0.001f * getSampleRate();
     float dryWet = m_ValueTreeState.getRawParameterValue("DRYWET")->load();
     float verbTime = m_ValueTreeState.getRawParameterValue("TIME")->load();
+    float verbModAmt = m_ValueTreeState.getRawParameterValue("MODULATION")->load();
     
     m_Predelay.setSpeed(0.0f);
     m_Predelay.setDepth(0.0f);
     m_Predelay.setDelaySamples(predelayDelayAmountInSamples);
     
     m_FDN.setTime(verbTime);
+    m_FDN.setModulation(verbModAmt);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...

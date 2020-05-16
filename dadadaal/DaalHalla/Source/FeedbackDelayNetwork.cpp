@@ -62,9 +62,20 @@ void FeedbackDelayNetwork::setFs(float Fs)
     this->Fs = Fs;
     z1.setFs(Fs);
     z2.setFs(Fs);
+    z3.setFs(Fs);
+    z4.setFs(Fs);
 }
 
 void FeedbackDelayNetwork::setTime(float t)
 {
     this->feedbackGain = t;
+}
+
+void FeedbackDelayNetwork::setModulation(float m)
+{
+    this->modulationAmount = m;
+    z1.setDepth(m);
+    z2.setDepth(m);
+    z3.setDepth(m);
+    z4.setDepth(m);
 }

@@ -19,6 +19,8 @@ public:
     
     void setTime(float t);
     
+    void setModulation(float m);
+    
 private:
     
     float Fs = 48000.f;
@@ -29,6 +31,8 @@ private:
     FractionalDelay z4 {4111.0f, 1.6f};
     
     float feedbackGain = 1.0f;
+    
+    float modulationAmount = 0.0f;
     
     // ========
     // Feedback matrix
