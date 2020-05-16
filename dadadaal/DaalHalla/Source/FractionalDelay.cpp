@@ -1,4 +1,4 @@
-#include "FractionalDelay.hpp"
+#include "FractionalDelay.h"
 
 FractionalDelay::FractionalDelay()
 {

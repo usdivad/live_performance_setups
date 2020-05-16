@@ -12,8 +12,8 @@
 
 #include <JuceHeader.h>
 
-#include "FractionalDelay.hpp"
-#include "FeedbackDelayNetwork.hpp"
+#include "FractionalDelay.h"
+#include "FeedbackDelayNetwork.h"
 
 //==============================================================================
 /**

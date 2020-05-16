@@ -14,12 +14,12 @@
       <FILE id="wnHBvN" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="sKqqbW" name="FractionalDelay.cpp" compile="1" resource="0"
             file="Source/FractionalDelay.cpp"/>
-      <FILE id="ahZX2Z" name="FractionalDelay.hpp" compile="0" resource="0"
-            file="Source/FractionalDelay.hpp"/>
+      <FILE id="ahZX2Z" name="FractionalDelay.h" compile="0" resource="0"
+            file="Source/FractionalDelay.h"/>
       <FILE id="zc4rin" name="FeedbackDelayNetwork.cpp" compile="1" resource="0"
             file="Source/FeedbackDelayNetwork.cpp"/>
-      <FILE id="miipuE" name="FeedbackDelayNetwork.hpp" compile="0" resource="0"
-            file="Source/FeedbackDelayNetwork.hpp"/>
+      <FILE id="miipuE" name="FeedbackDelayNetwork.h" compile="0" resource="0"
+            file="Source/FeedbackDelayNetwork.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
