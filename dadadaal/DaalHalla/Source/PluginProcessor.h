@@ -15,6 +15,7 @@
 #include "FractionalDelay.h"
 #include "FeedbackDelayNetwork.h"
 #include "AllPassFilter.h"
+#include "SchroederReverb.h"
 
 //==============================================================================
 /**
@@ -73,10 +74,17 @@ private:
     bool m_ShouldUpdateParameters = false;
     
     FractionalDelay m_Predelay;
-    FeedbackDelayNetwork m_FDN;
     
-    AllPassFilter m_APF1 {240.0f, 0.777f};
-    AllPassFilter m_APF2 {82.0f, 0.888f};
+    
+    // TODO: Let user choose between diff algorithms
+    
+    // Stautner-Puckette
+    // FeedbackDelayNetwork m_FDN;
+    // AllPassFilter m_APF1 {240.0f, 0.777f};
+    // AllPassFilter m_APF2 {82.0f, 0.888f};
+    
+    // Schroeder
+    SchroederReverb m_Schroeder;
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

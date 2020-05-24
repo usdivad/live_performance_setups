@@ -104,10 +104,13 @@ void DaalHallaAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     m_Predelay.setFs(sampleRate);
     m_Predelay.setDelaySamples(0.0f);
     
-    m_FDN.setFs(sampleRate);
+    // Stautner-Puckette
+    // m_FDN.setFs(sampleRate);
+    // m_APF1.setFs(sampleRate);
+    // m_APF2.setFs(sampleRate);
     
-    m_APF1.setFs(sampleRate);
-    m_APF2.setFs(sampleRate);
+    // Schroeder
+    m_Schroeder.setFs(sampleRate);
 }
 
 void DaalHallaAudioProcessor::releaseResources()
@@ -165,14 +168,19 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     m_Predelay.setSpeed(0.0f);
     m_Predelay.setDepth(0.0f);
     m_Predelay.setDelaySamples(predelayDelayAmountInSamples);
+
+    // Stautner-Puckette
+    // m_FDN.setTime(verbTime);
+    // m_FDN.setModulation(verbModAmt);
+    // m_APF1.setModulation(verbModAmt);
+    // m_APF2.setModulation(verbModAmt);
+    // m_APF1.setFeedbackGain(diffusionAmt);
+    // m_APF2.setFeedbackGain(diffusionAmt);
     
-    m_FDN.setTime(verbTime);
-    m_FDN.setModulation(verbModAmt);
-    
-    m_APF1.setModulation(verbModAmt);
-    m_APF2.setModulation(verbModAmt);
-    m_APF1.setFeedbackGain(diffusionAmt);
-    m_APF2.setFeedbackGain(diffusionAmt);
+    // Schroeder
+    m_Schroeder.setFeedbackGain(verbTime);
+    m_Schroeder.setDiffusionGain(diffusionAmt);
+    m_Schroeder.setModulation(verbModAmt);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -188,14 +196,24 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
         
         for (int n=0; n<buffer.getNumSamples(); n++)
         {
+            // Input
             // x = in, w = verb, y = out
             float x = channelData[n];
-            float w = m_Predelay.processSample(x, channel);
-            w = m_FDN.processSample(w, channel);
-            w = m_APF1.processSample(w, channel); // Do APF in series
-            w = m_APF2.processSample(w, channel);
-            float y = ((1.0f - dryWet) * x) + (dryWet * w);
             
+            // Predelay
+            float w = m_Predelay.processSample(x, channel);
+            
+            // Stautner-Puckette
+            // w = m_FDN.processSample(w, channel);
+            // w = m_APF1.processSample(w, channel); // Do APF in series
+            // w = m_APF2.processSample(w, channel);
+            
+            // Schroeder
+            w = m_Schroeder.processSample(w, channel);
+            
+            
+            // Output
+            float y = ((1.0f - dryWet) * x) + (dryWet * w);
             channelData[n] = y;
         }
     }
