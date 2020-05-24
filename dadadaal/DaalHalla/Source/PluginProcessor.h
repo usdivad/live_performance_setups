@@ -14,6 +14,7 @@
 
 #include "FractionalDelay.h"
 #include "FeedbackDelayNetwork.h"
+#include "AllPassFilter.h"
 
 //==============================================================================
 /**
@@ -73,6 +74,9 @@ private:
     
     FractionalDelay m_Predelay;
     FeedbackDelayNetwork m_FDN;
+    
+    AllPassFilter m_APF1 {240.0f, 0.777f};
+    AllPassFilter m_APF2 {82.0f, 0.888f};
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

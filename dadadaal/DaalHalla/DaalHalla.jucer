@@ -5,6 +5,9 @@
               aaxIdentifier="com.usdivad.DaalHalla">
   <MAINGROUP id="WZzAkN" name="DaalHalla">
     <GROUP id="{59845344-83C5-359E-B59C-4B9BB7E98848}" name="Source">
+      <FILE id="cdKIgI" name="AllPassFilter.cpp" compile="1" resource="0"
+            file="Source/AllPassFilter.cpp"/>
+      <FILE id="DlAgTK" name="AllPassFilter.h" compile="0" resource="0" file="Source/AllPassFilter.h"/>
       <FILE id="fd5FmK" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="B2nx8D" name="PluginProcessor.h" compile="0" resource="0"
