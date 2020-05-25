@@ -15,6 +15,8 @@
 DaalHallaAudioProcessorEditor::DaalHallaAudioProcessorEditor (DaalHallaAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
+    setLookAndFeel(&m_DaalLookAndFeel);
+    
     setupSlider(m_TimeSlider, m_TimeLabel, m_TimeAttachment, "TIME", "Time");
     setupSlider(m_ModulationSlider, m_ModulationLabel, m_ModulationAttachment, "MODULATION", "Modulation");
     setupSlider(m_DryWetSlider, m_DryWetLabel, m_DryWetAttachment, "DRYWET", "Dry/Wet");
@@ -22,6 +24,10 @@ DaalHallaAudioProcessorEditor::DaalHallaAudioProcessorEditor (DaalHallaAudioProc
     setupSlider(m_DiffusionSlider, m_DiffusionLabel, m_DiffusionAttachment, "DIFFUSION", "Diffusion");
     setupSlider(m_LPFSlider, m_LPFLabel, m_LPFAttachment, "LPF", "LPF");
     
+    m_TitleLabel.setText("D A A L H A L L A", NotificationType::dontSendNotification);
+    m_TitleLabel.setJustificationType(Justification::centredTop);
+    m_TitleLabel.setFont(Font(20.0f, Font::bold));
+    addAndMakeVisible(&m_TitleLabel);
     
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -30,6 +36,7 @@ DaalHallaAudioProcessorEditor::DaalHallaAudioProcessorEditor (DaalHallaAudioProc
 
 DaalHallaAudioProcessorEditor::~DaalHallaAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
@@ -63,6 +70,8 @@ void DaalHallaAudioProcessorEditor::resized()
     m_PredelaySlider.setBoundsRelative(sliderX * 0.5f, sliderY * 2, sliderWidth, sliderHeight);
     m_DiffusionSlider.setBoundsRelative(sliderX, sliderY * 2, sliderWidth, sliderHeight);
     m_LPFSlider.setBoundsRelative(sliderX * 1.5f, sliderY * 2, sliderWidth, sliderHeight);
+    
+    m_TitleLabel.setBoundsRelative(0.25f, 0.1f, 0.5f, 0.25f);
 }
 
 void DaalHallaAudioProcessorEditor::setupSlider(Slider& slider, Label& label, std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment>& attachment, String paramID, String paramName)

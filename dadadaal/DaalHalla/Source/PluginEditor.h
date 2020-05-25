@@ -13,6 +13,8 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+#include "../../DaalLookAndFeel.h"
+
 //==============================================================================
 /**
 */
@@ -32,6 +34,11 @@ private:
     DaalHallaAudioProcessor& processor;
     
     //==============================================================================
+    
+    DaalLookAndFeel m_DaalLookAndFeel;
+    
+    Label m_TitleLabel;
+    
     Slider m_TimeSlider;
     Slider m_ModulationSlider;
     Slider m_DryWetSlider;

@@ -32,6 +32,10 @@
       <FILE id="miipuE" name="FeedbackDelayNetwork.h" compile="0" resource="0"
             file="Source/FeedbackDelayNetwork.h"/>
     </GROUP>
+    <FILE id="XBcwR0" name="DaalLookAndFeel.cpp" compile="1" resource="0"
+          file="../DaalLookAndFeel.cpp"/>
+    <FILE id="AyfRAe" name="DaalLookAndFeel.h" compile="0" resource="0"
+          file="../DaalLookAndFeel.h"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
