@@ -4409,7 +4409,7 @@
 #X msg 177 81 0;
 #X msg 83 341 \; pd-main.pd obj 200 200 \$1 \$2;
 #X obj 162 280 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
--262144 -1 -1 0 256;
+-262144 -1 -1 1 256;
 #X obj 64 387 t b b;
 #X msg 64 509 loadbang;
 #X obj 91 411 s SAVE-S;
@@ -6614,7 +6614,7 @@ and send to the name of the module \, for example [s basic-osc];
 #X obj 8 105 bng 15 250 50 0 open-reset-warning! empty <--RESET! 17
 7 0 10 -262144 -1 -1;
 #X text 287 790 comment;
-#X obj 1010 451 maestro4 1;
+#X obj 1005 428 maestro4 1;
 #X obj 315 530 polysynth 1;
 #X obj 535 165 8steps 1;
 #X obj 546 45 clock-multiply 1;
@@ -6623,8 +6623,7 @@ and send to the name of the module \, for example [s basic-osc];
 #X obj 538 389 trigger-seq 1;
 #X obj 180 166 basic-lfo 3;
 #X obj 550 539 karplus 1;
-#X text 1004 693 control: lfo freq \, karplus damp \, karplus reso
-;
+#X text 993 66 control: lfo freq \, karplus damp \, karplus reso;
 #X obj 40 321 scope 3;
 #X obj 219 492 snapshot~;
 #X obj 229 468 metro 10;
@@ -6632,7 +6631,7 @@ and send to the name of the module \, for example [s basic-osc];
 1;
 #X floatatom 218 518 5 0 0 0 - - -;
 #X obj 140 545 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 10013 1;
+-1 -1 10951 1;
 #X msg 1023 31 .M;
 #X msg 1057 31 .U;
 #X msg 1090 30 .T;
@@ -6640,6 +6639,9 @@ and send to the name of the module \, for example [s basic-osc];
 #X msg 1159 32 .N;
 #X msg 1196 31 .Y;
 #X obj 259 432 loadbang;
+#X obj 1048 629 audio-recorder 1;
+#X connect 12 4 35 0;
+#X connect 12 5 35 1;
 #X connect 14 0 13 1;
 #X connect 14 0 20 2;
 #X connect 15 0 14 0;
