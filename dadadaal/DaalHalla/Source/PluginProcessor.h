@@ -79,12 +79,12 @@ private:
     // TODO: Let user choose between diff algorithms
     
     // Stautner-Puckette
-    // FeedbackDelayNetwork m_FDN;
-    // AllPassFilter m_APF1 {240.0f, 0.777f};
-    // AllPassFilter m_APF2 {82.0f, 0.888f};
+    FeedbackDelayNetwork m_FDN;
+    AllPassFilter m_APF1 {240.0f, 0.777f};
+    AllPassFilter m_APF2 {82.0f, 0.888f};
     
     // Schroeder
-    SchroederReverb m_Schroeder;
+    // SchroederReverb m_Schroeder;
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

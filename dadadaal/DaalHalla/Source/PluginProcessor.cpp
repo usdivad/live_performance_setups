@@ -105,12 +105,12 @@ void DaalHallaAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     m_Predelay.setDelaySamples(0.0f);
     
     // Stautner-Puckette
-    // m_FDN.setFs(sampleRate);
-    // m_APF1.setFs(sampleRate);
-    // m_APF2.setFs(sampleRate);
+    m_FDN.setFs(sampleRate);
+    m_APF1.setFs(sampleRate);
+    m_APF2.setFs(sampleRate);
     
     // Schroeder
-    m_Schroeder.setFs(sampleRate);
+    // m_Schroeder.setFs(sampleRate);
 }
 
 void DaalHallaAudioProcessor::releaseResources()
@@ -170,17 +170,17 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     m_Predelay.setDelaySamples(predelayDelayAmountInSamples);
 
     // Stautner-Puckette
-    // m_FDN.setTime(verbTime);
-    // m_FDN.setModulation(verbModAmt);
-    // m_APF1.setModulation(verbModAmt);
-    // m_APF2.setModulation(verbModAmt);
-    // m_APF1.setFeedbackGain(diffusionAmt);
-    // m_APF2.setFeedbackGain(diffusionAmt);
+    m_FDN.setTime(verbTime);
+    m_FDN.setModulation(verbModAmt);
+    m_APF1.setModulation(verbModAmt);
+    m_APF2.setModulation(verbModAmt);
+    m_APF1.setFeedbackGain(diffusionAmt);
+    m_APF2.setFeedbackGain(diffusionAmt);
     
     // Schroeder
-    m_Schroeder.setFeedbackGain(verbTime);
-    m_Schroeder.setDiffusionGain(diffusionAmt);
-    m_Schroeder.setModulation(verbModAmt);
+    // m_Schroeder.setFeedbackGain(verbTime);
+    // m_Schroeder.setDiffusionGain(diffusionAmt);
+    // m_Schroeder.setModulation(verbModAmt);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -204,12 +204,12 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
             float w = m_Predelay.processSample(x, channel);
             
             // Stautner-Puckette
-            // w = m_FDN.processSample(w, channel);
-            // w = m_APF1.processSample(w, channel); // Do APF in series
-            // w = m_APF2.processSample(w, channel);
+            w = m_FDN.processSample(w, channel);
+            w = m_APF1.processSample(w, channel); // Do APF in series
+            w = m_APF2.processSample(w, channel);
             
             // Schroeder
-            w = m_Schroeder.processSample(w, channel);
+            // w = m_Schroeder.processSample(w, channel);
             
             
             // Output
