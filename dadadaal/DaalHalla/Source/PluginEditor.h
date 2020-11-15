@@ -45,6 +45,7 @@ private:
     Slider m_PredelaySlider;
     Slider m_DiffusionSlider;
     Slider m_LPFSlider;
+    ComboBox m_AlgorithmComboBox;
 
     Label m_TimeLabel;
     Label m_ModulationLabel;
@@ -59,6 +60,7 @@ private:
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_PredelayAttachment;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_DiffusionAttachment;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> m_LPFAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> m_AlgorithmAttachment;
     
     //==============================================================================
     void setupSlider(Slider& slider, Label& label, std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment>& attachment, String paramId, String paramName);

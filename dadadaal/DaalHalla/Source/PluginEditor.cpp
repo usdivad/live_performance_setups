@@ -15,8 +15,10 @@
 DaalHallaAudioProcessorEditor::DaalHallaAudioProcessorEditor (DaalHallaAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
+    // Look & feel
     setLookAndFeel(&m_DaalLookAndFeel);
     
+    // Sliders
     setupSlider(m_TimeSlider, m_TimeLabel, m_TimeAttachment, "TIME", "Time");
     setupSlider(m_ModulationSlider, m_ModulationLabel, m_ModulationAttachment, "MODULATION", "Modulation");
     setupSlider(m_DryWetSlider, m_DryWetLabel, m_DryWetAttachment, "DRYWET", "Dry/Wet");
@@ -24,6 +26,15 @@ DaalHallaAudioProcessorEditor::DaalHallaAudioProcessorEditor (DaalHallaAudioProc
     setupSlider(m_DiffusionSlider, m_DiffusionLabel, m_DiffusionAttachment, "DIFFUSION", "Diffusion");
     setupSlider(m_LPFSlider, m_LPFLabel, m_LPFAttachment, "LPF", "LPF");
     
+    // Dropdowns
+    m_AlgorithmComboBox.addItem("Schroeder", (int)DaalHallaReverbAlgorithm::kSchroeder);
+    m_AlgorithmComboBox.addItem("Stautner-Puckette", (int)DaalHallaReverbAlgorithm::kStautnerPuckette);
+    // m_AlgorithmComboBox.setSelectedId((int)DaalHallaReverbAlgorithm::kSchroeder);
+    addAndMakeVisible(m_AlgorithmComboBox);
+    
+    m_AlgorithmAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(processor.getValueTreeState(), "ALGORITHM", m_AlgorithmComboBox);
+    
+    // Title
     m_TitleLabel.setText("D A A L H A L L A", NotificationType::dontSendNotification);
     m_TitleLabel.setJustificationType(Justification::centredTop);
     m_TitleLabel.setFont(Font(20.0f, Font::bold));
@@ -71,7 +82,9 @@ void DaalHallaAudioProcessorEditor::resized()
     m_DiffusionSlider.setBoundsRelative(sliderX, sliderY * 2, sliderWidth, sliderHeight);
     m_LPFSlider.setBoundsRelative(sliderX * 1.5f, sliderY * 2, sliderWidth, sliderHeight);
     
-    m_TitleLabel.setBoundsRelative(0.25f, 0.1f, 0.5f, 0.25f);
+    m_AlgorithmComboBox.setBoundsRelative(0.25f, 0.15f, 0.5f, 0.1f);
+    
+    m_TitleLabel.setBoundsRelative(0.25f, 0.05f, 0.5f, 0.1f);
 }
 
 void DaalHallaAudioProcessorEditor::setupSlider(Slider& slider, Label& label, std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment>& attachment, String paramID, String paramName)

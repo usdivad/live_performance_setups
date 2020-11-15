@@ -110,7 +110,7 @@ void DaalHallaAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     m_APF2.setFs(sampleRate);
     
     // Schroeder
-    // m_Schroeder.setFs(sampleRate);
+    m_Schroeder.setFs(sampleRate);
 }
 
 void DaalHallaAudioProcessor::releaseResources()
@@ -164,6 +164,7 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     float verbTime = m_ValueTreeState.getRawParameterValue("TIME")->load();
     float verbModAmt = m_ValueTreeState.getRawParameterValue("MODULATION")->load();
     float diffusionAmt = m_ValueTreeState.getRawParameterValue("DIFFUSION")->load();
+    DaalHallaReverbAlgorithm algorithm = (DaalHallaReverbAlgorithm)m_ValueTreeState.getRawParameterValue("ALGORITHM")->load();
     
     m_Predelay.setSpeed(0.0f);
     m_Predelay.setDepth(0.0f);
@@ -178,9 +179,9 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     m_APF2.setFeedbackGain(diffusionAmt);
     
     // Schroeder
-    // m_Schroeder.setFeedbackGain(verbTime);
-    // m_Schroeder.setDiffusionGain(diffusionAmt);
-    // m_Schroeder.setModulation(verbModAmt);
+    m_Schroeder.setFeedbackGain(verbTime);
+    m_Schroeder.setDiffusionGain(diffusionAmt);
+    m_Schroeder.setModulation(verbModAmt);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -203,14 +204,26 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
             // Predelay
             float w = m_Predelay.processSample(x, channel);
             
-            // Stautner-Puckette
-            w = m_FDN.processSample(w, channel);
-            w = m_APF1.processSample(w, channel); // Do APF in series
-            w = m_APF2.processSample(w, channel);
-            
-            // Schroeder
-            // w = m_Schroeder.processSample(w, channel);
-            
+            // Process reverb based on chosen algorithm param
+            switch (algorithm)
+            {
+                case (DaalHallaReverbAlgorithm::kSchroeder):
+                {
+                    w = m_Schroeder.processSample(w, channel);
+                } break;
+                    
+                case (DaalHallaReverbAlgorithm::kStautnerPuckette):
+                {
+                    w = m_FDN.processSample(w, channel);
+                    w = m_APF1.processSample(w, channel); // Do APF in series
+                    w = m_APF2.processSample(w, channel);
+                } break;
+                    
+                default:
+                {
+                    
+                } break;
+            }
             
             // Output
             float y = ((1.0f - dryWet) * x) + (dryWet * w);
@@ -263,6 +276,7 @@ AudioProcessorValueTreeState::ParameterLayout DaalHallaAudioProcessor::createPar
     parameters.push_back(std::make_unique<AudioParameterFloat>("PREDELAY", "Predelay", 0.0f, 200.0f, 0.0f)); // Milliseconds
     parameters.push_back(std::make_unique<AudioParameterFloat>("DIFFUSION", "Diffusion", 0.2f, 0.8f, 0.5f));
     parameters.push_back(std::make_unique<AudioParameterFloat>("LPF", "LPF", 1000.0f, 20000.0f, 10000.0f)); // Hz
+    parameters.push_back(std::make_unique<AudioParameterInt>("ALGORITHM", "Reverb Algorithm", (int)DaalHallaReverbAlgorithm::kNone + 1, (int)DaalHallaReverbAlgorithm::kNumReverbAlgorithms - 1, (int)DaalHallaReverbAlgorithm::kSchroeder));
     
     return {parameters.begin(), parameters.end() };
 }

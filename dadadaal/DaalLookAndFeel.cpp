@@ -38,6 +38,15 @@ DaalLookAndFeel::DaalLookAndFeel()
     setColour(TextButton::buttonColourId, Colour(0xff535353));
     setColour(TextButton::buttonOnColourId, Colour(0xff949494));
     
+    setColour(ComboBox::textColourId, Colour(0xffffffff));
+    setColour(ComboBox::arrowColourId, Colour(0xffffffff));
+    setColour(ComboBox::backgroundColourId, Colour(0xff292929));
+    // setColour(ComboBox::buttonColourId, Colour(0xff535353));
+    
+    setColour(PopupMenu::textColourId, Colour(0xffffffff));
+    setColour(PopupMenu::backgroundColourId, Colour(0xff292929));
+    setColour(PopupMenu::highlightedBackgroundColourId, Colour(0xff535353));
+    
     // Misc
     // setColour(Slider::thumbColourId, Colour(0xff2c597b));
     // setColour(Slider::thumbColourId, Colours::red);
