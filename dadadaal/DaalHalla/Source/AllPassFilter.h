@@ -23,6 +23,10 @@ public:
     
     void setModulation(float m);
     
+    void setDelay(float delay);
+    
+    void setSpeed(float speed);
+    
 private:
     
     float Fs = 48000.f;

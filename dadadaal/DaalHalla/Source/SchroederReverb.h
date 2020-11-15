@@ -28,10 +28,10 @@ private:
     
     float Fs = 48000.f;
         
-    FeedbackCombFilter m_FBCF1 {1426.0f, 0.7f};
-    FeedbackCombFilter m_FBCF2 {1781.0f, 1.2f};
-    FeedbackCombFilter m_FBCF3 {1973.0f, 0.9f};
-    FeedbackCombFilter m_FBCF4 {2098.0f, 1.1f};
+    FeedbackCombFilter m_FBCF1 {1426.0f, 0.7f, 167.0f, 0.23f};
+    FeedbackCombFilter m_FBCF2 {1781.0f, 1.2f, 277.0f, 0.69f};
+    FeedbackCombFilter m_FBCF3 {1973.0f, 0.9f, 82.0f, 0.59f};
+    FeedbackCombFilter m_FBCF4 {2098.0f, 1.1f, 311.0f, 0.9f};
     
     AllPassFilter m_APF1 {240.0f, 0.777f};
     AllPassFilter m_APF2 {82.0f, 0.888f};

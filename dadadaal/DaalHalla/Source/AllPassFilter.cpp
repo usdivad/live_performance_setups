@@ -50,3 +50,13 @@ void AllPassFilter::setModulation(float m)
     this->modulationAmount = m;
     z.setDepth(m);
 }
+
+void AllPassFilter::setDelay(float delay)
+{
+    z.setDelaySamples(delay);
+}
+
+void AllPassFilter::setSpeed(float speed)
+{
+    z.setSpeed(speed);
+}

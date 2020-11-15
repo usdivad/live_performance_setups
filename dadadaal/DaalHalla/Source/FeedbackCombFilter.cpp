@@ -10,6 +10,19 @@ FeedbackCombFilter::FeedbackCombFilter(float delayInSamples, float speed)
     z.setSpeed(speed);
 }
 
+FeedbackCombFilter::FeedbackCombFilter(float delayInSamples, float speed, float apfDelay, float apfSpeed)
+{
+    z.setDelaySamples(delayInSamples);
+    z.setSpeed(speed);
+    
+    apf.setDelay(apfDelay);
+    apf.setSpeed(apfSpeed);
+    
+    // These APF params are hard-coded for now
+    apf.setFeedbackGain(0.22f);
+    apf.setModulation(3.03f);
+}
+
 FeedbackCombFilter::~FeedbackCombFilter()
 {
 }
@@ -30,7 +43,10 @@ float FeedbackCombFilter::processSample(float x, int channel)
     y = outZ;
     
     // Feedback signal result
-    fb[channel] = y;
+    // fb[channel] = y; // Direct output->input
+    // fb[channel] = lpf.processSample(outZ, channel); // With LPF processing
+    // fb[channel] = apf.processSample(outZ, channel); // With APF processing
+    fb[channel] = lpf.processSample(apf.processSample(outZ, channel), channel); // APF -> LPF!
 
     return y;
 }
@@ -39,6 +55,7 @@ void FeedbackCombFilter::setFs(float Fs)
 {
     this->Fs = Fs;
     z.setFs(Fs);
+    apf.setFs(Fs);
 }
 
 void FeedbackCombFilter::setFeedbackGain(float g)
