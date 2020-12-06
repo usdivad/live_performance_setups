@@ -4,8 +4,9 @@
 *.aif
 *.mp3
 .DS_Store
-*/.DS_Store
-*/Samples/Processed/Freeze/
+**/.DS_Store
+**/Samples/Processed/Freeze/
+**/Backup/*
 *.JPG
 *.asd
 
