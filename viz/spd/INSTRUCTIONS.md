@@ -8,7 +8,7 @@
 4. In terminal: `cd ..` (to go back to the `viz` directory)
 5. ...
     - **SPD:**
-        - i. Open `spd/index.html`, either locally or with localhost on any port (this opens the receiver). Make sure you're still in the `viz` directory
+        - i. Open `spd/index.html`, either locally or with localhost on any port (this opens the receiver). **Make sure you're still in the `viz` directory**
         - ii. To open in full-screen Chrome:
             1. `python -m SimpleHTTPServer 8000`
             2. `/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app=http://localhost:8000`
