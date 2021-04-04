@@ -5,6 +5,9 @@
               aaxIdentifier="com.usdivad.DaalHalla">
   <MAINGROUP id="WZzAkN" name="DaalHalla">
     <GROUP id="{59845344-83C5-359E-B59C-4B9BB7E98848}" name="Source">
+      <FILE id="ZhiLr5" name="LowPassFilter.cpp" compile="1" resource="0"
+            file="Source/LowPassFilter.cpp"/>
+      <FILE id="bdsz75" name="LowPassFilter.h" compile="0" resource="0" file="Source/LowPassFilter.h"/>
       <FILE id="SgOR33" name="SchroederReverb.cpp" compile="1" resource="0"
             file="Source/SchroederReverb.cpp"/>
       <FILE id="dX93Es" name="SchroederReverb.h" compile="0" resource="0"

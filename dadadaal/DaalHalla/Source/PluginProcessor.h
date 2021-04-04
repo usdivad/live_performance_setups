@@ -12,9 +12,10 @@
 
 #include <JuceHeader.h>
 
-#include "FractionalDelay.h"
-#include "FeedbackDelayNetwork.h"
 #include "AllPassFilter.h"
+#include "FeedbackDelayNetwork.h"
+#include "FractionalDelay.h"
+#include "LowPassFilter.h"
 #include "SchroederReverb.h"
 
 enum class DaalHallaReverbAlgorithm
@@ -81,6 +82,7 @@ private:
     AudioProcessorValueTreeState m_ValueTreeState;
     bool m_ShouldUpdateParameters = false;
     
+    // Predelay
     FractionalDelay m_Predelay;
     
     // Stautner-Puckette
@@ -90,6 +92,9 @@ private:
     
     // Schroeder
     SchroederReverb m_Schroeder;
+    
+    // LPF
+    LowPassFilter m_LPF;
     
     //==============================================================================
     AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
