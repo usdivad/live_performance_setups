@@ -163,14 +163,18 @@ void DaalHallaAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
         buffer.clear (i, 0, buffer.getNumSamples());
     
     
+    // Get params
     float predelayDelayAmountInSamples = m_ValueTreeState.getRawParameterValue("PREDELAY")->load() * 0.001f * getSampleRate();
     float dryWet = m_ValueTreeState.getRawParameterValue("DRYWET")->load();
-    float verbTime = m_ValueTreeState.getRawParameterValue("TIME")->load();
+    float verbTimeInSeconds = m_ValueTreeState.getRawParameterValue("TIME")->load();
     float verbModAmt = m_ValueTreeState.getRawParameterValue("MODULATION")->load();
     float diffusionAmt = m_ValueTreeState.getRawParameterValue("DIFFUSION")->load();
     float lpfFreq = m_ValueTreeState.getRawParameterValue("LPF")->load();
-    DBG(lpfFreq);
     DaalHallaReverbAlgorithm algorithm = (DaalHallaReverbAlgorithm)m_ValueTreeState.getRawParameterValue("ALGORITHM")->load();
+    
+    // Reverb time
+    // TODO: Don't hard-code these <:8)
+    float verbTime = jmap(verbTimeInSeconds, 0.67f, 24.09f, 0.4f, 0.7f);
     
     // Predelay
     m_Predelay.setSpeed(0.0f);
@@ -285,13 +289,13 @@ AudioProcessorValueTreeState::ParameterLayout DaalHallaAudioProcessor::createPar
 {
     std::vector<std::unique_ptr<RangedAudioParameter>> parameters;
     
-    parameters.push_back(std::make_unique<AudioParameterFloat>("TIME", "Time", 0.4f, 0.7f, 0.5f));
-    parameters.push_back(std::make_unique<AudioParameterFloat>("MODULATION", "Modulation", 1.0f, 10.0f, 2.0f));
+    parameters.push_back(std::make_unique<AudioParameterFloat>("TIME", "Time", 0.67f, 24.09f, 12.0f)); // 0.4, 0.7, 0.5. TODO: Just have the display be different, rather than parameters themeslves
+    parameters.push_back(std::make_unique<AudioParameterFloat>("MODULATION", "Modulation", 1.0f, 10.0f, 4.0f));
     parameters.push_back(std::make_unique<AudioParameterFloat>("DRYWET", "Dry/Wet", 0.0f, 1.0f, 0.5f));
-    parameters.push_back(std::make_unique<AudioParameterFloat>("PREDELAY", "Predelay", 0.0f, 200.0f, 0.0f)); // Milliseconds
+    parameters.push_back(std::make_unique<AudioParameterFloat>("PREDELAY", "Predelay", 0.0f, 200.0f, 50.0f)); // Milliseconds
     parameters.push_back(std::make_unique<AudioParameterFloat>("DIFFUSION", "Diffusion", 0.2f, 0.8f, 0.5f));
     parameters.push_back(std::make_unique<AudioParameterFloat>("LPF", "LPF", 1000.0f, 20000.0f, 10000.0f)); // Hz
-    parameters.push_back(std::make_unique<AudioParameterInt>("ALGORITHM", "Reverb Algorithm", (int)DaalHallaReverbAlgorithm::kNone + 1, (int)DaalHallaReverbAlgorithm::kNumReverbAlgorithms - 1, (int)DaalHallaReverbAlgorithm::kSchroeder));
+    parameters.push_back(std::make_unique<AudioParameterInt>("ALGORITHM", "Reverb Algorithm", (int)DaalHallaReverbAlgorithm::kNone + 1, (int)DaalHallaReverbAlgorithm::kNumReverbAlgorithms - 1, (int)DaalHallaReverbAlgorithm::kStautnerPuckette));
     
     return {parameters.begin(), parameters.end() };
 }
