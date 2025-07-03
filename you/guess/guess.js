@@ -16,7 +16,7 @@ let bpm = 180;
 // Melody
 
 let melodyNoteRoot = 60;
-let melodyNotesToGuess = [0, 2, 4, 5, 7, 9, 11, 12];
+let melodyNotesToGuess = [2, 4, 5, 7, 9, 11, 12];
 let melodyNotesGuessed = [];
 
 let melodyNotePlaybackIndex = 0;
@@ -164,6 +164,7 @@ function start() {
     // ----
     // Setup melody
     shuffle(melodyNotesToGuess);
+    melodyNotesToGuess.unshift(0); // Force melody to start on tonic
     console.log(melodyNotesToGuess);
 
     // ----
