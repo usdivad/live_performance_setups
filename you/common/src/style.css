@@ -1,0 +1,8 @@
+body {
+	font-family: Arial, serif;
+	text-align: center;
+}
+
+.hidden {
+	visibility: hidden;
+}

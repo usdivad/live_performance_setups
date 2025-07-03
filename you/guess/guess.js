@@ -10,6 +10,7 @@ console.log("---- GUESS ----");
 // ----
 // Global
 
+let hasStarted = false;
 let bpm = 180;
 
 // ----
@@ -161,6 +162,9 @@ function shuffle(arr) {
 // Main
 
 function start() {
+    
+    console.log("Starting audio");
+
     // ----
     // Setup melody
     shuffle(melodyNotesToGuess);
@@ -176,21 +180,39 @@ function start() {
 
     let droneNoteFreq = new Tone.Frequency(melodyNoteRoot - 24, "midi");
     droneSynth.triggerAttack(droneNoteFreq);
+
+    // ----
+    // Update DOM
+    document.getElementById("instructionsStart")?.remove();
+    document.getElementById("instructionsNotes")?.classList.remove("hidden");
+
+    // ----
+    // Update book-keeping
+    hasStarted = true;
 }
 
 window.onload = (event) => {
     // Start audio on button press
     document.querySelector("button")?.addEventListener("click", async () => {
-        await Tone.start();
-        console.log("Starting audio");
-
-        start();
-
-        document.querySelector("button")?.remove();
+        if (!hasStarted) {
+            await Tone.start();
+            start();
+        }
     });
+    // document.querySelector("button")?.addEventListener("click", () => {
+    //     start();
+    // });
 
     // Input on key down
     document.addEventListener("keydown", (event) => {
-        handleKeyDown(event);
+        if (hasStarted) {
+            handleKeyDown(event);
+        }
+    });
+    document.addEventListener("keydown", async (event) => {
+        if (event.key == " " && !hasStarted) {
+            await Tone.start();
+            start();
+        }
     });
 };
