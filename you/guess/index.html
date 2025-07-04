@@ -2,14 +2,24 @@
 	<head>
 		<link href="../common/src/style.css" rel="stylesheet"/>
 		<script src="../common/lib/Tone.js"></script>
+		<script src="../common/lib/webmidi.js"></script>
 		<script src="guess.js"></script>
 	</head>
 
 	<body>
-		<h1>GUESS</h1>
+		<h1>guess</h1>
 		<div>
-			<p id="instructionsStart">Press <strong>Space</strong> or <button>Start</button> to begin</p>
-			<p id="instructionsNotes"class="hidden">Press <strong>A-K</strong> keys to play notes</p>
+			<p id="instructionsStart">
+				<i>to start:</i>
+				<br/>
+				use <strong>midi input</strong> / press <strong>space</strong> / press <button>start</button>
+			</p>
+
+			<p id="instructionsNotes"class="hidden">
+				<i>to play notes:</i>
+				<br/>
+				use <strong>midi input</strong> / press <strong>a-k</strong> keys
+			</p>
 		</div>
 	</body>
 </html>

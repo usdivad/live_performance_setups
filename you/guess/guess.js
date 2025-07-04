@@ -65,6 +65,17 @@ let inputNoteRoot = melodyNoteRoot + 12;
 let inputGuessedNotes = [];
 let inputGuessedNoteIndex = -1;
 
+// ----
+// Enable WebMIDI input
+
+WebMidi
+    .enable()
+    .then(onWebMidiEnabled)
+    .catch(error => console.log(error));
+
+// ----
+// Input handlers
+
 function handleKeyDown(event) {
 
     // ----
@@ -81,11 +92,44 @@ function handleKeyDown(event) {
     let noteGuess = inputNotes[noteIndex];
 
     // ----
+
+    console.log("Input key down: " + key.toUpperCase() + " -- " + noteGuess);
+
+    handleNoteInput(noteGuess);
+}
+
+async function handleMidiNoteOn(event) {
+    // ----
+    // First time: start
+
+    if (!hasStarted) {
+        await Tone.start();
+        start();
+        return;
+    }
+
+    // ----
+    // Get note
+    // TODO: Make this octave-agnostic -- currently we have to start on inputNoteRoot (72)
+
+    const noteNum = event.note.number;
+    let noteGuess = noteNum - inputNoteRoot; // TODO: Pass note num in directly to avoid extra calc
+
+    // ----
+
+    console.log("Input MIDI note on: " + noteNum + " -- " + noteGuess);
+
+    handleNoteInput(noteGuess);
+}
+
+function handleNoteInput(noteGuess) {
+
+    // ----
     // Play input note
     let note = inputNoteRoot + noteGuess;
     let noteFreq = new Tone.Frequency(note, "midi");
     inputSynth.triggerAttackRelease(noteFreq, "4n");
-    console.log("Input playing note " + note + " for key " + key.toUpperCase());
+    // console.log("Input playing note " + note);
 
     // ----
     // Make sure we're playing the guessed melody
@@ -104,10 +148,10 @@ function handleKeyDown(event) {
 
         if (noteGuess == nextGuessedNote) {
             inputGuessedNoteIndex++;
-            console.log("Next already-guessed note correctly played; incrementing input guessed note index to " + inputGuessedNoteIndex);
+            console.log("Next already-guessed note correctly played at index " + inputGuessedNoteIndex);
         } else {
             inputGuessedNoteIndex = -1;
-            console.log("Resetting input guessed note index to -1");
+            console.log("Resetting input already-guessed note index to -1");
         }
 
         return;
@@ -137,11 +181,28 @@ function handleKeyDown(event) {
             // melodyNotePlaybackProbability = 0.9;
             console.log("You win!!");
         }
+    } else {
+        console.log("Incorrect guess for next melody note");
     }
 
     // Reset regardless of correct/incorrect guess
     inputGuessedNoteIndex = -1;
     // console.log("Resetting input guessed note index to -1");    
+}
+
+function onWebMidiEnabled() {
+    console.log("MIDI enabled");
+
+    console.log(WebMidi.inputs);
+
+    WebMidi.inputs.forEach((device, index) => {
+        console.log("Listening to MIDI device " + index + ": " + device.name);
+        
+        device.addListener("noteon", e => {
+            // console.log(e.note.number);
+            handleMidiNoteOn(e);
+        }, {channels: [1,2,3,4]});
+    })
 }
 
 // --------------------------------
