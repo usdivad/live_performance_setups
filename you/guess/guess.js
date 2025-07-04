@@ -99,27 +99,30 @@ function handleKeyDown(event) {
 }
 
 async function handleMidiNoteOn(event) {
-    // ----
-    // First time: start
 
-    if (!hasStarted) {
+    if (hasStarted) {
+        
+        // ----
+        // Get note
+        // TODO: Make this octave-agnostic -- currently we have to start on inputNoteRoot (72)
+
+        const noteNum = event.note.number;
+        let noteGuess = noteNum - inputNoteRoot; // TODO: Pass note num in directly to avoid extra calc
+
+        // ----
+
+        console.log("Input MIDI note on: " + noteNum + " -- " + noteGuess);
+
+        handleNoteInput(noteGuess);
+
+    } else {
+
+        // ----
+        // First time: start
+
         await Tone.start();
         start();
-        return;
     }
-
-    // ----
-    // Get note
-    // TODO: Make this octave-agnostic -- currently we have to start on inputNoteRoot (72)
-
-    const noteNum = event.note.number;
-    let noteGuess = noteNum - inputNoteRoot; // TODO: Pass note num in directly to avoid extra calc
-
-    // ----
-
-    console.log("Input MIDI note on: " + noteNum + " -- " + noteGuess);
-
-    handleNoteInput(noteGuess);
 }
 
 function handleNoteInput(noteGuess) {
@@ -193,7 +196,7 @@ function handleNoteInput(noteGuess) {
 function onWebMidiEnabled() {
     console.log("MIDI enabled");
 
-    console.log(WebMidi.inputs);
+    // console.log(WebMidi.inputs);
 
     WebMidi.inputs.forEach((device, index) => {
         console.log("Listening to MIDI device " + index + ": " + device.name);
@@ -223,6 +226,10 @@ function shuffle(arr) {
 // Main
 
 function start() {
+
+    if (hasStarted) {
+        return;
+    }
     
     console.log("Starting audio");
 
